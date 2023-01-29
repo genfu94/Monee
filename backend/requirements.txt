@@ -1,0 +1,4 @@
+nordigen
+fastapi
+uvicorn
+jinja2
