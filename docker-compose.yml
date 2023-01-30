@@ -7,3 +7,10 @@ services:
       - ./frontend/public:/app/frontend/public
     ports:
       - "3000:3000"
+
+  budget-app-backend:
+    build: './backend'
+    volumes:
+      - ./backend/src:/src
+    ports:
+      - "8000:8000"

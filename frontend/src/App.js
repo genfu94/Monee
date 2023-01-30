@@ -1,20 +1,18 @@
 import './App.css';
 
 import {
-    Route,
-    Routes
-  } from "react-router-dom";
+  Route,
+  Routes
+} from "react-router-dom";
+
+import BankSelector from "./BankSelector/BankSelector"
 
 function App() {
   return (
-      <Routes>
-        <Route exact path='/' element={< Home />}></Route>
-      </Routes>
+    <Routes>
+      <Route exact path='/' element={< BankSelector />}></Route>
+    </Routes>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
 }
 
 export default App;

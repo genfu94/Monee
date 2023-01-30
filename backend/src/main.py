@@ -3,23 +3,29 @@ from uuid import uuid4
 from nordigen import NordigenClient
 from fastapi import FastAPI, Request
 import uvicorn
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 client = None
-templates = Jinja2Templates(directory="templates")
-
-@app.get("/", response_class=HTMLResponse)
-async def select_country(request: Request):
-    return templates.TemplateResponse("bank_select.html", {"request": request})
-
 
 @app.get("/{country_code}")
 async def select_bank(request: Request, country_code: str):
     banks = client.institution.get_institutions(country_code)
-    return templates.TemplateResponse("bank_select.html", {"request": request, })
+    return banks
+
 '''
 
 
