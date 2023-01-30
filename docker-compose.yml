@@ -5,6 +5,5 @@ services:
     volumes:
       - ./frontend/src:/app/frontend/src
       - ./frontend/public:/app/frontend/public
-      - /app/frontend/node_modules
     ports:
       - "3000:3000"
