@@ -20,14 +20,15 @@ class BankSelector extends React.Component {
         fetch(`http://localhost:8000/${selected_country.value}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                data.forEach((institution) => {this.state.institutions.push({'value': institution['id'], 'label': institution['name']})})
             });
     }
 
     render() {
         return (
             <div>
-                <Select options={this.countries} onChange={this.onCountrySelect}/>
+                <Select options={this.countries} onChange={this.onCountrySelect.bind(this)}/>
+                <Select options={this.state.institutions}/>
             </div>
         );
     }
