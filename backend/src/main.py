@@ -83,23 +83,7 @@ async def fetch_account_info(requisition_id: str, account_id: str):
     print(transactions)
 
     return None
-'''
-print(init)
 
-# Get requisition_id and link to initiate authorization process with a bank
-link = init.link # bank authorization link
-requisition_id = init.requisition_id
-
-accounts = client.requisition.get_requisition_by_id(
-    requisition_id=init.requisition_id
-)
-
-# Get account id from the list.
-account_id = accounts["accounts"][0]
-
-# Create account instance and provide your account id from previous step
-account = client.account_api(id=account_id)
-'''
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
