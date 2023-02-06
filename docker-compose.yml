@@ -14,3 +14,12 @@ services:
       - ./backend/src:/src
     ports:
       - "8000:8000"
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo
+    volumes:
+      - ./db:/data/db
+    ports:
+      - "27017:27017"
