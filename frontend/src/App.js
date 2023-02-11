@@ -10,7 +10,8 @@ import BankSelector from "./BankSelector/BankSelector"
 function App() {
   return (
     <Routes>
-      <Route exact path='/' element={< BankSelector />}></Route>
+      <Route exact path='/' element={< BankSelector />}>
+      </Route>
     </Routes>
   );
 }

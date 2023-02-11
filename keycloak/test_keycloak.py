@@ -23,7 +23,8 @@ class KeycloakConfigurator:
         self.keycloak_admin.realm_name = "budget_app"
         self.keycloak_admin.create_client({
             "name": "budget_app",
-            "clientId": "budget_app"
+            "clientId": "budget_app",
+            "rootUrl": "http://localhost:3000"
         }, skip_exists=True)
 
     def set_configuration(self):
