@@ -2,6 +2,7 @@ version: "3.8"
 services:
   budget-app-frontend:
     build: './frontend'
+    container_name: budget_app_frontend
     volumes:
       - ./frontend/src:/app/frontend/src
       - ./frontend/public:/app/frontend/public
@@ -10,6 +11,7 @@ services:
 
   budget-app-backend:
     build: './backend'
+    container_name: budget_app_backend
     volumes:
       - ./backend/src:/src
     ports:
@@ -19,12 +21,24 @@ services:
   
   mongo:
     image: mongo
+    container_name: budget_app_mongo
     volumes:
       - ./db:/data/db
     ports:
       - "27017:27017"
   
   keycloak:
-    build: './keycloak'
+    image: quay.io/keycloak/keycloak:20.0.3
+    container_name: budget_app_keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
     ports:
       - "8080:8080"
+    command:
+      - start-dev
+
+  keycloak_configure:
+    build: './keycloak'
+    depends_on:
+      - keycloak

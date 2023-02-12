@@ -1,9 +1,11 @@
 from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakGetError
-
+import time
 
 if __name__ == "__main__":
-    keycloak_admin = KeycloakAdmin(server_url="http://localhost:8080",
+    # TODO: use more robust approach to wait for keycloak initialization
+    time.sleep(20)
+    keycloak_admin = KeycloakAdmin(server_url="http://budget_app_keycloak:8080",
                                     username='admin',
                                     password='admin',
                                     realm_name="master",
