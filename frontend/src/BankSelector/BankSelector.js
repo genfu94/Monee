@@ -1,7 +1,7 @@
 import React from "react"
 import Select from 'react-select'
 import Button from '@mui/material/Button';
-
+import NavBar from '../NavBar/navbar.js'
 
 class BankSelector extends React.Component {
     constructor(props) {
@@ -42,7 +42,8 @@ class BankSelector extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{'background-color': '#eff0f2'}}>
+                <NavBar/>
                 <Select options={this.countries} onChange={this.onCountrySelect.bind(this)}/>
                 <Select options={this.state.institutions} onChange={(selected_institution) => {this.setState({selected_institution: selected_institution})}}/>
                 <Button variant='outlined' onClick={this.bankConnect.bind(this)}>Connect</Button>

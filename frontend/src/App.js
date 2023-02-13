@@ -1,5 +1,3 @@
-import './App.css';
-
 import {
   Route,
   Routes
@@ -15,5 +13,6 @@ function App() {
     </Routes>
   );
 }
+
 
 export default App;
