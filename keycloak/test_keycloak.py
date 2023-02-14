@@ -36,4 +36,4 @@ if __name__ == "__main__":
             "type": "Password",
             "value": "user"
         }]
-    })
+    }, exist_ok=True)

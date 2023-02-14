@@ -1,4 +1,4 @@
 nordigen
 fastapi
 uvicorn
-jinja2
+pymongo
