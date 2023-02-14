@@ -6,12 +6,12 @@ class NavBar  extends React.Component {
     render() {
         return (
             <div className="nav-bar">
-                <div className="nav-bar-content">
+                <ul className="nav-bar-content">
                     <img className="logo" src={budget_logo} />
-                    <div className="nav-bar-link">Home</div>
-                    <div className="nav-bar-link">Account</div>
-                    <div className="nav-bar-link">Transazioni</div>
-                </div>
+                    <li className="nav-bar-link">Home</li>
+                    <li className="nav-bar-link">Account</li>
+                    <li className="nav-bar-link">Transazioni</li>
+                </ul>
             </div>
         );
     }

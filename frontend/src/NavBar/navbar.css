@@ -17,6 +17,12 @@
     height: 100%;
 }
 
+.nav-bar-link:hover {
+    color: #778A35;
+    text-shadow: .25px 0px .1px,
+                  -.25px 0px .1px;
+}
+
 .logo {
     height: 3rem;
     width: 3rem;
@@ -25,5 +31,7 @@
 .nav-bar-link {
     margin-left: 14px;
     margin-right: 14px;
-    color:rgb(78, 77, 77)
+    padding: 0px 14px 0px 14px;
+    color:rgb(170, 167, 167);
+    list-style: none;
 }
