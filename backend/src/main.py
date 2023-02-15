@@ -21,6 +21,7 @@ app.add_middleware(
 )
 
 client = None
+db_client = None
 
 @app.get("/{country_code}")
 async def select_bank(request: Request, country_code: str):
@@ -59,29 +60,44 @@ async def get_account_list(requisition_id: str):
     return None
 
 
-@app.get("/account/fetch_info")
-async def fetch_account_info(requisition_id: str, account_id: str):
-    accounts = client.requisition.get_requisition_by_id(
-        requisition_id=requisition_id
-    )
 
-    # Get account id from the list.
-    account_id = accounts["accounts"][0]
+@app.get("/account/fetch_accounts")
+async def fetch_account_info(username: str):
+    db_ref = db_client["budget_app"]
+    account_collection = db_ref["accounts"]
+    subaccount_collection = db_ref["sub_accounts"]
 
-    # Create account instance and provide your account id from previous step
-    account = client.account_api(id=account_id)
+    query = { "username": username }
 
-    # Fetch account metadata
-    meta_data = account.get_metadata()
-    # Fetch details
-    details = account.get_details()
-    # Fetch balances
-    balances = account.get_balances()
-    # Fetch transactions
-    transactions = account.get_transactions()
+    user_accounts = account_collection.find(query)
 
-    print(balances)
-    print(transactions)
+    for acc in user_accounts:
+        sub_accounts = client.requisition.get_requisition_by_id(
+            requisition_id=acc['requisition_id']
+        )
+
+        for i, sub_acc_id in enumerate(sub_accounts['accounts']):
+            sub_acc_instance = client.account_api(id=sub_acc_id)
+            sub_acc_details = sub_acc_instance.get_details()['account']
+
+            myquery = [
+            {
+                "$set": {"balance": sub_acc_instance.get_balances()['balances'][0]['balanceAmount']},
+            },
+            {
+                "$set": {
+                    "transactions": {
+                        "$mergeObjects": [
+                            "$transactions",
+                            sub_acc_instance.get_transactions()['transactions']
+                        ]
+                    }
+                }
+            }
+            ]
+
+            if sub_acc_details['status'] == 'enabled':
+                subaccount_collection.update_one({"_id": sub_acc_id}, myquery, upsert=True)
 
     return None
 
@@ -96,9 +112,8 @@ if __name__ == "__main__":
     )
 
     client.generate_token()
+
     CONNECTION_STRING = "mongodb://budget_app_mongo:27017/"
     db_client = pymongo.MongoClient(CONNECTION_STRING)
-    db_ref = db_client["budget_app"]
-    user_collection = db_ref["users"]
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
