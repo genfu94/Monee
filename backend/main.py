@@ -4,7 +4,7 @@ from nordigen import NordigenClient
 from fastapi import FastAPI, Request
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-import pymongo
+from database_manager import mongo_client
 
 app = FastAPI()
 
@@ -63,7 +63,7 @@ async def get_account_list(requisition_id: str):
 
 @app.get("/account/fetch_accounts")
 async def fetch_account_info(username: str):
-    db_ref = db_client["budget_app"]
+    db_ref = mongo_client["budget_app"]
     account_collection = db_ref["accounts"]
     subaccount_collection = db_ref["sub_accounts"]
 
@@ -112,8 +112,5 @@ if __name__ == "__main__":
     )
 
     client.generate_token()
-
-    CONNECTION_STRING = "mongodb://budget_app_mongo:27017/"
-    db_client = pymongo.MongoClient(CONNECTION_STRING)
 
     uvicorn.run(app, host="0.0.0.0", port=8000)

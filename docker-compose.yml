@@ -13,7 +13,7 @@ services:
     build: './backend'
     container_name: budget_app_backend
     volumes:
-      - ./backend/src:/src
+      - ./:/app
     ports:
       - "8000:8000"
     depends_on:
