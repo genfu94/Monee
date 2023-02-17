@@ -75,14 +75,20 @@ async def fetch_account_info(username: str):
         )
 
         for i, sub_acc_id in enumerate(sub_accounts['accounts']):
-            sub_acc_instance = client.account_api(id=sub_acc_id)
-            sub_acc_details = sub_acc_instance.get_details()['account']
             last_account_update = account_db_manager.get_sub_account_last_update(sub_acc_id)
-            balance = sub_acc_instance.get_balances()['balances'][0]['balanceAmount']
-            transactions = sub_acc_instance.get_transactions(date_from=last_account_update)['transactions']
 
-            if sub_acc_details['status'] == 'enabled':
-                account_db_manager.update_sub_account(sub_acc_id, balance, transactions)
+            if last_account_update:
+                date_time_obj = datetime.strptime(last_account_update, '%Y-%m-%d').date()
+
+                if date_time_obj < datetime.now().date():
+                    sub_acc_instance = client.account_api(id=sub_acc_id)
+                    sub_acc_details = sub_acc_instance.get_details()['account']
+                
+                    balance = sub_acc_instance.get_balances()['balances'][0]['balanceAmount']
+                    transactions = sub_acc_instance.get_transactions(date_from=last_account_update)['transactions']
+
+                    if sub_acc_details['status'] == 'enabled':
+                        account_db_manager.update_sub_account(sub_acc_id, balance, transactions)
                 
 
     return None
