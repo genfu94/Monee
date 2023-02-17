@@ -4,7 +4,8 @@ from nordigen import NordigenClient
 from fastapi import FastAPI, Request
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from database_manager import mongo_client
+from database_manager import mongo_client, account_db_manager
+from datetime import datetime
 
 app = FastAPI()
 
@@ -64,12 +65,9 @@ async def get_account_list(requisition_id: str):
 @app.get("/account/fetch_accounts")
 async def fetch_account_info(username: str):
     db_ref = mongo_client["budget_app"]
-    account_collection = db_ref["accounts"]
     subaccount_collection = db_ref["sub_accounts"]
 
-    query = { "username": username }
-
-    user_accounts = account_collection.find(query)
+    user_accounts = account_db_manager.find_accounts_by_username(username)
 
     for acc in user_accounts:
         sub_accounts = client.requisition.get_requisition_by_id(
@@ -79,25 +77,13 @@ async def fetch_account_info(username: str):
         for i, sub_acc_id in enumerate(sub_accounts['accounts']):
             sub_acc_instance = client.account_api(id=sub_acc_id)
             sub_acc_details = sub_acc_instance.get_details()['account']
-
-            myquery = [
-            {
-                "$set": {"balance": sub_acc_instance.get_balances()['balances'][0]['balanceAmount']},
-            },
-            {
-                "$set": {
-                    "transactions": {
-                        "$mergeObjects": [
-                            "$transactions",
-                            sub_acc_instance.get_transactions()['transactions']
-                        ]
-                    }
-                }
-            }
-            ]
+            last_account_update = account_db_manager.get_sub_account_last_update(sub_acc_id)
+            balance = sub_acc_instance.get_balances()['balances'][0]['balanceAmount']
+            transactions = sub_acc_instance.get_transactions(date_from=last_account_update)['transactions']
 
             if sub_acc_details['status'] == 'enabled':
-                subaccount_collection.update_one({"_id": sub_acc_id}, myquery, upsert=True)
+                account_db_manager.update_sub_account(sub_acc_id, balance, transactions)
+                
 
     return None
 
