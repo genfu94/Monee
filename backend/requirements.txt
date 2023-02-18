@@ -2,3 +2,4 @@ nordigen
 fastapi
 uvicorn
 pymongo
+dataclasses-json

@@ -1,9 +1,15 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 import uvicorn
+import configparser
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
-from database_manager import account_db_manager
-from bank_sync import bank_sync_client
+from bank_sync.bank_sync import (
+    bank_sync_client,
+    NordigenBankSyncClient,
+    APICredentials,
+    MongoAccountDatabaseClient
+)
+
+import routes.bank_connection_api
 
 app = FastAPI()
 
@@ -18,24 +24,33 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(routes.bank_connection_api.router)
 
-client = None
-db_client = None
+@app.on_event("startup")
+def startup_event():
+    global bank_sync_client
 
-@app.get("/{country_code}")
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    account_db_client = MongoAccountDatabaseClient(config['DATABASE']['DBConnectionString'])
+    bank_sync_client = NordigenBankSyncClient(
+        APICredentials(config['DEFAULT']['NordigenSecretID'], config['DEFAULT']['NordigenSecretKey']),
+        account_db_client
+    )
+
+    bank_sync_client.initialize()
+
+
+'''@app.get("/{country_code}")
 async def select_bank(request: Request, country_code: str):
     banks = client.institution.get_institutions(country_code)
     return banks
-
-@app.get("/bank_connect/{institution_id}")
-async def bank_connect(institution_id: str):
-    return bank_sync_client.start_bank_syncing(institution_id)
 
 
 @app.get("/accounts/{requisition_id}")
 async def get_account_list(requisition_id: str):
     return bank_sync_client.list_accounts(requisition_id)
-
 
 
 @app.get("/account/fetch_accounts")
@@ -60,10 +75,9 @@ async def fetch_account_info(username: str):
                         account_db_manager.update_sub_account(sub_acc_id, balance, transactions)
                 
 
-    return None
+    return None'''
+
 
 
 if __name__ == "__main__":
-    
-
     uvicorn.run(app, host="0.0.0.0", port=8000)
