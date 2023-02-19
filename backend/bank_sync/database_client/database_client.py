@@ -1,6 +1,22 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails
+from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo
 from pymongo import MongoClient
+from typing import List, Dict
+
+
+def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLinkingDetails:
+    return NordigenBankLinkingDetails(
+        client="Nordigen",
+        link=bank_link_details_json['link'],
+        requisition_id=bank_link_details_json['requisition_id'],
+        institution=InstitutionInfo(**bank_link_details_json['institution']),
+        status=bank_link_details_json['status']
+    )
+
+
+BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER = {
+    "Nordigen": parse_nordigen_bank_link_details
+}
 
 
 class AccountDatabaseClient(ABC):
@@ -10,6 +26,10 @@ class AccountDatabaseClient(ABC):
 
     @abstractmethod
     def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
+        pass
+
+    @abstractmethod
+    def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
         pass
 
     '''@abstractmethod
@@ -43,6 +63,10 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         bank_linking_details_json['user'] = username
         self.bank_link_collection.insert_one(bank_linking_details_json)
     
+    def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
+        user_bank_link_details_list = self.bank_link_collection.find({'user': username})
+        return [BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER[bank_link_detail['client']](bank_link_detail) for bank_link_detail in user_bank_link_details_list]
+
     '''def update_sub_account(self, sub_account_id: str, new_balance: dict, transactions: list):
         update_query = [
             {

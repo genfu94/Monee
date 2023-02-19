@@ -12,7 +12,7 @@ class AccountStatus(int, Enum):
 
 
 class BankLinkingDetails(BaseModel):
-    pass
+    client: str
 
 
 class InstitutionInfo(BaseModel):
