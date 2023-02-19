@@ -1,120 +1,11 @@
 from uuid import uuid4
-from typing import List
 from abc import ABC, abstractmethod
-from enum import Enum
-from dataclasses import dataclass, field
 from datetime import datetime
-from dataclasses_json import dataclass_json
-from pydantic import BaseModel
 
 from nordigen import NordigenClient
-from pymongo import MongoClient
 import configparser
-
-
-@dataclass_json
-@dataclass
-class AccountSyncInfo:
-    pass
-
-
-@dataclass_json
-@dataclass
-class NordigenAccountSyncInfo(AccountSyncInfo):
-    requisition_id: str
-    account_id: str
-
-
-@dataclass
-class APICredentials:
-    secret_id: str
-    secret_key: str
-
-
-
-class BankLinkingDetails(BaseModel):
-    pass
-
-
-class InstitutionInfo(BaseModel):
-    name: str
-    id: str
-
-
-class NordigenBankLinkingDetails(BankLinkingDetails):
-    link: str
-    requisition_id: str
-    institution: InstitutionInfo
-
-
-@dataclass
-class Balance:
-    currency: str
-    amount: float
-
-
-@dataclass
-class Transaction:
-    pass
-
-
-@dataclass
-class AccountStatus:
-    AUTHORIZATION_REQUIRED = 0
-    LINKED = 1
-    LINK_EXPIRED = 2
-
-
-@dataclass_json
-@dataclass
-class AccountData:
-    bank: str
-    status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
-    account_name: str = None
-    balances: List[Balance] = field(default_factory=list)
-    transactions: List[Transaction] = field(default_factory=list)
-
-
-class AccountDatabaseClient(ABC):
-    @abstractmethod
-    def initialize(self):
-        pass
-
-    @abstractmethod
-    def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
-        pass
-
-    '''@abstractmethod
-    def fetch_account(self, username: str, account_id: str):
-        pass
-    
-    @abstractmethod
-    def fetch_sync_info(self, username: str, account_id: str) -> AccountSyncInfo:
-        pass
-    
-    @abstractmethod
-    def update_account(self, username: str, account_data: AccountData):
-        pass'''
-
-
-class MongoAccountDatabaseClient(AccountDatabaseClient):
-    def __init__(self, connection_string: str):
-        self.connection_string = connection_string
-        self._mongo_client = None
-
-    def initialize(self):
-        if self._mongo_client:
-            return
-        
-        self._mongo_client = MongoClient(self.connection_string)
-        self.db_client = self._mongo_client['budget_app']
-        self.bank_link_collection = self.db_client['bank_links']
-
-    def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
-        print("BANK LINKING DETAILS", bank_linking_details)
-        bank_linking_details_json = bank_linking_details.dict()
-        bank_linking_details_json['user'] = username
-        self.bank_link_collection.insert_one(bank_linking_details_json)
+from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails
+from .database_client.database_client import AccountDatabaseClient, MongoAccountDatabaseClient
 
 
 class BankSyncClient(ABC):
@@ -153,7 +44,6 @@ class NordigenBankSyncClient(BankSyncClient):
         if self.nordigen_client != None:
             return
 
-        print("ACCOUNT DB CLIENT", self.account_db_client)
         self.account_db_client.initialize()
         
         self.nordigen_client = NordigenClient(
