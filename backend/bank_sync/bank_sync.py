@@ -80,12 +80,11 @@ def initialize_bank_sync_client():
     config.read('config.ini')
 
     account_db_client = MongoAccountDatabaseClient(config['DATABASE']['DBConnectionString'])
-    print("ACCOUNT DB CLIENT BEFORE PASSING", account_db_client)
+
     bank_sync_client = NordigenBankSyncClient(
         APICredentials(config['DEFAULT']['NordigenSecretID'], config['DEFAULT']['NordigenSecretKey']),
         account_db_client
     )
-
 
     bank_sync_client.initialize()
 
