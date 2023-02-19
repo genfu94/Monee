@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
-import configparser
 from fastapi.middleware.cors import CORSMiddleware
 from bank_sync.bank_sync import (
-    bank_sync_client,
+    initialize_bank_sync_client,
     NordigenBankSyncClient,
     APICredentials,
     MongoAccountDatabaseClient
@@ -28,18 +27,7 @@ app.include_router(routes.bank_connection_api.router)
 
 @app.on_event("startup")
 def startup_event():
-    global bank_sync_client
-
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-
-    account_db_client = MongoAccountDatabaseClient(config['DATABASE']['DBConnectionString'])
-    bank_sync_client = NordigenBankSyncClient(
-        APICredentials(config['DEFAULT']['NordigenSecretID'], config['DEFAULT']['NordigenSecretKey']),
-        account_db_client
-    )
-
-    bank_sync_client.initialize()
+    initialize_bank_sync_client()
 
 
 '''@app.get("/{country_code}")

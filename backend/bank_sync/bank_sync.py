@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from nordigen import NordigenClient
 from pymongo import MongoClient
+import configparser
 
 
 @dataclass_json
@@ -30,9 +31,8 @@ class APICredentials:
     secret_key: str
 
 
-@dataclass_json
-@dataclass
-class BankLinkingDetails:
+
+class BankLinkingDetails(BaseModel):
     pass
 
 
@@ -41,8 +41,6 @@ class InstitutionInfo(BaseModel):
     id: str
 
 
-@dataclass_json
-@dataclass
 class NordigenBankLinkingDetails(BankLinkingDetails):
     link: str
     requisition_id: str
@@ -113,7 +111,8 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self.bank_link_collection = self.db_client['bank_links']
 
     def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
-        bank_linking_details_json = bank_linking_details.to_json()
+        print("BANK LINKING DETAILS", bank_linking_details)
+        bank_linking_details_json = bank_linking_details.dict()
         bank_linking_details_json['user'] = username
         self.bank_link_collection.insert_one(bank_linking_details_json)
 
@@ -151,9 +150,10 @@ class NordigenBankSyncClient(BankSyncClient):
         self.account_db_client = account_db_client
 
     def initialize(self):
-        if self.nordigen_client == None:
+        if self.nordigen_client != None:
             return
 
+        print("ACCOUNT DB CLIENT", self.account_db_client)
         self.account_db_client.initialize()
         
         self.nordigen_client = NordigenClient(
@@ -202,3 +202,22 @@ class NordigenBankSyncClient(BankSyncClient):
         return sub_acc_instance.get_transactions(date_from=last_account_update)['transactions']'''
 
 bank_sync_client:BankSyncClient = None
+
+def initialize_bank_sync_client():
+    global bank_sync_client
+
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    account_db_client = MongoAccountDatabaseClient(config['DATABASE']['DBConnectionString'])
+    print("ACCOUNT DB CLIENT BEFORE PASSING", account_db_client)
+    bank_sync_client = NordigenBankSyncClient(
+        APICredentials(config['DEFAULT']['NordigenSecretID'], config['DEFAULT']['NordigenSecretKey']),
+        account_db_client
+    )
+
+
+    bank_sync_client.initialize()
+
+def get_bank_sync_client():
+    return bank_sync_client
