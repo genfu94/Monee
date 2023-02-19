@@ -5,6 +5,28 @@ from enum import Enum
 from typing import List
 
 
+class AccountStatus(int, Enum):
+    AUTHORIZATION_REQUIRED = 0
+    LINKED = 1
+    LINK_EXPIRED = 2
+
+
+class BankLinkingDetails(BaseModel):
+    pass
+
+
+class InstitutionInfo(BaseModel):
+    name: str
+    id: str
+
+
+class NordigenBankLinkingDetails(BankLinkingDetails):
+    link: str
+    requisition_id: str
+    institution: InstitutionInfo
+    status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
+
+
 @dataclass_json
 @dataclass
 class AccountSyncInfo:
@@ -24,22 +46,6 @@ class APICredentials:
     secret_key: str
 
 
-
-class BankLinkingDetails(BaseModel):
-    pass
-
-
-class InstitutionInfo(BaseModel):
-    name: str
-    id: str
-
-
-class NordigenBankLinkingDetails(BankLinkingDetails):
-    link: str
-    requisition_id: str
-    institution: InstitutionInfo
-
-
 @dataclass
 class Balance:
     currency: str
@@ -51,18 +57,10 @@ class Transaction:
     pass
 
 
-@dataclass
-class AccountStatus:
-    AUTHORIZATION_REQUIRED = 0
-    LINKED = 1
-    LINK_EXPIRED = 2
-
-
 @dataclass_json
 @dataclass
 class AccountData:
     bank: str
-    status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
     account_name: str = None
     balances: List[Balance] = field(default_factory=list)
     transactions: List[Transaction] = field(default_factory=list)
