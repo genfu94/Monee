@@ -3,9 +3,8 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 
 from nordigen import NordigenClient
-import configparser
 from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails, AccountStatus
-from .database_client.database_client import AccountDatabaseClient, MongoAccountDatabaseClient
+from .database_client.database_client import AccountDatabaseClient
 
 
 class BankSyncClient(ABC):
@@ -37,15 +36,15 @@ class NordigenBankSyncClient(BankSyncClient):
         super().__init__(account_db_client)
 
         self.nordigen_link_status_map = {
-            "CR": 0,
-            "GC": 0,
-            "UA": 0,
-            "RJ": 0,
-            "SA": 0,
-            "GA": 0,
-            "LN": 1,
-            "SU": 2,
-            "EX": 2
+            "CR": AccountStatus.AUTHORIZATION_REQUIRED,
+            "GC": AccountStatus.AUTHORIZATION_REQUIRED,
+            "UA": AccountStatus.AUTHORIZATION_REQUIRED,
+            "RJ": AccountStatus.AUTHORIZATION_REQUIRED,
+            "SA": AccountStatus.AUTHORIZATION_REQUIRED,
+            "GA": AccountStatus.AUTHORIZATION_REQUIRED,
+            "LN": AccountStatus.LINKED,
+            "SU": AccountStatus.LINK_EXPIRED,
+            "EX": AccountStatus.LINK_EXPIRED
         }
 
     def initialize(self):
@@ -91,24 +90,3 @@ class NordigenBankSyncClient(BankSyncClient):
             institution=bank_linking_details.institution,
             status=self.nordigen_link_status_map[nordigen_bank_link_details_json['status']]
         )
-
-
-bank_sync_client:BankSyncClient = None
-
-def initialize_bank_sync_client():
-    global bank_sync_client
-
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-
-    account_db_client = MongoAccountDatabaseClient(config['DATABASE']['DBConnectionString'])
-
-    bank_sync_client = NordigenBankSyncClient(
-        APICredentials(config['DEFAULT']['NordigenSecretID'], config['DEFAULT']['NordigenSecretKey']),
-        account_db_client
-    )
-
-    bank_sync_client.initialize()
-
-def get_bank_sync_client():
-    return bank_sync_client

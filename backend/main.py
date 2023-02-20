@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from bank_sync.bank_sync import initialize_bank_sync_client
+from dependencies import initialize_bank_sync_client
 
 import routes.bank_connection_api
 
