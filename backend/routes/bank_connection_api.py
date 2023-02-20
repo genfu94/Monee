@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from bank_sync.bank_sync import InstitutionInfo
+from bank_sync.bank_sync import InstitutionInfo, BankLinkingDetails, NordigenBankLinkingDetails
 from dependencies import get_bank_sync_client
 
 router = APIRouter()
@@ -12,3 +12,8 @@ async def bank_connect(username:str, institution: InstitutionInfo):
 @router.get("/update_bank_links")
 async def update_bank_links(username:str):
     return get_bank_sync_client().update_bank_links_statuses(username)
+
+
+@router.get("/fetch_all_bank_accounts")
+async def fetch_all_bank_accounts(bank_linking_details: NordigenBankLinkingDetails):
+    return get_bank_sync_client().fetch_all_bank_accounts(bank_linking_details)

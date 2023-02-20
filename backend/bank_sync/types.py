@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from enum import Enum
 from typing import List
 
@@ -21,10 +21,27 @@ class InstitutionInfo(BaseModel):
 
 
 class NordigenBankLinkingDetails(BankLinkingDetails):
-    link: str
     requisition_id: str
     institution: InstitutionInfo
+    link: str
     status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
+
+
+class Balance(BaseModel):
+    currency: str
+    amount: float
+
+
+class Transaction(BaseModel):
+    pass
+
+
+class AccountData(BaseModel):
+    account_id: str
+    account_name: str
+    bank_linking_details: BankLinkingDetails
+    balances: List[Balance] = []
+    transactions: List[Transaction] = []
 
 
 @dataclass_json
@@ -44,23 +61,3 @@ class NordigenAccountSyncInfo(AccountSyncInfo):
 class APICredentials:
     secret_id: str
     secret_key: str
-
-
-@dataclass
-class Balance:
-    currency: str
-    amount: float
-
-
-@dataclass
-class Transaction:
-    pass
-
-
-@dataclass_json
-@dataclass
-class AccountData:
-    bank: str
-    account_name: str = None
-    balances: List[Balance] = field(default_factory=list)
-    transactions: List[Transaction] = field(default_factory=list)

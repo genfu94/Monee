@@ -1,9 +1,10 @@
 from uuid import uuid4
 from abc import ABC, abstractmethod
 from datetime import datetime
+from typing import List
 
 from nordigen import NordigenClient
-from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails, AccountStatus
+from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData
 from .database_client.database_client import AccountDatabaseClient
 
 
@@ -27,6 +28,10 @@ class BankSyncClient(ABC):
         for bank_link_status in self.account_db_client.fetch_user_bank_links(username):
             bank_linking_details = self.fetch_link_bank_status(bank_link_status)
             self.account_db_client.update_bank_link_status(bank_linking_details)
+
+    @abstractmethod
+    def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetails) -> List[AccountData]:
+        pass
 
 
 class NordigenBankSyncClient(BankSyncClient):
@@ -90,3 +95,25 @@ class NordigenBankSyncClient(BankSyncClient):
             institution=bank_linking_details.institution,
             status=self.nordigen_link_status_map[nordigen_bank_link_details_json['status']]
         )
+    
+    def _fetch_bank_account_details(self, bank_linking_details: BankLinkingDetails, account_id: str) -> AccountData:
+        account_api = self.nordigen_client.account_api(id=account_id)
+        account_details_json = account_api.get_details()['account']
+        
+        if account_details_json['status'] == 'deleted':
+            return None
+        
+        return AccountData(
+            account_id=account_id,
+            account_name=account_details_json['name'],
+            bank_linking_details=bank_linking_details
+        )
+
+    def fetch_all_bank_accounts(self, bank_linking_details: BankLinkingDetails) -> List[AccountData]:
+        bank_accounts = self.nordigen_client.requisition.get_requisition_by_id(
+            requisition_id=bank_linking_details.requisition_id
+        )
+
+        return [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
+
+
