@@ -10,4 +10,4 @@ async def bank_connect(username:str, institution: InstitutionInfo):
 
 @router.get("/update_bank_links")
 async def update_bank_links(username:str):
-    return get_bank_sync_client().update_bank_links_status(username)
+    return get_bank_sync_client().update_bank_links_statuses(username)

@@ -4,7 +4,7 @@ from datetime import datetime
 
 from nordigen import NordigenClient
 import configparser
-from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails
+from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails, AccountStatus
 from .database_client.database_client import AccountDatabaseClient, MongoAccountDatabaseClient
 
 
@@ -24,9 +24,10 @@ class BankSyncClient(ABC):
     def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetails) -> BankLinkingDetails:
         pass
     
-    def update_bank_links_status(self, username: str):
+    def update_bank_links_statuses(self, username: str):
         for bank_link_status in self.account_db_client.fetch_user_bank_links(username):
-            self.fetch_link_bank_status(bank_link_status)
+            bank_linking_details = self.fetch_link_bank_status(bank_link_status)
+            self.account_db_client.update_bank_link_status(bank_linking_details)
 
 
 class NordigenBankSyncClient(BankSyncClient):
@@ -34,6 +35,18 @@ class NordigenBankSyncClient(BankSyncClient):
         self.nordigen_auth_credentials = nordigen_auth_credentials
         self.nordigen_client = None
         super().__init__(account_db_client)
+
+        self.nordigen_link_status_map = {
+            "CR": 0,
+            "GC": 0,
+            "UA": 0,
+            "RJ": 0,
+            "SA": 0,
+            "GA": 0,
+            "LN": 1,
+            "SU": 2,
+            "EX": 2
+        }
 
     def initialize(self):
         if self.nordigen_client != None:
@@ -65,13 +78,19 @@ class NordigenBankSyncClient(BankSyncClient):
         self.account_db_client.add_bank(username, bank_linking_details)
         
         return bank_linking_details
-    
-    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetails) -> BankLinkingDetails:
-        print(self.nordigen_client.requisition.get_requisition_by_id(
-            requisition_id=bank_linking_details.requisition_id
-        ))
 
-        return None
+    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetails) -> BankLinkingDetails:
+        nordigen_bank_link_details_json = self.nordigen_client.requisition.get_requisition_by_id(
+            requisition_id=bank_linking_details.requisition_id
+        )
+
+        return NordigenBankLinkingDetails(
+            client="Nordigen",
+            link=nordigen_bank_link_details_json['link'],
+            requisition_id=bank_linking_details.requisition_id,
+            institution=bank_linking_details.institution,
+            status=self.nordigen_link_status_map[nordigen_bank_link_details_json['status']]
+        )
 
 
 bank_sync_client:BankSyncClient = None

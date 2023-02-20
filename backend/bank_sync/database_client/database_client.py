@@ -32,6 +32,10 @@ class AccountDatabaseClient(ABC):
     def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
         pass
 
+    @abstractmethod
+    def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
+        pass
+
     '''@abstractmethod
     def fetch_account(self, username: str, account_id: str):
         pass
@@ -66,6 +70,15 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
         user_bank_link_details_list = self.bank_link_collection.find({'user': username})
         return [BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER[bank_link_detail['client']](bank_link_detail) for bank_link_detail in user_bank_link_details_list]
+
+    def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
+        filter_query = { 'requisition_id': bank_linking_details.requisition_id }
+        update_query = {
+            '$set': {
+                'status': bank_linking_details.status
+            }
+        }
+        self.bank_link_collection.update_one(filter_query, update_query)
 
     '''def update_sub_account(self, sub_account_id: str, new_balance: dict, transactions: list):
         update_query = [
