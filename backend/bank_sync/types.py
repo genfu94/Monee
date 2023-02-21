@@ -4,6 +4,7 @@ from pydantic import BaseModel, validator
 from enum import Enum
 from typing import List, Union, Annotated
 import json
+from abc import ABC, abstractmethod
 
 
 class AccountStatus(int, Enum):
@@ -12,40 +13,17 @@ class AccountStatus(int, Enum):
     LINK_EXPIRED = 2
 
 
-class BankLinkingDetailsBase(BaseModel):
-    client: str
-
-    '''_subtypes = dict()
-
-    def __init_subclass__(cls, client=None):
-        cls._subtypes[client or cls.__name__.lower()] = cls
-    
-    @classmethod
-    def _convert_to_real_type(cls, data):
-        client_type = data.get("client")
-
-        if client_type is None:
-            raise ValueError("Missing 'client' in BankLinkingDetails")
-
-        sub = cls._subtypes.get(client_type)
-
-        if sub is None:
-            raise TypeError(f"Unsupport sub-type: {client_type}")
-
-        return sub(**data)
-    
-    @classmethod
-    def parse_obj(cls, obj):
-        return cls._convert_to_real_type(obj)
-
-    @classmethod
-    def parse_raw(cls, str_obj):
-        return cls._convert_to_real_type(json.loads(str_obj))'''
-    
-
 class InstitutionInfo(BaseModel):
     name: str
     id: str
+
+
+class BankLinkingDetailsBase(BaseModel, ABC):
+    client: str
+
+    @abstractmethod
+    def get_identifiers(self):
+        pass
 
 
 class NordigenBankLinkingDetails(BankLinkingDetailsBase):
@@ -53,6 +31,14 @@ class NordigenBankLinkingDetails(BankLinkingDetailsBase):
     institution: InstitutionInfo
     link: str
     status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
+
+    def get_identifiers(self):
+        return {
+            'requisition_id': self.requisition_id
+        }
+
+
+BankLinkingDetails = Union[NordigenBankLinkingDetails, BankLinkingDetailsBase]
 
 
 class Balance(BaseModel):
@@ -71,15 +57,6 @@ class AccountData(BaseModel):
     balances: List[Balance] = []
     transactions: List[Transaction] = []
 
-    '''@classmethod
-    def parse_raw(cls, str_obj):
-        parsed = cls.parse_obj(json.loads(str_obj))
-        parsed.bank_linking_details = parsed.bank_linking_details.parse_obj(json.loads(str_obj)['bank_linking_details'])
-
-        return parsed'''
-
-
-BankLinkingDetails = Union[NordigenBankLinkingDetails, BankLinkingDetailsBase]
 
 @dataclass_json
 @dataclass

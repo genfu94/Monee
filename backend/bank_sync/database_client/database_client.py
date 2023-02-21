@@ -77,7 +77,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         return [BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER[bank_link_detail['client']](bank_link_detail) for bank_link_detail in user_bank_link_details_list]
 
     def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
-        filter_query = { 'requisition_id': bank_linking_details.requisition_id }
+        filter_query = bank_linking_details.get_identifiers()
         update_query = {
             '$set': {
                 'status': bank_linking_details.status
@@ -86,9 +86,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self.bank_link_collection.update_one(filter_query, update_query)
 
     def _find_bank_linking_details_id(self, bank_linking_details: BankLinkingDetails):
-        return self.bank_link_collection.find_one({
-            "requisition_id": bank_linking_details.requisition_id
-        })
+        return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())['_id']
 
     def add_account(self, account_data: AccountData):
         bank_link_id = self._find_bank_linking_details_id(account_data.bank_linking_details)
