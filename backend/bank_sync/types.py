@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 from pydantic import BaseModel, validator
 from enum import Enum
-from typing import List
+from typing import List, Union, Annotated
 import json
 
 
@@ -12,10 +12,10 @@ class AccountStatus(int, Enum):
     LINK_EXPIRED = 2
 
 
-class BankLinkingDetails(BaseModel):
+class BankLinkingDetailsBase(BaseModel):
     client: str
 
-    _subtypes = dict()
+    '''_subtypes = dict()
 
     def __init_subclass__(cls, client=None):
         cls._subtypes[client or cls.__name__.lower()] = cls
@@ -40,7 +40,7 @@ class BankLinkingDetails(BaseModel):
 
     @classmethod
     def parse_raw(cls, str_obj):
-        return cls._convert_to_real_type(json.loads(str_obj))
+        return cls._convert_to_real_type(json.loads(str_obj))'''
     
 
 class InstitutionInfo(BaseModel):
@@ -48,7 +48,7 @@ class InstitutionInfo(BaseModel):
     id: str
 
 
-class NordigenBankLinkingDetails(BankLinkingDetails, client="Nordigen"):
+class NordigenBankLinkingDetails(BankLinkingDetailsBase):
     requisition_id: str
     institution: InstitutionInfo
     link: str
@@ -67,17 +67,19 @@ class Transaction(BaseModel):
 class AccountData(BaseModel):
     account_id: str
     account_name: str
-    bank_linking_details: BankLinkingDetails
+    bank_linking_details: NordigenBankLinkingDetails | BankLinkingDetailsBase
     balances: List[Balance] = []
     transactions: List[Transaction] = []
 
-    @classmethod
+    '''@classmethod
     def parse_raw(cls, str_obj):
         parsed = cls.parse_obj(json.loads(str_obj))
         parsed.bank_linking_details = parsed.bank_linking_details.parse_obj(json.loads(str_obj)['bank_linking_details'])
 
-        return parsed
+        return parsed'''
 
+
+BankLinkingDetails = Union[NordigenBankLinkingDetails, BankLinkingDetailsBase]
 
 @dataclass_json
 @dataclass

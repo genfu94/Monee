@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List
 
 from nordigen import NordigenClient
-from .types import InstitutionInfo, BankLinkingDetails, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData
+from .types import InstitutionInfo, BankLinkingDetailsBase, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData
 from .database_client.database_client import AccountDatabaseClient
 
 
@@ -17,11 +17,11 @@ class BankSyncClient(ABC):
         pass
     
     @abstractmethod
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetails:
+    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
         pass
 
     @abstractmethod
-    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetails) -> BankLinkingDetails:
+    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
         pass
     
     def update_bank_links_statuses(self, username: str):
@@ -30,7 +30,7 @@ class BankSyncClient(ABC):
             self.account_db_client.update_bank_link_status(bank_linking_details)
 
     @abstractmethod
-    def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetails) -> List[AccountData]:
+    def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetailsBase) -> List[AccountData]:
         pass
 
     def track_new_account(self, account_data: AccountData):
@@ -68,7 +68,7 @@ class NordigenBankSyncClient(BankSyncClient):
 
         self.nordigen_client.generate_token()
     
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetails:
+    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
         init = self.nordigen_client.initialize_session(
             institution_id=institution.id,
             redirect_uri="https://nordigen.com",
@@ -86,7 +86,7 @@ class NordigenBankSyncClient(BankSyncClient):
         
         return bank_linking_details
 
-    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetails) -> BankLinkingDetails:
+    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
         nordigen_bank_link_details_json = self.nordigen_client.requisition.get_requisition_by_id(
             requisition_id=bank_linking_details.requisition_id
         )
@@ -99,7 +99,7 @@ class NordigenBankSyncClient(BankSyncClient):
             status=self.nordigen_link_status_map[nordigen_bank_link_details_json['status']]
         )
     
-    def _fetch_bank_account_details(self, bank_linking_details: BankLinkingDetails, account_id: str) -> AccountData:
+    def _fetch_bank_account_details(self, bank_linking_details: BankLinkingDetailsBase, account_id: str) -> AccountData:
         account_api = self.nordigen_client.account_api(id=account_id)
         account_details_json = account_api.get_details()['account']
         
@@ -112,7 +112,7 @@ class NordigenBankSyncClient(BankSyncClient):
             bank_linking_details=bank_linking_details
         )
 
-    def fetch_all_bank_accounts(self, bank_linking_details: BankLinkingDetails) -> List[AccountData]:
+    def fetch_all_bank_accounts(self, bank_linking_details: BankLinkingDetailsBase) -> List[AccountData]:
         bank_accounts = self.nordigen_client.requisition.get_requisition_by_id(
             requisition_id=bank_linking_details.requisition_id
         )
