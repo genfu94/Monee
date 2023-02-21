@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from bank_sync.bank_sync import InstitutionInfo, BankLinkingDetails, NordigenBankLinkingDetails
+from bank_sync.bank_sync import InstitutionInfo, BankLinkingDetails, AccountData
 from dependencies import get_bank_sync_client
 import json
 from typing import Dict
@@ -20,3 +20,8 @@ async def update_bank_links(username:str):
 async def fetch_all_bank_accounts(bank_linking_details: Dict):
     bank_linking_details = BankLinkingDetails.parse_obj(bank_linking_details)
     return get_bank_sync_client().fetch_all_bank_accounts(bank_linking_details)
+
+@router.post("/track_new_account")
+async def track_new_account(account_data: Dict):
+    account_data = AccountData.parse_raw(json.dumps(account_data))
+    return get_bank_sync_client().track_new_account(account_data)

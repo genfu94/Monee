@@ -71,6 +71,13 @@ class AccountData(BaseModel):
     balances: List[Balance] = []
     transactions: List[Transaction] = []
 
+    @classmethod
+    def parse_raw(cls, str_obj):
+        parsed = cls.parse_obj(json.loads(str_obj))
+        parsed.bank_linking_details = parsed.bank_linking_details.parse_obj(json.loads(str_obj)['bank_linking_details'])
+
+        return parsed
+
 
 @dataclass_json
 @dataclass

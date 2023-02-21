@@ -33,6 +33,9 @@ class BankSyncClient(ABC):
     def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetails) -> List[AccountData]:
         pass
 
+    def track_new_account(self, account_data: AccountData):
+        self.account_db_client.add_account(account_data)
+
 
 class NordigenBankSyncClient(BankSyncClient):
     def __init__(self, nordigen_auth_credentials: APICredentials, account_db_client: AccountDatabaseClient):
@@ -115,5 +118,4 @@ class NordigenBankSyncClient(BankSyncClient):
         )
 
         return [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
-
 

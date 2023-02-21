@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo
+from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData
 from pymongo import MongoClient
 from typing import List, Dict
 
@@ -36,6 +36,10 @@ class AccountDatabaseClient(ABC):
     def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
         pass
 
+    @abstractmethod
+    def add_account(self, account_data: AccountData):
+        pass
+
     '''@abstractmethod
     def fetch_account(self, username: str, account_id: str):
         pass
@@ -61,6 +65,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self._mongo_client = MongoClient(self.connection_string)
         self.db_client = self._mongo_client['budget_app']
         self.bank_link_collection = self.db_client['bank_links']
+        self.account_collection = self.db_client['accounts']
 
     def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
         bank_linking_details_json = bank_linking_details.dict()
@@ -79,6 +84,23 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             }
         }
         self.bank_link_collection.update_one(filter_query, update_query)
+
+    def _find_bank_linking_details_id(self, bank_linking_details: BankLinkingDetails):
+        return self.bank_link_collection.find_one({
+            "requisition_id": bank_linking_details.requisition_id
+        })
+
+    def add_account(self, account_data: AccountData):
+        bank_link_id = self._find_bank_linking_details_id(account_data.bank_linking_details)
+
+        self.account_collection.insert_one({
+            '_id': account_data.account_id,
+            'name': account_data.account_name,
+            'balances': account_data.balances,
+            'transactions': account_data.transactions,
+            'bank_link_id': bank_link_id
+        })
+
 
     '''def update_sub_account(self, sub_account_id: str, new_balance: dict, transactions: list):
         update_query = [
