@@ -46,7 +46,11 @@ class Balance(BaseModel):
 
 
 class Transaction(BaseModel):
-    pass
+    transaction_id: str
+    booking_date: str
+    transaction_amount: Balance
+    origin: str
+    text: str
 
 
 class AccountData(BaseModel):

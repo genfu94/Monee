@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List
 
 from nordigen import NordigenClient
-from .types import InstitutionInfo, BankLinkingDetailsBase, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData, Balance
+from .types import InstitutionInfo, BankLinkingDetailsBase, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData, Balance, Transaction
 from .database_client.database_client import AccountDatabaseClient
 
 
@@ -123,8 +123,26 @@ class NordigenBankSyncClient(BankSyncClient):
 
         return [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
 
+
+    def _psd2_to_transaction(self, psd2_transaction: dict) -> Transaction:
+        #print(psd2_transaction)
+        return Transaction(
+            transaction_id=psd2_transaction['transactionId'],
+            booking_date=psd2_transaction['bookingDate'],
+            transaction_amount=Balance.parse_obj(psd2_transaction['transactionAmount']),
+            origin=psd2_transaction['creditorName'] if 'creditorName' in psd2_transaction else psd2_transaction['debtorName'],
+            text=psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
+        )
+
+
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         account_api = self.nordigen_client.account_api(id=account_data.account_id)
         balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
         account_data.balances.append(Balance.parse_obj(balances_dict))
+
+        transactions_dict = account_api.get_transactions()['transactions']
+        transactions_list = transactions_dict['booked'] + transactions_dict['pending']
+
+        account_data.transactions = [self._psd2_to_transaction(psd2_trans) for psd2_trans in transactions_list]
+
         return account_data
