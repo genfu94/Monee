@@ -24,3 +24,7 @@ async def fetch_all_bank_accounts(bank_linking_details: BankLinkingDetails):
 @router.post("/track_new_account")
 async def track_new_account(account_data: AccountData):
     return get_bank_sync_client().track_new_account(account_data)
+
+@router.post("/fetch_account_updates")
+async def fetch_account_updates(account_data: AccountData):
+    return get_bank_sync_client().fetch_account_updates(account_data)

@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List
 
 from nordigen import NordigenClient
-from .types import InstitutionInfo, BankLinkingDetailsBase, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData
+from .types import InstitutionInfo, BankLinkingDetailsBase, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData, Balance
 from .database_client.database_client import AccountDatabaseClient
 
 
@@ -35,6 +35,10 @@ class BankSyncClient(ABC):
 
     def track_new_account(self, account_data: AccountData):
         self.account_db_client.add_account(account_data)
+
+    @abstractmethod
+    def fetch_account_updates(self, account_data: AccountData) -> AccountData:
+        pass
 
 
 class NordigenBankSyncClient(BankSyncClient):
@@ -119,3 +123,8 @@ class NordigenBankSyncClient(BankSyncClient):
 
         return [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
 
+    def fetch_account_updates(self, account_data: AccountData) -> AccountData:
+        account_api = self.nordigen_client.account_api(id=account_data.account_id)
+        balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
+        account_data.balances.append(Balance.parse_obj(balances_dict))
+        return account_data
