@@ -3,12 +3,12 @@ import {
   Routes
 } from "react-router-dom";
 
-import BankSelector from "./BankSelector/BankSelector"
+import Home from "./pages/Home.js"
 
 function App() {
   return (
     <Routes>
-      <Route exact path='/' element={< BankSelector />}>
+      <Route exact path='/' element={< Home />}>
       </Route>
     </Routes>
   );
