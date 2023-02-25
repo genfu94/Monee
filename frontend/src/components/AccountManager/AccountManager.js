@@ -13,20 +13,24 @@ class AccountManager extends React.Component {
     };
   }
 
+  #renderAccountItem(item) {
+    const iconStyle = {"borderRadius": "50%", padding: "10px", "backgroundColor": "green", color: "white", fontSize: "30px"};
+
+    return (
+        <li className="account-item" key={item.account_id}>
+          <AiFillBank style={iconStyle}/>
+          <div className="account-name">
+            {item.bank_linking_details.institution.name} - {item.account_name}
+          </div>
+          <div>{item.balances[0].amount}</div>
+        </li>
+      )
+  }
+
   render() {
     return (
       <ul className="account-list">
-        {this.state.account_list.map((item) => (
-          <li className="account-item" key={item.account_id}>
-            <div>
-              <AiFillBank style={{ "border-radius": "50%", padding: "10px", "background-color": "green", color: "white", fontSize: "30px" }}/>
-            </div>
-            <div className="account-name">
-              {item.bank_linking_details.institution.name} - {item.account_name}
-            </div>
-            <div>{item.balances[0].amount}</div>
-          </li>
-        ))}
+        {this.state.account_list.map((item) => this.#renderAccountItem(item))}
       </ul>
     );
   }
