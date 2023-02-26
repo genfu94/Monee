@@ -40,6 +40,9 @@ class AccountDatabaseClient(ABC):
     def add_account(self, account_data: AccountData):
         pass
 
+    @abstractmethod
+    def fetch_linked_accounts(self, username: str):
+        pass
     '''@abstractmethod
     def fetch_account(self, username: str, account_id: str):
         pass
@@ -99,7 +102,8 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             'bank_link_id': bank_link_id
         })
 
-
+    def fetch_linked_accounts(self, username: str):
+        return self.account_collection.find({'user': username})
     '''def update_sub_account(self, sub_account_id: str, new_balance: dict, transactions: list):
         update_query = [
             {

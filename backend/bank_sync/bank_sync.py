@@ -39,7 +39,10 @@ class BankSyncClient(ABC):
     @abstractmethod
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         pass
-
+    
+    @abstractmethod
+    def fetch_linked_accounts(self, username: str) -> List[AccountData]:
+        return self.account_db_client.fetch_linked_accounts(username)
 
 class NordigenBankSyncClient(BankSyncClient):
     def __init__(self, nordigen_auth_credentials: APICredentials, account_db_client: AccountDatabaseClient):
