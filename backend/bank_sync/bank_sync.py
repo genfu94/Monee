@@ -40,7 +40,6 @@ class BankSyncClient(ABC):
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         pass
     
-    @abstractmethod
     def fetch_linked_accounts(self, username: str) -> List[AccountData]:
         return self.account_db_client.fetch_linked_accounts(username)
 
