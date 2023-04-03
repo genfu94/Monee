@@ -1,9 +1,6 @@
 .profile-dropdown-area {
-  width: max-content;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  text-transform: none !important;
+  font-size: 0.8em;
 }
 
 .profile-user-name {
@@ -11,5 +8,9 @@
   font-weight: 500;
   line-height: 1.14;
   color: #354052;
-  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
 }

@@ -1,20 +1,23 @@
 .nav-bar {
-    margin: 0;
-    padding: 0;
     height: 75px;
-    border-bottom: 1px solid #e5e9ed;
-    margin-bottom: 50px;
-    box-shadow: 10px 5px 5px rgba(39, 38, 38, 0.041);
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: white;
+}
+
+.nav-bar-menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .nav-bar-content {
     display: flex;
     align-items: center;
-    margin: 0 auto;
     height: 100%;
+    min-width: 1200px;
+    justify-content: space-between;
 }
 
 .nav-bar-link:hover {

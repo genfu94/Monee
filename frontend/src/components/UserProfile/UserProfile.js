@@ -5,8 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "./style.css";
 import { Button } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import {IoMdArrowDropdown} from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 function UserProfile() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -18,36 +17,40 @@ function UserProfile() {
     setAnchorEl(event.currentTarget);
   };
 
-  const CustomButton = styled(Button)({
-    boxShadow: 'none',
-    textTransform: 'none',
-    fontSize: 16,
-    padding: '6px 12px',
-    lineHeight: 1.5,
-  });
-
   return (
     <>
-      <CustomButton onClick={handleClick} className="profile-dropdown-area">
-        <Avatar sx={{ bgcolor: deepOrange[500] }} style={{width: 32, height: 32, fontSize: '0.8em'}}>U</Avatar>
-        <div className="profile-user-name">User</div>
-        <IoMdArrowDropdown/>
-      </CustomButton>
+      <Button
+        onClick={handleClick}
+        className="profile-dropdown-area"
+      >
+        <Avatar
+          sx={{ bgcolor: deepOrange[500] }}
+          style={{ width: 32, height: 32, fontSize: "0.8em" }}
+        >
+          U
+        </Avatar>
+        <div className="profile-user-name">
+          <span>User</span>
+          <IoMdArrowDropdown />
+        </div>
+      </Button>
 
       <Menu
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
+          vertical: 'bottom',
+          horizontal: 'center',
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
+          vertical: 'top',
+          horizontal: 'center',
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
       </Menu>
     </>
   );
