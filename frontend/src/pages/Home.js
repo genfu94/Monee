@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../components/NavBar/navbar.js";
 import AccountManager from "../components/AccountManager/AccountManager.js";
+import RecordList from "../components/RecordList/RecordList.js"
 
 class Home extends React.Component {
   constructor(props) {
@@ -57,6 +58,7 @@ class Home extends React.Component {
       <>
         <NavBar />
         <AccountManager account_list={this.accounts} />
+        <RecordList/>
       </>
     );
   }
