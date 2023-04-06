@@ -1,22 +1,20 @@
-.record-entry {
-  max-width: 900px;
-  height: 40px;
+.transaction {
+  max-width: 1100px;
+  min-width: 900px;
+  height: 50px;
   border-radius: 0.1em;
   background-color: white;
   box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
   transition: box-shadow 0.5s;
   display: flex;
-  align-items: center;
 }
 
-.record-selector {
-  flex: 0 0 5%;
+.transaction-select-box {
   display: flex;
   align-items: center;
 }
 
-.record-info-container {
-  flex: 1;
+.transaction-info-container {
   display: flex;
   align-items: center;
   margin: 10px;
@@ -24,27 +22,28 @@
   flex: 1;
 }
 
-.record-info {
+.transaction-info {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex: 0 0 90%;
 }
 
-.record-info-category {
+.transaction-info-category {
   display: flex;
   align-items: center;
-  flex: 0 0 30%;
-}
-
-.record-info-account {
-  display: flex;
-  align-items: center;
-  font-size: 0.7em;
-  font-family: "Montserrat";
   flex: 0 0 20%;
 }
 
-.record-info-entity {
+.transaction-info-account {
+  display: flex;
+  align-items: center;
+  font-size: 0.7em;
+  font-family: "Montserrat";
+  flex: 0 0 30%;
+}
+
+.transaction-info-entity {
   display: flex;
   align-items: center;
   color: #7f8fa4;
@@ -53,13 +52,13 @@
   flex: 0 0 30%;
 }
 
-.record-info-description {
+.transaction-info-description {
   display: flex;
   align-items: center;
   color: #7f8fa4;
   font-size: 0.7em;
   font-family: "Montserrat";
-  flex: 0 0 15%;
+  flex: 0 0 20%;
 }
 
 .transaction-amount-section {
@@ -89,6 +88,6 @@
   justify-content: center;
 }
 
-.record-entry:hover {
+.transaction:hover {
   box-shadow: 0 5px 5px rgb(0 0 0 / 0.05); 
 }
