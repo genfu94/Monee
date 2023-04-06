@@ -1,47 +1,10 @@
-from uuid import uuid4
-from abc import ABC, abstractmethod
-from datetime import datetime
-from typing import List
-
 from nordigen import NordigenClient
-from .types import InstitutionInfo, BankLinkingDetailsBase, APICredentials, NordigenBankLinkingDetails, AccountStatus, AccountData, Balance, Transaction
-from .database_client.database_client import AccountDatabaseClient
+from .bank_sync import BankSyncClient
+from ..types import InstitutionInfo, BankLinkingDetailsBase, AccountData, APICredentials, NordigenBankLinkingDetails, AccountStatus, Balance, Transaction
+from ..database_client.database_client import AccountDatabaseClient
+from typing import List
+from uuid import uuid4
 
-
-class BankSyncClient(ABC):
-    def __init__(self, account_db_client: AccountDatabaseClient):
-        self.account_db_client = account_db_client
-
-    @abstractmethod
-    def initialize(self):
-        pass
-    
-    @abstractmethod
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
-        pass
-
-    @abstractmethod
-    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
-        pass
-    
-    def update_bank_links_statuses(self, username: str):
-        for bank_link_status in self.account_db_client.fetch_user_bank_links(username):
-            bank_linking_details = self.fetch_link_bank_status(bank_link_status)
-            self.account_db_client.update_bank_link_status(bank_linking_details)
-
-    @abstractmethod
-    def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetailsBase) -> List[AccountData]:
-        pass
-
-    def track_new_account(self, account_data: AccountData):
-        self.account_db_client.add_account(account_data)
-
-    @abstractmethod
-    def fetch_account_updates(self, account_data: AccountData) -> AccountData:
-        pass
-    
-    def fetch_linked_accounts(self, username: str) -> List[AccountData]:
-        return self.account_db_client.fetch_linked_accounts(username)
 
 class NordigenBankSyncClient(BankSyncClient):
     def __init__(self, nordigen_auth_credentials: APICredentials, account_db_client: AccountDatabaseClient):

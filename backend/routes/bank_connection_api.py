@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from bank_sync.bank_sync import InstitutionInfo, AccountData
+from bank_sync.bank_sync_client.bank_sync import InstitutionInfo, AccountData
 from bank_sync.types import BankLinkingDetails 
 from dependencies import get_bank_sync_client
 import json
