@@ -19,12 +19,21 @@
   flex: 1;
   display: flex;
   align-items: center;
+  margin: 10px;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.record-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .record-info-category {
   display: flex;
   align-items: center;
-  flex: 0 0 20%;
+  flex: 0 0 30%;
 }
 
 .record-info-account {
@@ -51,6 +60,23 @@
   font-size: 0.7em;
   font-family: "Montserrat";
   flex: 0 0 15%;
+}
+
+.transaction-amount-section {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+}
+
+.target-currency-transaction-amount {
+  color: #fe3b2c;
+  margin-left: auto;
+}
+
+.original-currency-transaction-amount {
+  color: #7f8fa4;
+  font-size: 0.8em;
+  margin-left: auto;
 }
 
 .circle {
