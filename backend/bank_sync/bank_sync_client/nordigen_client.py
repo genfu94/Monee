@@ -37,7 +37,14 @@ class NordigenBankSyncClient(BankSyncClient):
 
         self.nordigen_client.generate_token()
     
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
+    def get_available_institutions(self, country_code: str) -> List[InstitutionInfo]:
+        raw_institutions = self.nordigen_client.institution.get_institutions(country_code)
+        institution_list = [InstitutionInfo.parse_obj(r) for r in raw_institutions]
+
+        return institution_list
+
+
+    def initiate_bank_connection(self, institution: InstitutionInfo) -> BankLinkingDetailsBase:
         init = self.nordigen_client.initialize_session(
             institution_id=institution.id,
             redirect_uri="https://nordigen.com",
@@ -50,7 +57,10 @@ class NordigenBankSyncClient(BankSyncClient):
             requisition_id=init.requisition_id,
             institution=institution
         )
-
+        
+        return bank_linking_details
+    
+    def link_bank(self, username: str, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
         self.account_db_client.add_bank(username, bank_linking_details)
         
         return bank_linking_details

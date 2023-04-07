@@ -17,9 +17,8 @@ class BankSelector extends React.Component {
         }
     }
     
-
     onCountrySelect(selected_country) {
-        fetch(`http://localhost:8000/${selected_country.value}`)
+        fetch(`http://localhost:8000/get_available_institutions?country_code=${selected_country.value}`)
             .then((res) => res.json())
             .then((data) => {
                 data.forEach((institution) => {this.state.institutions.push({'value': institution['id'], 'label': institution['name']})})
@@ -27,14 +26,22 @@ class BankSelector extends React.Component {
     }
 
     bankConnect() {
-        let institution_id = this.state.selected_institution.value;
-        console.log("Institution selected", institution_id);
-        fetch(`http://localhost:8000/bank_connect/${institution_id}`)
+        let institution = {
+            'id': this.state.selected_institution['value'],
+            'name': this.state.selected_institution['label'],
+        };
+        console.log("Institution selected", institution);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(institution)
+        };
+        fetch(`http://localhost:8000/initiate_bank_connection`, requestOptions)
             .then((res) => res.json())
             .then((data) => {
                 let bank_connection_link = data.link;
                 let requisition_id = data.requisition_id;
-
                 window.location.replace(bank_connection_link);
             });
     }

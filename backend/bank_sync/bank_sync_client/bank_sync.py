@@ -13,6 +13,14 @@ class BankSyncClient(ABC):
     @abstractmethod
     def initialize(self):
         pass
+
+    @abstractmethod
+    def get_available_institutions(self, country_code: str) -> List[InstitutionInfo]:
+        pass
+
+    @abstractmethod
+    def initiate_bank_connection(self, institution: InstitutionInfo) -> BankLinkingDetailsBase:
+        pass
     
     @abstractmethod
     def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:

@@ -7,6 +7,17 @@ from typing import Dict
 
 router = APIRouter()
 
+
+@router.get("/get_available_institutions")
+async def get_available_institutions(country_code: str):
+    return get_bank_sync_client().get_available_institutions(country_code)
+
+
+@router.post("/initiate_bank_connection")
+async def initiate_bank_connection(institution: InstitutionInfo):
+    return get_bank_sync_client().initiate_bank_connection(institution)
+
+
 @router.post("/bank_connect")
 async def bank_connect(username:str, institution: InstitutionInfo):
     return get_bank_sync_client().link_bank(username, institution)
