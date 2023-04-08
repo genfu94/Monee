@@ -17,10 +17,6 @@ class BankSyncClient(ABC):
     @abstractmethod
     def get_available_institutions(self, country_code: str) -> List[InstitutionInfo]:
         pass
-
-    @abstractmethod
-    def initiate_bank_connection(self, institution: InstitutionInfo) -> BankLinkingDetailsBase:
-        pass
     
     @abstractmethod
     def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
@@ -34,6 +30,8 @@ class BankSyncClient(ABC):
         for bank_link_status in self.account_db_client.fetch_user_bank_links(username):
             bank_linking_details = self.fetch_link_bank_status(bank_link_status)
             self.account_db_client.update_bank_link_status(bank_linking_details)
+        
+        self.account_db_client.remove_unauthorized_bank_links(username)
 
     @abstractmethod
     def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetailsBase) -> List[AccountData]:

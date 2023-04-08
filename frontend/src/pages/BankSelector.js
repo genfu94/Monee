@@ -37,11 +37,10 @@ class BankSelector extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(institution)
         };
-        fetch(`http://localhost:8000/initiate_bank_connection`, requestOptions)
+        fetch(`http://localhost:8000/bank_connect?username=user`, requestOptions)
             .then((res) => res.json())
             .then((data) => {
                 let bank_connection_link = data.link;
-                let requisition_id = data.requisition_id;
                 window.location.replace(bank_connection_link);
             });
     }

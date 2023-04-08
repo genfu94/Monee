@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData
+from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData, AccountStatus
 from pymongo import MongoClient
 from typing import List, Dict
 
@@ -34,6 +34,10 @@ class AccountDatabaseClient(ABC):
 
     @abstractmethod
     def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
+        pass
+
+    @abstractmethod
+    def remove_unauthorized_bank_links(self, username: str):
         pass
 
     @abstractmethod
@@ -87,6 +91,12 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             }
         }
         self.bank_link_collection.update_one(filter_query, update_query)
+    
+    def remove_unauthorized_bank_links(self, username: str):
+        remove_query = {
+            "status": AccountStatus.AUTHORIZATION_REQUIRED
+        }
+        self.bank_link_collection.delete_many(remove_query)
 
     def _find_bank_linking_details_id(self, bank_linking_details: BankLinkingDetails):
         return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())['_id']
