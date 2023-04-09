@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 from pydantic import BaseModel, validator
 from enum import Enum
-from typing import List, Union
+from typing import List, Union, Dict
 from abc import ABC, abstractmethod
 
 
@@ -58,7 +58,7 @@ class AccountData(BaseModel):
     account_name: str
     bank_linking_details: NordigenBankLinkingDetails | BankLinkingDetailsBase
     balances: List[Balance] = []
-    transactions: List[Transaction] = []
+    transactions: Dict = {}
 
 
 @dataclass_json

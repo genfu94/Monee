@@ -94,6 +94,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     
     def remove_unauthorized_bank_links(self, username: str):
         remove_query = {
+            "user":username,
             "status": AccountStatus.AUTHORIZATION_REQUIRED
         }
         self.bank_link_collection.delete_many(remove_query)
@@ -103,35 +104,38 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
 
     def add_account(self, account_data: AccountData):
         bank_link_id = self._find_bank_linking_details_id(account_data.bank_linking_details)
-
-        self.account_collection.insert_one({
-            '_id': account_data.account_id,
-            'name': account_data.account_name,
-            'balances': account_data.balances,
-            'transactions': account_data.transactions,
-            'bank_link_id': bank_link_id
-        })
+        account = self.account_collection.find_one({"_id": account_data.account_id})
+        if account is None:
+            self.account_collection.insert_one({
+                '_id': account_data.account_id,
+                'name': account_data.account_name,
+                'balances': account_data.balances,
+                'transactions': account_data.transactions,
+                'bank_link_id': bank_link_id
+            })
+        else:
+            self.update_account(account_data.json())
 
     def fetch_linked_accounts(self, username: str):
         return self.account_collection.find({'user': username})
-    '''def update_sub_account(self, sub_account_id: str, new_balance: dict, transactions: list):
+ 
+    def update_account(self, account_data: AccountData):
         update_query = [
             {
-                "$set": {"balance": new_balance},
-            },
-            {
-                "$set": {"last_update": datetime.now().strftime("%Y-%m-%d")}
+                "$set": {
+                    "balances": account_data.balances,
+                }
             },
             {
                 "$set": {
                     "transactions": {
                         "$mergeObjects": [
                             "$transactions",
-                            transactions
+                            account_data.transactions
                         ]
                     }
                 }
             }
         ]
 
-        self.sub_account_collection.update_one({"_id": sub_account_id}, update_query, upsert=True)'''
+        self.account_collection.update_one({"_id": account_data.account_id}, update_query, upsert=True)
