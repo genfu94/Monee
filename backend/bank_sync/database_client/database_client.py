@@ -93,10 +93,10 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self.bank_link_collection.delete_many(remove_query)
 
     def _find_bank_linking_details_id(self, bank_linking_details: BankLinkingDetails):
-        return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())['_id']
+        return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())
 
     def add_account(self, account_data: AccountData):
-        bank_link_id = self._find_bank_linking_details_id(account_data.bank_linking_details)
+        bank_link = self._find_bank_linking_details_id(account_data.bank_linking_details)
         account = self.account_collection.find_one({"_id": account_data.account_id})
         if account is None:
             self.account_collection.insert_one({
@@ -104,13 +104,15 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
                 'name': account_data.account_name,
                 'balances': account_data.balances,
                 'transactions': account_data.transactions,
-                'bank_link_id': bank_link_id
+                'user': bank_link['user'],
+                'institution_name': bank_link['institution']['name'],
+                'bank_link_id': bank_link['_id']
             })
         else:
-            self.update_account(account_data.json())
+            self.update_account(account_data)
 
     def fetch_linked_accounts(self, username: str):
-        return self.account_collection.find({'user': username})
+        return list(self.account_collection.find({'user': username}, {'bank_link_id': 0}))
  
     def update_account(self, account_data: AccountData):
         update_query = [

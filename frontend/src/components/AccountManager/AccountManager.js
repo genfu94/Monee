@@ -5,12 +5,6 @@ import { AiFillBank } from "react-icons/ai";
 class AccountManager extends React.Component {
   constructor(props) {
     super(props);
-
-    const { account_list } = props;
-
-    this.state = {
-      account_list: account_list,
-    };
   }
 
   #renderAccountItem(item) {
@@ -23,11 +17,11 @@ class AccountManager extends React.Component {
     };
 
     return (
-      <li className="account-item" key={item.account_id}>
+      <li className="account-item" key={item._id}>
         <AiFillBank fontSize="30px" />
         <div className="account-info-container">
           <div className="account-name">
-            {item.bank_linking_details.institution.name} - {item.account_name}
+            {item.institution_name} - {item.name}
           </div>
           <div className="account-balance">
             {item.balances[0].currency}: {item.balances[0].amount}
@@ -42,7 +36,7 @@ class AccountManager extends React.Component {
       <div className="account-list-container ">
         <div id="account-label">ACCOUNTS</div>
         <ul className="account-list">
-          {this.state.account_list.map((item) => this.#renderAccountItem(item))}
+          {this.props.account_list.map((item) => this.#renderAccountItem(item))}
         </ul>
       </div>
     );

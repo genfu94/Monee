@@ -10,18 +10,18 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      loading: true,
+      loading: false,
     };
 
-    fetch(
-      `http://localhost:8000/update_bank_links?username=user`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({
-          "loading": false
-        })
-      });
+    // fetch(
+    //   `http://localhost:8000/update_bank_links?username=user`
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     this.setState({
+    //       "loading": false
+    //     })
+    //   });
   }
 
   async componentDidMount() {
