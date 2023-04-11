@@ -46,9 +46,6 @@ class BankSyncClient(ABC):
     def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetailsBase) -> List[AccountData]:
         pass
 
-    def track_new_account(self, account_data: AccountData):
-        self.account_db_client.add_account(account_data)
-
     @abstractmethod
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         pass

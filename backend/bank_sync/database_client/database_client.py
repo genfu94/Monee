@@ -47,17 +47,10 @@ class AccountDatabaseClient(ABC):
     @abstractmethod
     def fetch_linked_accounts(self, username: str):
         pass
-    '''@abstractmethod
-    def fetch_account(self, username: str, account_id: str):
-        pass
-    
+
     @abstractmethod
-    def fetch_sync_info(self, username: str, account_id: str) -> AccountSyncInfo:
+    def update_account(self, account_data: AccountData):
         pass
-    
-    @abstractmethod
-    def update_account(self, username: str, account_data: AccountData):
-        pass'''
 
 
 class MongoAccountDatabaseClient(AccountDatabaseClient):

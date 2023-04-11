@@ -26,13 +26,3 @@ async def update_bank_links(username:str):
 @router.get("/fetch_linked_accounts")
 async def fetch_linked_accounts(username: str):
     return get_bank_sync_client().fetch_linked_accounts(username)
-
-
-@router.post("/track_new_account")
-async def track_new_account(account_data: AccountData):
-    return get_bank_sync_client().track_new_account(account_data)
-
-
-@router.post("/fetch_account_updates")
-async def fetch_account_updates(account_data: AccountData):
-    return get_bank_sync_client().fetch_account_updates(account_data)
