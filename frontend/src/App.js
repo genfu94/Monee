@@ -4,6 +4,7 @@ import React from "react";
 import Home from "./pages/Home.js";
 import WebFont from "webfontloader";
 import BankSelector from "./pages/BankSelector.js";
+import Transactions from './pages/Transactions.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class App extends React.Component {
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/connect" element={<BankSelector />}></Route>
+          <Route exact path="/transactions" element={<Transactions />}></Route>
         </Routes>
       );
     }
