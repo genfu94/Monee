@@ -2,15 +2,15 @@ import React from "react";
 import "./style.css";
 import { HiOutlineLightBulb } from "react-icons/hi";
 import { AiFillEye } from "react-icons/ai";
-import Checkbox from '@mui/material/Checkbox';
-import {BsCircleFill} from "react-icons/bs";
+import Checkbox from "@mui/material/Checkbox";
+import { BsCircleFill } from "react-icons/bs";
 
 export default class TransactionList extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  #transactionList() {
+  #renderTransactionItem(transaction) {
     return (
       <div className="transaction">
         <div className="transaction-select-box">
@@ -36,16 +36,16 @@ export default class TransactionList extends React.Component {
               <BsCircleFill
                 style={{ fontSize: "0.5em", color: "rgb(255, 160, 0)" }}
               />
-              &nbsp; N26 - Conto corrente principale
+              &nbsp; N26 - Conto Corrente Principale
             </div>
             <div className="transaction-info-entity">
-              IT52V0200874130000400611684
+              {transaction.origin}
             </div>
-            <div className="transaction-info-description">Luce & Gas 02/23</div>
+            <div className="transaction-info-description">{transaction.text}</div>
           </div>
           <div className="transaction-amount-section">
-            <div className="target-currency-transaction-amount">- €42.15</div>
-            <div className="original-currency-transaction-amount">- €42.15</div>
+            <div className={`target-currency-transaction-amount ${transaction.transaction_amount.amount > 0 ? "transaction-income":""}`}>{transaction.transaction_amount.currency}&nbsp;{transaction.transaction_amount.amount}</div>
+            <div className="original-currency-transaction-amount">{transaction.transaction_amount.currency}&nbsp;{transaction.transaction_amount.amount}</div>
           </div>
         </div>
       </div>
@@ -55,10 +55,20 @@ export default class TransactionList extends React.Component {
   render() {
     return (
       <div className="transaction-view-container">
-        <div className="transaction-selector">
-          <Checkbox icon={<AiFillEye style={{color: "#292929"}} />} checkedIcon={<AiFillEye style={{color: "blue"}} />} />
+        <ul className="transaction-selector">
+          <li>
+            <Checkbox
+              icon={<AiFillEye style={{ color: "#292929" }} />}
+              checkedIcon={<AiFillEye style={{ color: "blue" }} />}
+            />
+            N26 - Conto corrente principale
+          </li>
+        </ul>
+        <div>
+          {
+            Object.keys(this.props.transactions).map((transaction_id) => this.#renderTransactionItem(this.props.transactions[transaction_id]))
+          }
         </div>
-        {this.#transactionList()}
       </div>
     );
   }

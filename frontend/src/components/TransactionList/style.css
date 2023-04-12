@@ -12,6 +12,14 @@
   background-color: #fafbfc;;
   box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
   height: 700px;
+  list-style:none;
+  font-family: 'Montserrat';
+  font-size: 0.6em;
+}
+
+.transaction-selector > li {
+  overflow: auto;
+
 }
 
 .transaction {
@@ -86,6 +94,10 @@
 .target-currency-transaction-amount {
   color: #fe3b2c;
   margin-left: auto;
+}
+
+.transaction-income {
+  color: #1d8718;
 }
 
 .original-currency-transaction-amount {

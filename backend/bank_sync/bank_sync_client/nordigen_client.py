@@ -30,12 +30,16 @@ class NordigenBankSyncClient(BankSyncClient):
 
         self.account_db_client.initialize()
         
-        self.nordigen_client = NordigenClient(
-            secret_id = self.nordigen_auth_credentials.secret_id,
-            secret_key=self.nordigen_auth_credentials.secret_key
-        )
+        try:
+            self.nordigen_client = NordigenClient(
+                secret_id = self.nordigen_auth_credentials.secret_id,
+                secret_key=self.nordigen_auth_credentials.secret_key
+            )
 
-        self.nordigen_client.generate_token()
+            self.nordigen_client.generate_token()
+        except Exception as e:
+            print(e)
+            self.nordigen_client = None
     
     def get_available_institutions(self, country_code: str) -> List[InstitutionInfo]:
         raw_institutions = self.nordigen_client.institution.get_institutions(country_code)

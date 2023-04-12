@@ -1,6 +1,5 @@
 import React from "react";
 import NavBar from "../components/NavBar/navbar.js";
-import AccountManager from "../components/AccountManager/AccountManager.js";
 import TransactionList from "../components/TransactionList/TransactionList.js";
 
 class Home extends React.Component {
@@ -8,7 +7,8 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      accounts: [],
+      transactions: {},
+      accounts: []
     };
 
     fetch(
@@ -16,9 +16,15 @@ class Home extends React.Component {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        let all_transactions = {};
+        let all_accounts = [];
+        for(const account of data) {
+          all_transactions = Object.assign(all_transactions, account.transactions);
+          all_accounts.push(account.institution_name + " - " + account.name);
+        }
         this.setState({
-          "accounts": data
+          "transactions": all_transactions,
+          'accounts': all_accounts
         })
       });
   }
@@ -27,7 +33,7 @@ class Home extends React.Component {
     return (
       <>
         <NavBar />
-        <TransactionList />
+        <TransactionList transactions={this.state.transactions}/>
       </>
     );
   }
