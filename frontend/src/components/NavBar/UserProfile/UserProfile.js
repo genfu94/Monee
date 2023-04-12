@@ -3,7 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import "./style.css";
+import "./UserProfile.style.css";
 import { Button } from "@mui/material";
 import { IoMdArrowDropdown } from "react-icons/io";
 
@@ -25,7 +25,7 @@ function UserProfile() {
       >
         <Avatar
           sx={{ bgcolor: deepOrange[500] }}
-          style={{ width: 32, height: 32, fontSize: "0.8em" }}
+          style={{ width: '35px', height: '35px', fontSize: "15px" }}
         >
           U
         </Avatar>

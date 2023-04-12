@@ -1,21 +1,21 @@
 import React from "react";
-import "./navbar.css";
+import "./Navbar.style.css";
 import budget_logo from "./budget.png";
-import UserProfile from "../UserProfile/UserProfile.js";
+import UserProfile from "./UserProfile/UserProfile.js";
 
 function NavBar() {
   return (
-    <div className="nav-bar">
-      <div className="nav-bar-content">
-        <ul className="nav-bar-menu">
-          <img className="logo nav-bar-link" src={budget_logo} />
+    <div className="flex-centered nav-bar elevation-1">
+      <div className="flex-centered nav-bar-content">
+        <ul className="flex-centered nav-bar-menu">
+          <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
           <li className="nav-bar-link">Dashboard</li>
           <li className="nav-bar-link">Account</li>
           <li className="nav-bar-link">Records</li>
           <li className="nav-bar-link">Analytics</li>
         </ul>
-        <div className="nav-bar-menu">
-          <div id="add-record-btn">+Add Record</div>
+        <div className="flex-centered">
+          <div id="add-record-btn">+Record</div>
           <UserProfile />
         </div>
       </div>

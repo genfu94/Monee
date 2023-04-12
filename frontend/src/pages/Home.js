@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../components/NavBar/navbar.js";
+import NavBar from "../components/NavBar/Navbar.js";
 import AccountManager from "../components/AccountManager/AccountManager.js";
 import TransactionList from "../components/TransactionList/TransactionList.js";
 
