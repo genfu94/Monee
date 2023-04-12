@@ -1,0 +1,33 @@
+.transaction-view-container {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-container-vertical {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.elevation-1 {
+  box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
+}
+
+.transaction-selector {
+  list-style: none;
+  display: flex;
+  direction: column;
+  flex-basis: 15%;
+  border-radius: 20px;
+  background-color: #fafbfc;;
+}
+
+.transaction-selector > li {
+  font-family: 'Montserrat';
+  font-size: 0.6em;
+}
+
+.transaction-list {
+  flex-basis: 85%;
+}

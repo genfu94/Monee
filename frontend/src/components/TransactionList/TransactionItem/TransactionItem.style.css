@@ -1,7 +1,23 @@
-.transaction-view-container {
+.selectable-item {
+  box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
+  transition: box-shadow 0.5s;
+}
+
+.selectable-item:hover {
+  box-shadow: 0 5px 5px rgb(0 0 0 / 0.05); 
+}
+
+.flex-centered {
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: center;
+}
+
+.flex-centered-vertical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .transaction {
@@ -10,48 +26,32 @@
   height: 50px;
   border-radius: 0.3em;
   background-color: white;
-  box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
-  transition: box-shadow 0.5s;
-  display: flex;
-}
-
-.transaction-select-box {
-  display: flex;
-  align-items: center;
+  margin-top: 10px;
+  padding: 0px 15px 0px 15px;
 }
 
 .transaction-info-container {
-  display: flex;
-  align-items: center;
   margin: 10px;
   justify-content: space-between;
   flex: 1;
 }
 
 .transaction-info {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  flex: 0 0 90%;
+  flex-basis: 90%;
 }
 
 .transaction-info-category {
-  display: flex;
-  align-items: center;
-  flex: 0 0 20%;
+  flex-basis: 20%;
 }
 
 .transaction-info-account {
-  display: flex;
-  align-items: center;
   font-size: 0.7em;
   font-family: "Montserrat";
-  flex: 0 0 30%;
+  flex-basis: 30%;
 }
 
 .transaction-info-entity {
-  display: flex;
-  align-items: center;
   color: #7f8fa4;
   font-size: 0.7em;
   font-family: "Montserrat";
@@ -59,8 +59,6 @@
 }
 
 .transaction-info-description {
-  display: flex;
-  align-items: center;
   color: #7f8fa4;
   font-size: 0.7em;
   font-family: "Montserrat";
@@ -68,8 +66,6 @@
 }
 
 .transaction-amount-section {
-  display: flex;
-  flex-direction: column;
   font-size: 0.9em;
 }
 
@@ -93,11 +89,4 @@
   width: 24px;
   height: 24px;
   background-color: coral;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.transaction:hover {
-  box-shadow: 0 5px 5px rgb(0 0 0 / 0.05); 
 }

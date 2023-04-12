@@ -1,8 +1,8 @@
 import React from "react";
-import "./style.css";
+import "./TransactionList.style.css";
 import { AiFillEye } from "react-icons/ai";
 import Checkbox from "@mui/material/Checkbox";
-import TransactionItem from "../TransactionItem/TransactionItem.js"
+import TransactionItem from "./TransactionItem/TransactionItem.js"
 
 export default class TransactionList extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ export default class TransactionList extends React.Component {
 
   render() {
     return (
-      <div className="transaction-view-container">
+      <div className="transaction-view-container elevation-1">
         <ul className="transaction-selector">
           <li>
             <Checkbox
@@ -21,7 +21,7 @@ export default class TransactionList extends React.Component {
             N26 - Conto corrente principale
           </li>
         </ul>
-        <div>
+        <div class="flex-container-vertical transaction-list">
           {
             Object.keys(this.props.transactions).map((transaction_id) => TransactionItem(this.props.transactions[transaction_id]))
           }
