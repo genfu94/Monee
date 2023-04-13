@@ -4,6 +4,8 @@ from ..types import InstitutionInfo, BankLinkingDetailsBase, AccountData, APICre
 from ..database_client.database_client import AccountDatabaseClient
 from typing import List, Dict
 from uuid import uuid4
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class NordigenBankSyncClient(BankSyncClient):
@@ -80,6 +82,10 @@ class NordigenBankSyncClient(BankSyncClient):
         )
 
     def _fetch_bank_account_details(self, bank_linking_details: BankLinkingDetailsBase, account_id: str) -> AccountData:
+        stored_account = self.account_db_client.find_account(account_id)
+        if stored_account:
+            return stored_account
+        
         account_api = self.nordigen_client.account_api(id=account_id)
         account_details_json = account_api.get_details()['account']
         
@@ -87,8 +93,8 @@ class NordigenBankSyncClient(BankSyncClient):
             return None
         
         return AccountData(
-            account_id=account_id,
-            account_name=account_details_json['name'],
+            _id=account_id,
+            name=account_details_json['name'],
             bank_linking_details=bank_linking_details
         )
 
@@ -97,7 +103,10 @@ class NordigenBankSyncClient(BankSyncClient):
             requisition_id=bank_linking_details.requisition_id
         )
 
-        return [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
+        bank_accounts_info =  [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
+        bank_accounts_info = list(filter(lambda item: item is not None, bank_accounts_info))
+
+        return bank_accounts_info
 
     def _psd2_to_transaction(self, psd2_transaction: dict) -> Dict:
         # Returns a dict representation of a bank_sync.types.Transaction object
@@ -109,13 +118,23 @@ class NordigenBankSyncClient(BankSyncClient):
             "text": psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
         }
 
+    def get_last_sync_time(self, last_update):
+        return last_update.replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
+
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
-        account_api = self.nordigen_client.account_api(id=account_data.account_id)
-        balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
-        account_data.balances.append(balances_dict)
+        last_update = datetime.strptime(account_data.last_update, "%Y/%m/%d, %H:%M:%S") if account_data.last_update is not None else datetime.now() - relativedelta(years=1)
+        last_sync_time = self.get_last_sync_time(last_update)
 
-        transactions_dict = account_api.get_transactions()['transactions']
-        transactions_list = transactions_dict['booked'] + transactions_dict['pending']
+        print("After", last_sync_time, last_update, last_update - relativedelta(hours=8))
 
-        account_data.transactions = {psd2_trans['transactionId']:self._psd2_to_transaction(psd2_trans) for psd2_trans in transactions_list}
+        if account_data.last_update is None or last_update - relativedelta(hours=8) > last_sync_time:
+            account_api = self.nordigen_client.account_api(id=account_data.id)
+            balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
+            account_data.balances = [balances_dict]
+
+            transactions_dict = account_api.get_transactions(date_from=last_update.strftime('%Y-%m-%d'))['transactions']
+            transactions_list = transactions_dict['booked'] + transactions_dict['pending']
+
+            account_data.transactions = {psd2_trans['transactionId']:self._psd2_to_transaction(psd2_trans) for psd2_trans in transactions_list}
+        
         return account_data

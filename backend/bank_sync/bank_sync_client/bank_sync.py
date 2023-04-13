@@ -30,9 +30,8 @@ class BankSyncClient(ABC):
         user_bank_links = self.account_db_client.fetch_user_bank_links(username)
         for link in user_bank_links:
             for account in self.fetch_all_bank_accounts(link):
-                if account is not None:
-                    account = self.fetch_account_updates(account)
-                    self.account_db_client.add_account(account)
+                account = self.fetch_account_updates(account)
+                self.account_db_client.add_account(account)
 
     def update_bank_links_statuses(self, username: str):
         for bank_link_status in self.account_db_client.fetch_user_bank_links(username):

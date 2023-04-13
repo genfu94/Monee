@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, Field
 from enum import Enum
 from typing import List, Union, Dict
 from abc import ABC, abstractmethod
@@ -54,9 +54,10 @@ class Transaction(BaseModel):
 
 
 class AccountData(BaseModel):
-    account_id: str
-    account_name: str
-    bank_linking_details: NordigenBankLinkingDetails | BankLinkingDetailsBase
+    id: str = Field(..., alias='_id')
+    name: str
+    last_update: str = None
+    bank_linking_details: NordigenBankLinkingDetails | BankLinkingDetailsBase = None
     balances: List[Balance] = []
     transactions: Dict = {}
 

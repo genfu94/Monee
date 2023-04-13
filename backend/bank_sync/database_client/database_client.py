@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData, AccountStatus
 from pymongo import MongoClient
 from typing import List, Dict
+from datetime import datetime
+import json
 
 
 def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLinkingDetails:
@@ -45,6 +47,10 @@ class AccountDatabaseClient(ABC):
         pass
 
     @abstractmethod
+    def find_account(self, account_id: str) -> AccountData:
+        pass
+
+    @abstractmethod
     def fetch_linked_accounts(self, username: str):
         pass
 
@@ -85,6 +91,13 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         }
         self.bank_link_collection.update_one(filter_query, update_query)
     
+    def find_account(self, account_id: str):
+        account = self.account_collection.find_one({
+            "_id": account_id
+        })
+
+        return AccountData.parse_obj(account) if account is not None else None
+    
     def remove_unauthorized_bank_links(self, username: str):
         remove_query = {
             "user":username,
@@ -96,15 +109,16 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())
 
     def add_account(self, account_data: AccountData):
-        bank_link = self._find_bank_linking_details_id(account_data.bank_linking_details)
-        account = self.account_collection.find_one({"_id": account_data.account_id})
+        account = self.account_collection.find_one({"_id": account_data.id})
         if account is None:
+            bank_link = self._find_bank_linking_details_id(account_data.bank_linking_details)
             self.account_collection.insert_one({
-                '_id': account_data.account_id,
-                'name': account_data.account_name,
+                '_id': account_data.id,
+                'name': account_data.name,
                 'balances': account_data.balances,
                 'transactions': account_data.transactions,
                 'user': bank_link['user'],
+                'last_update': datetime.now().strftime("%Y/%m/%d, %H:%M:%S"),
                 'institution_name': bank_link['institution']['name'],
                 'bank_link_id': bank_link['_id']
             })
@@ -115,10 +129,12 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         return list(self.account_collection.find({'user': username}, {'bank_link_id': 0}))
  
     def update_account(self, account_data: AccountData):
+        account_data=json.loads(account_data.json())
         update_query = [
             {
                 "$set": {
-                    "balances": account_data.balances,
+                    "balances": account_data["balances"],
+                    "last_update": datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
                 }
             },
             {
@@ -126,11 +142,11 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
                     "transactions": {
                         "$mergeObjects": [
                             "$transactions",
-                            account_data.transactions
+                            account_data["transactions"]
                         ]
                     }
                 }
             }
         ]
 
-        self.account_collection.update_one({"_id": account_data.account_id}, update_query, upsert=True)
+        self.account_collection.update_one({"_id": account_data["id"]}, update_query, upsert=True)
