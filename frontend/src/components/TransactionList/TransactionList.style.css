@@ -14,20 +14,21 @@
   box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
 }
 
+.transaction-list-container {
+  margin: 20px;
+}
+
 .transaction-selector {
   list-style: none;
-  display: flex;
-  direction: column;
-  flex-basis: 15%;
-  border-radius: 20px;
-  background-color: #fafbfc;;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  background-color: #fafbfc;
+  height: min-content;
+  width: 400px;
 }
 
 .transaction-selector > li {
   font-family: 'Montserrat';
   font-size: 0.6em;
-}
-
-.transaction-list {
-  flex-basis: 85%;
 }

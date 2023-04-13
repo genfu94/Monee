@@ -27,8 +27,9 @@
 }
 
 .nav-bar-content {
-    justify-content: space-between;
-    min-width: 1200px;
+    justify-content: space-between !important;
+    min-width: 900px;
+    max-width: 1200px;
 }
 
 .nav-bar-logo {

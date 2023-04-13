@@ -62,7 +62,7 @@
   color: #7f8fa4;
   font-size: 0.7em;
   font-family: "Montserrat";
-  flex: 0 0 20%;
+  flex-basis: 20%;
 }
 
 .transaction-amount-section {
