@@ -125,8 +125,6 @@ class NordigenBankSyncClient(BankSyncClient):
         last_update = datetime.strptime(account_data.last_update, "%Y/%m/%d, %H:%M:%S") if account_data.last_update is not None else datetime.now() - relativedelta(years=1)
         last_sync_time = self.get_last_sync_time(last_update)
 
-        print("After", last_sync_time, last_update, last_update - relativedelta(hours=8))
-
         if account_data.last_update is None or last_update - relativedelta(hours=8) > last_sync_time:
             account_api = self.nordigen_client.account_api(id=account_data.id)
             balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']

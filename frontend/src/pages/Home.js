@@ -28,7 +28,6 @@ class Home extends React.Component {
       <>
         <NavBar />
         <AccountManager account_list={this.state.accounts} />
-        <TransactionList />
       </>
     );
   }

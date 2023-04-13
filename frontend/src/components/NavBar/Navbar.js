@@ -1,6 +1,6 @@
 import React from "react";
 import "./Navbar.style.css";
-import budget_logo from "./budget.png";
+import budget_logo from "../../budget.png";
 import UserProfile from "./UserProfile/UserProfile.js";
 
 function NavBar() {
