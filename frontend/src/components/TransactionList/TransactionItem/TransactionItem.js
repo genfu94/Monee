@@ -5,6 +5,7 @@ import { BsCircleFill } from "react-icons/bs";
 
 
 export default function TransactionItem(transaction) {
+  console.log(Object.keys(transaction))
   return (
     <div className="flex-centered selectable-item transaction">
       <div className="flex-centered">

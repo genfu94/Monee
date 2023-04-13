@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from typing import List, Dict
 from datetime import datetime
 import json
+from collections import defaultdict
+import calendar
 
 
 def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLinkingDetails:
@@ -125,8 +127,22 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         else:
             self.update_account(account_data)
 
+    def _group_transactions_by_date(self, transaction_list):
+        grouped_transactions = defaultdict(list)
+        for transaction_id, transaction in transaction_list.items():
+            transaction_date = datetime.strptime(transaction['booking_date'], "%Y-%m-%d")
+            transaction_date = calendar.month_name[transaction_date.month] + ' ' + str(transaction_date.day) + ', ' + str(transaction_date.year)
+            grouped_transactions[transaction_date].append(transaction)
+        
+        return grouped_transactions
+
+
     def fetch_linked_accounts(self, username: str):
-        return list(self.account_collection.find({'user': username}, {'bank_link_id': 0}))
+        accounts = list(self.account_collection.find({'user': username}, {'bank_link_id': 0}))
+        for account in accounts:
+            account['transactions'] = self._group_transactions_by_date(account['transactions'])
+        
+        return accounts
  
     def update_account(self, account_data: AccountData):
         account_data=json.loads(account_data.json())
