@@ -7,7 +7,7 @@ import BankSelector from "./pages/BankSelector.js";
 import Transactions from "./pages/Transactions.js";
 import budget_logo from "./budget.png";
 import ClipLoader from "react-spinners/ClipLoader";
-import keycloak from "./keycloak.js";
+import {keycloak, setUserInfo} from "./keycloak.js";
 
 function initKeycloak() {
   keycloak
@@ -15,7 +15,7 @@ function initKeycloak() {
       onLoad: "login-required",
     })
     .then(function (authenticated) {
-      console.log("Authenticated");
+      keycloak.loadUserProfile().then((value) => setUserInfo(value));
     })
     .catch(function () {
       console.log("Not authenticated");

@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import "./UserProfile.style.css";
 import { Button } from "@mui/material";
 import { IoMdArrowDropdown } from "react-icons/io";
+import {keycloak, userInfo} from "../../../keycloak.js"
 
 function UserProfile() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,10 +28,10 @@ function UserProfile() {
           sx={{ bgcolor: deepOrange[500] }}
           style={{ width: '35px', height: '35px', fontSize: "15px" }}
         >
-          U
+          {userInfo.username[0]}
         </Avatar>
         <div className="profile-user-name">
-          <span>User</span>
+          <span>{userInfo.username}</span>
           <IoMdArrowDropdown />
         </div>
       </Button>
@@ -50,7 +51,7 @@ function UserProfile() {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={() => keycloak.logout()}>Logout</MenuItem>
       </Menu>
     </>
   );
