@@ -7,20 +7,7 @@ import BankSelector from "./pages/BankSelector.js";
 import Transactions from "./pages/Transactions.js";
 import budget_logo from "./budget.png";
 import ClipLoader from "react-spinners/ClipLoader";
-import {keycloak, setUserInfo} from "./keycloak.js";
-
-function initKeycloak() {
-  keycloak
-    .init({
-      onLoad: "login-required",
-    })
-    .then(function (authenticated) {
-      keycloak.loadUserProfile().then((value) => setUserInfo(value));
-    })
-    .catch(function () {
-      console.log("Not authenticated");
-    });
-}
+import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -30,14 +17,30 @@ class App extends React.Component {
       loading: true,
     };
 
-    initKeycloak();
+    this.initKeycloak();
 
     this.handleLoadingComplete = () => this.setState({ loading: false });
+  }
 
-    fetch(`http://localhost:8000/update_bank_links?username=user`)
-      .then((res) => res.json())
-      .then((data) => {
-        this.handleLoadingComplete();
+  initKeycloak() {
+    keycloak
+      .init({
+        onLoad: "login-required",
+      })
+      .then((authenticated) => {
+        keycloak.loadUserProfile().then((value) => {
+          setUserInfo(value);
+          fetch(
+            `http://localhost:8000/update_bank_links?username=${userInfo.username}`
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              this.handleLoadingComplete();
+            });
+        });
+      })
+      .catch(function () {
+        console.log("Not authenticated");
       });
   }
 
