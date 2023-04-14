@@ -1,3 +1,12 @@
+.selectable-item {
+    box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
+    transition: box-shadow 0.5s;
+  }
+  
+  .selectable-item:hover {
+    box-shadow: 0 5px 5px rgb(0 0 0 / 0.05); 
+  }
+
 .account-list {
     display: flex;
     flex-direction: column;
@@ -8,16 +17,22 @@
 
 .account-item {
     display: flex;
-    margin: 15px 0 15px 0;
-    padding: 0px 5px 0px 5px;
     align-items: center;
+    justify-content: center;
+    max-width: 1100px;
+    min-width: 900px;
+    height: 50px;
+    border-radius: 0.3em;
+    background-color: white;
+    padding: 20px 15px;
+    cursor:pointer;
+    margin: 10px;
 }
 
 .account-list-container {
     display: flex;
     flex-direction: column;
     background-color: rgb(250, 250, 250);
-    width: 500px;
     padding: 20px;
     align-items: left;
 }
@@ -25,20 +40,31 @@
 .account-info-container {
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+    flex-basis: 40%;
+}
+
+.account-type {
+    display: flex;
+    flex-basis: 15%;
+    color: #7f8fa4;
+    font-size: 12px;
 }
 
 .account-name {
     font-family: 'Montserrat';
-    font-weight: bold;
+    font-weight:bolder;
     color:rgb(45, 45, 45);
-    font-size: 0.9em;
+    font-size: 15px;
 }
 
 .account-balance {
-    font-size: 0.7em;
+    display: flex;
+    color:rgb(45, 45, 45);
+    justify-content: right;
+    align-items: right;
+    flex-grow: 1;
     font-family: 'Montserrat';
-    color:rgb(45, 45, 45)
+    font-weight: bolder;
 }
 
 #account-label {

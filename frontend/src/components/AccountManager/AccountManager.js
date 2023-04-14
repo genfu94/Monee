@@ -17,15 +17,27 @@ class AccountManager extends React.Component {
     };
 
     return (
-      <li className="account-item" key={item._id}>
-        <AiFillBank fontSize="30px" />
-        <div className="account-info-container">
-          <div className="account-name">
+      <li className="account-item selectable-item" key={item._id}>
+        <div style={{display: "flex", flexBasis: "5%"}}>
+          <div
+            style={{
+              borderRadius: "7px",
+              backgroundColor: "rgb(255, 160, 0)",
+              margin: "5px",
+              padding: "3px 5px",
+            }}
+          >
+            <AiFillBank fontSize="20px" color="#ffffff" />
+          </div>
+        </div>
+          <div className="account-info-container account-name">
             {item.institution_name} - {item.name}
           </div>
-          <div className="account-balance">
-            {item.balances[0].currency}: {item.balances[0].amount}
-          </div>
+        <div className="account-type">
+          Bank Account
+        </div>
+        <div className="account-balance">
+          {item.balances[0].currency} {item.balances[0].amount}
         </div>
       </li>
     );
