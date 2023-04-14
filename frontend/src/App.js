@@ -7,6 +7,7 @@ import BankSelector from "./pages/BankSelector.js";
 import Transactions from "./pages/Transactions.js";
 import budget_logo from "./budget.png";
 import ClipLoader from "react-spinners/ClipLoader";
+import Accounts from "./pages/Accounts.js"
 import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
 
 class App extends React.Component {
@@ -87,6 +88,7 @@ class App extends React.Component {
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/connect" element={<BankSelector />}></Route>
           <Route exact path="/transactions" element={<Transactions />}></Route>
+          <Route exact path="/accounts" element={<Accounts />}></Route>
         </Routes>
       );
     }
