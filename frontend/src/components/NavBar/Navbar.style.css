@@ -9,7 +9,7 @@
 }
 
 .nav-bar {
-    height: 65px;
+    height: 75px;
     background-color: white;
 }
 
@@ -17,7 +17,7 @@
     margin: 0px 10px;
     color: #7f8fa4;
     list-style: none;
-    font-size: 0.8em;
+    font-size: 16px;
     text-decoration: none;
 }
 
@@ -29,8 +29,8 @@
 
 .nav-bar-content {
     justify-content: space-between !important;
-    min-width: 900px;
-    max-width: 1200px;
+    min-width: 1200px;
+    max-width: 1500px;
 }
 
 .nav-bar-logo {

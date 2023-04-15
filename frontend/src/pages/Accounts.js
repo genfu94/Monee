@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../components/NavBar/Navbar.js";
 import AccountManager from "../components/AccountManager/AccountManager.js";
 import TransactionList from "../components/TransactionList/TransactionList.js";
+import "./style.css";
 
 class Home extends React.Component {
   constructor(props) {
@@ -25,10 +26,12 @@ class Home extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="main-container">
         <NavBar />
-        <AccountManager account_list={this.state.accounts} />
-      </>
+        <div style={{display:"flex", flexDirection:"column", flex: "1 1 auto"}}>
+          <AccountManager account_list={this.state.accounts} />
+        </div>
+      </div>
     );
   }
 }

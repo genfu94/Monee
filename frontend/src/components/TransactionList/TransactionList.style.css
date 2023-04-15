@@ -15,20 +15,30 @@
 }
 
 .transaction-list-container {
-  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.transaction-selector {
+.side-menu {
   list-style: none;
   margin: 0;
   padding: 0;
   border-radius: 5px;
   background-color: #fafbfc;
-  height: min-content;
-  width: 400px;
+  width: 250px;
+  margin-right: 30px;
+  padding: 20px 30px;
 }
 
 .transaction-selector > li {
   font-family: 'Montserrat';
   font-size: 0.6em;
+}
+
+#account-label {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  color:rgb(30, 30, 30);
+  font-size: 0.9em;
 }

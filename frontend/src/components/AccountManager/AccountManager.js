@@ -18,7 +18,7 @@ class AccountManager extends React.Component {
 
     return (
       <li className="account-item selectable-item" key={item._id}>
-        <div style={{display: "flex", flexBasis: "5%"}}>
+        <div style={{ display: "flex", flexBasis: "7%" }}>
           <div
             style={{
               borderRadius: "7px",
@@ -30,12 +30,10 @@ class AccountManager extends React.Component {
             <AiFillBank fontSize="20px" color="#ffffff" />
           </div>
         </div>
-          <div className="account-info-container account-name">
-            {item.institution_name} - {item.name}
-          </div>
-        <div className="account-type">
-          Bank Account
+        <div className="account-info-container account-name">
+          {item.institution_name} - {item.name}
         </div>
+        <div className="account-type">Bank Account</div>
         <div className="account-balance">
           {item.balances[0].currency} {item.balances[0].amount}
         </div>
@@ -45,11 +43,27 @@ class AccountManager extends React.Component {
 
   render() {
     return (
-      <div className="account-list-container ">
-        <div id="account-label">ACCOUNTS</div>
-        <ul className="account-list">
-          {this.props.account_list.map((item) => this.#renderAccountItem(item))}
-        </ul>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20px",
+          flex: 1,
+        }}
+      >
+        <div className="side-menu">
+          <div id="account-label">Accounts</div>
+          <div className="side-menu-container">
+            <div id="add-account-btn">+Add</div>
+          </div>
+        </div>
+        <div className="account-list-container">
+          <ul className="account-list">
+            {this.props.account_list.map((item) =>
+              this.#renderAccountItem(item)
+            )}
+          </ul>
+        </div>
       </div>
     );
   }

@@ -1,75 +1,108 @@
 .selectable-item {
-    box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
-    transition: box-shadow 0.5s;
-  }
-  
-  .selectable-item:hover {
-    box-shadow: 0 5px 5px rgb(0 0 0 / 0.05); 
-  }
+  box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
+  transition: box-shadow 0.5s;
+}
+
+.selectable-item:hover {
+  box-shadow: 0 5px 5px rgb(0 0 0 / 0.05);
+}
+
+.side-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  background-color: #fafbfc;
+  width: 250px;
+  margin-right: 30px;
+  padding: 20px 30px;
+}
+
+.side-menu-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px;
+}
+
+#add-account-btn {
+  background-color: rgb(0, 168, 111);
+  color: #fff;
+  border-radius: 30px;
+  padding: 5px 10px;
+  font-size: 9px;
+  width: 150px;
+  height: 25px;
+  padding: 5px 20px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 25px;
+  font-size: 15px;
+}
 
 .account-list {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    list-style: none;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .account-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 1100px;
-    min-width: 900px;
-    height: 50px;
-    border-radius: 0.3em;
-    background-color: white;
-    padding: 20px 15px;
-    cursor:pointer;
-    margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1100px;
+  min-width: 900px;
+  height: 50px;
+  border-radius: 0.3em;
+  background-color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .account-list-container {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(250, 250, 250);
-    padding: 20px;
-    align-items: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .account-info-container {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 40%;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 40%;
 }
 
 .account-type {
-    display: flex;
-    flex-basis: 15%;
-    color: #7f8fa4;
-    font-size: 12px;
+  display: flex;
+  flex-basis: 15%;
+  color: #7f8fa4;
+  font-size: 12px;
 }
 
 .account-name {
-    font-family: 'Montserrat';
-    font-weight:bolder;
-    color:rgb(45, 45, 45);
-    font-size: 15px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  color: rgb(45, 45, 45);
+  font-size: 15px;
 }
 
 .account-balance {
-    display: flex;
-    color:rgb(45, 45, 45);
-    justify-content: right;
-    align-items: right;
-    flex-grow: 1;
-    font-family: 'Montserrat';
-    font-weight: bolder;
+  display: flex;
+  color: rgb(45, 45, 45);
+  justify-content: right;
+  align-items: right;
+  flex-grow: 1;
+  font-family: "Montserrat";
+  font-weight: 600;
 }
 
 #account-label {
-    font-family: 'Montserrat';
-    font-weight: 1000;
-    color:rgb(30, 30, 30);
-    font-size: 0.9em;
+  font-family: "Montserrat";
+  font-weight: 700;
+  color: rgb(30, 30, 30);
+  font-size: 24px;
 }
