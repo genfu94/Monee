@@ -1,6 +1,5 @@
 import React from "react";
-import NavBar from "../components/NavBar/Navbar.js";
-import TransactionList from "../components/TransactionList/TransactionList.js";
+import SideMenuLayout from "./SideMenuLayout.js";
 import "./style.css";
 
 class Home extends React.Component {
@@ -32,15 +31,11 @@ class Home extends React.Component {
   }
 
   render() {
+    //<TransactionList transactions={this.state.transactions} />
     return (
-      <div>
-        <NavBar />
-        <div
-          style={{ display: "flex", flexDirection: "column", flex: "1 1 auto" }}
-        >
-          <TransactionList transactions={this.state.transactions} />
-        </div>
-      </div>
+      <>
+        <SideMenuLayout sideMenuTitle="Transactions"/>
+      </>
     );
   }
 }

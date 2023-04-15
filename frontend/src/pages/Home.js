@@ -1,12 +1,10 @@
 import React from "react";
-import NavBar from "../components/NavBar/Navbar.js";
+import SideMenuLayout from "./SideMenuLayout.js";
 
 class Home extends React.Component {
   render() {
     return (
-      <>
-        <NavBar />
-      </>
+      <SideMenuLayout sideMenuTitle="Accounts"/>
     );
   }
 }

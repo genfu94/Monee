@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar/Navbar.js";
 import AccountManager from "../components/AccountManager/AccountManager.js";
 import TransactionList from "../components/TransactionList/TransactionList.js";
 import "./style.css";
+import SideMenuLayout from "./SideMenuLayout.js";
 
 class Home extends React.Component {
   constructor(props) {
@@ -25,13 +26,11 @@ class Home extends React.Component {
   }
 
   render() {
+    //<AccountManager account_list={this.state.accounts} />
     return (
-      <div className="main-container">
-        <NavBar />
-        <div style={{display:"flex", flexDirection:"column", flex: "1 1 auto"}}>
-          <AccountManager account_list={this.state.accounts} />
-        </div>
-      </div>
+      <>
+        <SideMenuLayout sideMenuTitle="Accounts"/>
+      </>
     );
   }
 }
