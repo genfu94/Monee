@@ -19,6 +19,7 @@ class SideMenuLayout extends React.Component {
             </div>
           </div>
           <div className="content">
+            {this.props.content}
           </div>
         </div>
       </>

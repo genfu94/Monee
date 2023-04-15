@@ -18,11 +18,12 @@
 .side-menu-title {
   font-family: "Montserrat";
   font-weight: 700;
-  color: rgb(30, 30, 30);
+  color: rgb(80, 80, 80);
   font-size: 24px;
 }
 
 .content {
   display: flex;
   flex: 1;
+  height: min-content;
 }

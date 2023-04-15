@@ -13,23 +13,23 @@ class Home extends React.Component {
       accounts: [],
     };
 
-    fetch(
-      `http://localhost:8000/fetch_linked_accounts?username=user`
-    )
+    fetch(`http://localhost:8000/fetch_linked_accounts?username=user`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         this.setState({
-          "accounts": data
-        })
+          accounts: data,
+        });
       });
   }
 
   render() {
-    //<AccountManager account_list={this.state.accounts} />
     return (
       <>
-        <SideMenuLayout sideMenuTitle="Accounts"/>
+        <SideMenuLayout
+          sideMenuTitle="Accounts"
+          content={<AccountManager account_list={this.state.accounts} />}
+        />
       </>
     );
   }
