@@ -61,7 +61,10 @@ class App extends React.Component {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          height: "100%",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
         }}
       >
         <div

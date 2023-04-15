@@ -1,8 +1,9 @@
 import React from "react";
 import SideMenuLayout from "./SideMenuLayout.js";
+import TransactionList from "../components/TransactionList/TransactionList.js"
 import "./style.css";
 
-class Home extends React.Component {
+class Transactions extends React.Component {
   constructor(props) {
     super(props);
 
@@ -31,13 +32,15 @@ class Home extends React.Component {
   }
 
   render() {
-    //<TransactionList transactions={this.state.transactions} />
     return (
       <>
-        <SideMenuLayout sideMenuTitle="Transactions"/>
+        <SideMenuLayout
+          sideMenuTitle="Transactions"
+          content={<TransactionList transactions={this.state.transactions} />}
+        />
       </>
     );
   }
 }
 
-export default Home;
+export default Transactions;
