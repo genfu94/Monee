@@ -19,3 +19,12 @@ docker compose up
 
 
 ## ✨ Demo
+Currently the application allows to add a new bank account, visualize the amount on each and list all the transactions (still not categorized):
+
+![name-of-you-image](https://github.com/genfu94/budget-app/blob/main/images/loading.png?raw=true)
+
+![name-of-you-image](https://github.com/genfu94/budget-app/blob/main/images/accounts.png?raw=true)
+
+![name-of-you-image](https://github.com/genfu94/budget-app/blob/main/images/add_new_account.png?raw=true)
+
+![name-of-you-image](https://github.com/genfu94/budget-app/blob/main/images/transactions.png?raw=true)
