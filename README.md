@@ -16,3 +16,6 @@ Finally simply run from the root folder:
 ```
 docker compose up
 ```
+
+
+## ✨ Demo
