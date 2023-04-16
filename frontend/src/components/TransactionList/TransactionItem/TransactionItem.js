@@ -80,7 +80,7 @@ export default function TransactionItem(props) {
         </div>
       </div>
 
-      <Modal disableAutoFocus="true" open={open} onClose={handleClose}>
+      <Modal disableAutoFocus={true} open={open} onClose={handleClose}>
         <Box sx={style}>
           {transaction.transaction_amount.amount}
         </Box>

@@ -17,7 +17,7 @@ class AccountManager extends React.Component {
     };
 
     return (
-      <div style={{display: "flex", width:"100%", justifyContent: "center"}}>
+      <div key={item._id} style={{display: "flex", width:"100%", justifyContent: "center"}}>
         <div className="account-item selectable-item" key={item._id}>
           <div style={{ display: "flex", flexBasis: "7%" }}>
             <div

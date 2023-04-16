@@ -34,7 +34,7 @@ export default class TransactionList extends React.Component {
                 </ListSubheader>
                 {this.props.transactions[sectionId].map((item) => {
                   return (
-                    <ListItem key={`item-${item.id}`}>
+                    <ListItem key={`item-${item.transaction_id}`}>
                       <TransactionItem transaction={item} />
                     </ListItem>
                   );
