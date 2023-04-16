@@ -19,14 +19,14 @@ export default class TransactionList extends React.Component {
         <List
           sx={{
             display: "flex",
-            alignItems: "center",
+            width: "100%",
             justifyContent: "center",
-            flexDirection: "column",
+            flexDirection: "column"
           }}
         >
           {Object.keys(this.props.transactions).map((sectionId) => (
             <li key={`section-${sectionId}`}>
-              <ul style={{margin:"0", padding:"0"}}>
+              <ul style={{ margin: "0", padding: "0" }}>
                 <ListSubheader style={{ backgroundColor: "#eff0f2" }}>
                   <div style={{ fontSize: "12px", fontWeight: "900" }}>
                     {sectionId}

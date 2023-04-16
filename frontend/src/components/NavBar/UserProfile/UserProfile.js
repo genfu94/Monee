@@ -26,7 +26,7 @@ function UserProfile() {
       >
         <Avatar
           sx={{ bgcolor: deepOrange[500] }}
-          style={{ width: '35px', height: '35px', fontSize: "15px" }}
+          style={{ width: '35px', height: '35px', fontSize: "20px" }}
         >
           {userInfo.username[0]}
         </Avatar>

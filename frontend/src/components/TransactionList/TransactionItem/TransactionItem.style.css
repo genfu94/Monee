@@ -1,6 +1,7 @@
 .selectable-item {
   box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
   transition: box-shadow 0.5s;
+  cursor:pointer;
 }
 
 .selectable-item:hover {
@@ -21,12 +22,14 @@
 }
 
 .transaction {
-  max-width: 1100px;
-  min-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
   height: 50px;
   border-radius: 0.3em;
   background-color: white;
-  cursor:pointer;
+  padding: 15px 10px;
 }
 
 .transaction-info-container {

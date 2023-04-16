@@ -24,7 +24,7 @@ export default function TransactionItem(props) {
 
   let transaction = props.transaction;
   return (
-    <div>
+    <div style={{display: "flex", width:"100%", justifyContent: "center"}}>
       <div
         className="flex-centered selectable-item transaction"
         onClick={handleOpen}
