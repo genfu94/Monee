@@ -4,6 +4,8 @@ import "./style.css";
 import SideMenuLayout from "./SideMenuLayout.js";
 import Modal from "@mui/material/Modal";
 import Box from '@mui/material/Box';
+import BankSelector from "../components/BankSelector/BankSelector.js";
+
 
 class Home extends React.Component {
   constructor(props) {
@@ -35,9 +37,9 @@ class Home extends React.Component {
       transform: "translate(-50%, -50%)",
       width: 400,
       bgcolor: "background.paper",
-      border: "2px solid #000",
+      borderRadius: "10px",
       boxShadow: 24,
-      p: 4,
+      p: 1,
     };
 
     return (
@@ -53,7 +55,9 @@ class Home extends React.Component {
         />
 
         <Modal disableAutoFocus={true} open={this.state.showNewAccountDialog} onClose={this.closeNewAccountDialog}>
-          <Box sx={style}>Asd</Box>
+          <Box sx={style}>
+            <BankSelector/>
+          </Box>
         </Modal>
       </>
     );

@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Home from "./pages/Home.js";
 import WebFont from "webfontloader";
-import BankSelector from "./pages/BankSelector.js";
 import Transactions from "./pages/Transactions.js";
 import budget_logo from "./budget.png";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -89,7 +88,6 @@ class App extends React.Component {
       return (
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
-          <Route exact path="/connect" element={<BankSelector />}></Route>
           <Route exact path="/transactions" element={<Transactions />}></Route>
           <Route exact path="/accounts" element={<Accounts />}></Route>
         </Routes>
