@@ -39,7 +39,7 @@ class Home extends React.Component {
       bgcolor: "background.paper",
       borderRadius: "10px",
       boxShadow: 24,
-      p: 1,
+      p: 1
     };
 
     return (

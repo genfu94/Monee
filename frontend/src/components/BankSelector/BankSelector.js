@@ -3,7 +3,7 @@ import Select from "react-select";
 import Button from "@mui/material/Button";
 import "./BankSelector.style.css";
 import { BsBank } from "react-icons/bs";
-import {userInfo} from "../../keycloak.js"
+import { userInfo } from "../../keycloak.js";
 
 class BankSelector extends React.Component {
   constructor(props) {
@@ -47,7 +47,10 @@ class BankSelector extends React.Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(institution),
     };
-    fetch(`http://localhost:8000/bank_connect?username=${userInfo.username}`, requestOptions)
+    fetch(
+      `http://localhost:8000/bank_connect?username=${userInfo.username}`,
+      requestOptions
+    )
       .then((res) => res.json())
       .then((data) => {
         let bank_connection_link = data.link;
@@ -56,77 +59,41 @@ class BankSelector extends React.Component {
   }
 
   render() {
+    const selectStyle = {
+      container: (base) => ({
+        ...base,
+        flex: 1,
+        marginBottom: "20px",
+      }),
+    };
+
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          flex: "1",
-        }}
-      >
-        <div
-          style={{ display: "flex", width: "100%", justifyContent: "center" }}
-        >
-          <div className="bank-selector-header">SEARCH YOUR BANK</div>
-        </div>
+      <div className="bank-selector-container">
+        <div className="bank-selector-header">SEARCH YOUR BANK</div>
 
         <div className="bank-icon">
           <BsBank style={{ fontSize: "100px", color: "white" }} />
         </div>
-        <div style={{display: "flex", width:"100%", justifyContent: "left", fontFamily:'Montserrat', paddingLeft: '10px', marginBottom: '5px', fontSize: '13px'}}>
-            Select your Country
-        </div>
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "left",
+        <div className="select-label">Select your Country</div>
+        <Select
+          styles={selectStyle}
+          options={this.countries}
+          onChange={this.onCountrySelect.bind(this)}
+        />
+        <div className="select-label">Select your Bank</div>
+        <Select
+          styles={selectStyle}
+          options={this.state.institutions}
+          onChange={(selected_institution) => {
+            this.setState({ selected_institution: selected_institution });
           }}
+        />
+
+        <Button
+          variant="outlined"
+          disabled={this.state.selected_institution ? false : true}
+          onClick={this.bankConnect.bind(this)}
         >
-          <Select
-            textFieldProps={{
-                label: 'Label',
-                InputLabelProps: {
-                  shrink: true,
-                },
-              }}
-            styles={{
-              container: (base) => ({
-                ...base,
-                flex: 1,
-                marginBottom: "20px"
-              }),
-            }}
-            options={this.countries}
-            onChange={this.onCountrySelect.bind(this)}
-          />
-        </div>
-        <div style={{display: "flex", width:"100%", justifyContent: "left", fontFamily:'Montserrat', paddingLeft: '10px', marginBottom: '5px', fontSize: '13px'}}>
-            Select your Bank
-        </div>
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          <Select
-            styles={{
-              container: (base) => ({
-                ...base,
-                flex: 1,
-                marginBottom: "20px"
-              }),
-            }}
-            options={this.state.institutions}
-            onChange={(selected_institution) => {
-              this.setState({ selected_institution: selected_institution });
-            }}
-          />
-        </div>
-        <Button variant="outlined" disabled={this.state.selected_institution ? false : true} onClick={this.bankConnect.bind(this)}>
           Connect
         </Button>
       </div>
