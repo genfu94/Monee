@@ -1,0 +1,56 @@
+.transaction-editor__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.transaction-editor__header {
+  color: rgb(70, 70, 70);
+  font-size: 20px;
+  font-family: 'Montserrat';
+  font-weight: 700;
+  flex-basis: 10%;
+}
+
+.transaction-editor__main-info-container {
+  flex-basis: 20%;
+  display: flex;
+  justify-content: left;
+  margin: 10px 0px 10px 0px;
+}
+
+.transaction-editor__amount {
+  justify-content: center;
+}
+
+.transaction-editor__type {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.transaction-editor__general-info-container {
+  margin: 10px 0px 10px 0px;
+  display: flex;
+  flex-basis: 30%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.transaction-editor__datetime {
+  flex-basis: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.transaction-editor__payee {
+  flex-basis: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.transaction-editor__reason {
+  flex-basis: 100%;  
+}
