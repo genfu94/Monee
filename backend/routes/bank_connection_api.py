@@ -20,7 +20,8 @@ async def bank_connect(username:str, institution: InstitutionInfo):
 
 @router.get("/update_bank_links")
 async def update_bank_links(username:str):
-    return get_bank_sync_client().update_bank_links_statuses(username)
+    if get_bank_sync_client().nordigen_client:
+        return get_bank_sync_client().update_bank_links_statuses(username)
 
 
 @router.get("/fetch_linked_accounts")
