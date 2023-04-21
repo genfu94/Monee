@@ -4,8 +4,9 @@ import {styled} from "@mui/material/styles";
 
 export const labelStyle = {
   fontFamily: "Montserrat",
-  fontSize: "16px",
+  fontSize: "14px",
   fontWeight: "600",
+  color: "rgb(50, 50, 50)",
   margin: "7px 0px 7px 0px"
 };
 

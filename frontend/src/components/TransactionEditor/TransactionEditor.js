@@ -9,9 +9,8 @@ class TransactionEditor extends React.Component {
   }
 
   render() {
-    let {transaction_amount, origin, text, booking_date} = this.props.transaction;
     return (
-      <TransactionForm />
+      <TransactionForm {...this.props}/>
     );
   }
 }

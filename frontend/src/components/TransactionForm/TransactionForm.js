@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { TextField } from "@mui/material";
-import Select, { components } from "react-select";
 import { AiOutlineQuestion } from "react-icons/ai";
 import { MdRestaurant } from "react-icons/md";
 
@@ -13,23 +12,27 @@ import LabeledInput from "./LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import dayjs from "dayjs";
+import NestedSelector from "./NestedSelector/NestedSelector.js";
 
 function formatDate(v) {
-  return `${v["$y"]}-${v["$M"].toString().padStart(2, "0")}-${v["$D"]
+  return `${v["$y"]}-${(v["$M"]+1).toString().padStart(2, "0")}-${v["$D"]
     .toString()
     .padStart(2, "0")}`;
 }
 
-function TransactionForm() {
+function TransactionForm(props) {
+  const {transaction_amount, origin, text, booking_date} = props.transaction;
+
   const formik = useFormik({
     initialValues: {
-      amount: "",
-      type: "expense",
-      datetime: dayjs("2023-04-15 00:00:00"),
-      origin: "",
-      reason: "",
+      amount: transaction_amount.amount,
+      type: transaction_amount.amount < 0 ? "expense" : "income",
+      datetime: dayjs(booking_date + " 00:00:00"),
+      origin: origin,
+      reason: text
     },
     onSubmit: (values) => {
+      values['datetime'] = formatDate(values['datetime']);
       console.log(values);
     },
   });
@@ -52,6 +55,9 @@ function TransactionForm() {
           <MdRestaurant style={{ color: "white" }} />
         </div>
       ),
+      submenu: (
+        <div>SubMenu</div>
+      )
     },
   ];
 
@@ -80,21 +86,11 @@ function TransactionForm() {
           />
         </LabeledInput>
         <LabeledInput style={{flexBasis: "100%"}} label="Category">
-          <Select
-            placeholder="Select Option"
-            options={data}
-            fullWidth
-            getOptionLabel={(e) => (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {e.icon}
-                <span style={{ marginLeft: 5 }}>{e.text}</span>
-              </div>
-            )}
-          />
+          <NestedSelector/>
         </LabeledInput>
       </div>
 
-      <Divider />
+      <Divider style={{margin: '7px 0px 7px 0px'}}/>
 
       <div className="transaction-editor__general-info-container">
         <LabeledInput style={{ flexBasis: "45%" }} label="Datetime">
