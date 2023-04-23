@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { GoTriangleDown } from "react-icons/go";
@@ -32,26 +33,56 @@ export default function NestedSelector({ data, sx }) {
       height: "50px",
       borderColor: "inherit",
       textTransform: "none",
-    }
+    },
   };
 
+  const ref = useRef(null);
+
+  const onClickOutside = () => setOpen(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        onClickOutside && onClickOutside();
+      }
+    };
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [onClickOutside]);
+
   return (
-    <div className="nested-select-container">
-      <Button sx={{...defaultSx.Button, ...sx.Button}} onClick={switchOpen} variant="outlined">
+    <div ref={ref} className="nested-select-container">
+      <Button
+        sx={{ ...defaultSx.Button, ...sx.Button }}
+        onClick={switchOpen}
+        variant="outlined"
+      >
         {value}
         <GoTriangleDown style={{ marginLeft: "auto" }} />
       </Button>
       {open && (
         <div className="options">
-          {level.length > 1 && (
-            <div className="header" style={{"height": {...defaultSx.Button, ...sx.Button}.height, margin: 0, display: "flex", alignItems: "center"}}>
-              <IconButton size="small" onClick={goBackLevel}>
-                <IoChevronBackOutline />
-              </IconButton>
-              <span>{parent}</span>
-            </div>
-          )}
-          <List>
+          <div
+            className="header"
+            style={{
+              height: { ...defaultSx.Button, ...sx.Button }.height,
+              margin: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {level.length > 1 && (
+              <>
+                <IconButton size="small" onClick={goBackLevel}>
+                  <IoChevronBackOutline />
+                </IconButton>
+                <span>{parent}</span>
+              </>
+            )}
+          </div>
+          <List style={{ margin: 0, padding: 0 }}>
             {level[0].map((item, idx) => {
               return (
                 <ListItem

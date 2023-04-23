@@ -61,7 +61,7 @@ function _buildCategoriesApp(categories) {
       value: item.name,
       label: (
         <>
-          <div
+          <span
             style={{
               display: "flex",
               justifyContent: "center",
@@ -73,7 +73,7 @@ function _buildCategoriesApp(categories) {
             }}
           >
             {item.icon}
-          </div>
+          </span>
           &nbsp; {item.name}
         </>
       ),
