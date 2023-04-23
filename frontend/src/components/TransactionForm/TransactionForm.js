@@ -16,13 +16,13 @@ import NestedSelector from "./NestedSelector/NestedSelector.js";
 import { build_categories_tree } from "../categories.js";
 
 function formatDate(v) {
-  return `${v["$y"]}-${(v["$M"]+1).toString().padStart(2, "0")}-${v["$D"]
+  return `${v["$y"]}-${(v["$M"] + 1).toString().padStart(2, "0")}-${v["$D"]
     .toString()
     .padStart(2, "0")}`;
 }
 
 function TransactionForm(props) {
-  const {transaction_amount, origin, text, booking_date} = props.transaction;
+  const { transaction_amount, origin, text, booking_date } = props.transaction;
 
   const formik = useFormik({
     initialValues: {
@@ -30,10 +30,10 @@ function TransactionForm(props) {
       type: transaction_amount.amount < 0 ? "expense" : "income",
       datetime: dayjs(booking_date + " 00:00:00"),
       origin: origin,
-      reason: text
+      reason: text,
     },
     onSubmit: (values) => {
-      values['datetime'] = formatDate(values['datetime']);
+      values["datetime"] = formatDate(values["datetime"]);
       console.log(values);
     },
   });
@@ -88,12 +88,12 @@ function TransactionForm(props) {
             onChange={(v) => formik.setFieldValue("type", v)}
           />
         </LabeledInput>
-        <LabeledInput style={{flexBasis: "100%"}} label="Category">
-          <NestedSelector data={data}/>
+        <LabeledInput style={{ flexBasis: "100%" }} label="Category">
+          <NestedSelector sx={{ Button: { height: "50px" } }} data={data} />
         </LabeledInput>
       </div>
 
-      <Divider style={{margin: '7px 0px 7px 0px'}}/>
+      <Divider style={{ margin: "7px 0px 7px 0px" }} />
 
       <div className="transaction-editor__general-info-container">
         <LabeledInput style={{ flexBasis: "45%" }} label="Datetime">
