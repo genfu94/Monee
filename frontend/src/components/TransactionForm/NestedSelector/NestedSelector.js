@@ -8,27 +8,15 @@ import { IoChevronBackOutline } from "react-icons/io5";
 
 import "./NestedSelector.style.css";
 
-export default function NestedSelector() {
-  const data = [
-    {
-      value: "Food & Drinks",
-      label: <div>Food & Drinks</div>,
-      submenu: [
-        {
-          value: "Bar & Cafè",
-          label: <div>Bar & Cafè</div>,
-          submenu: [],
-        },
-      ],
-    },
-  ];
+export default function NestedSelector({data}) {
+  console.log("DATA", data);
   const [open, setOpen] = useState(false);
   const [level, setLevel] = useState([data]);
   const [value, setValue] = useState(null);
   const [parent, setParent] = useState("");
   const switchOpen = () => setOpen(!open);
   const addLevel = (v) => {
-    if (v.submenu == null || v.submenu.length == 0) {
+    if (v.submenu === null || v.submenu.length == 0) {
       setOpen(false);
       setValue(v.label);
     } else {

@@ -13,6 +13,7 @@ import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import dayjs from "dayjs";
 import NestedSelector from "./NestedSelector/NestedSelector.js";
+import { build_categories_tree } from "../categories.js";
 
 function formatDate(v) {
   return `${v["$y"]}-${(v["$M"]+1).toString().padStart(2, "0")}-${v["$D"]
@@ -37,29 +38,31 @@ function TransactionForm(props) {
     },
   });
 
-  const data = [
-    {
-      value: 0,
-      text: "Unknown",
-      icon: (
-        <div style={{ backgroundColor: "#454545" }} className="circle">
-          <AiOutlineQuestion style={{ color: "white" }} />
-        </div>
-      ),
-    },
-    {
-      value: 1,
-      text: "Food&Drink",
-      icon: (
-        <div style={{ backgroundColor: "red" }} className="circle">
-          <MdRestaurant style={{ color: "white" }} />
-        </div>
-      ),
-      submenu: (
-        <div>SubMenu</div>
-      )
-    },
-  ];
+  // const data = [
+  //   {
+  //     value: 0,
+  //     text: "Unknown",
+  //     icon: (
+  //       <div style={{ backgroundColor: "#454545" }} className="circle">
+  //         <AiOutlineQuestion style={{ color: "white" }} />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     value: 1,
+  //     text: "Food&Drink",
+  //     icon: (
+  //       <div style={{ backgroundColor: "red" }} className="circle">
+  //         <MdRestaurant style={{ color: "white" }} />
+  //       </div>
+  //     ),
+  //     submenu: (
+  //       <div>SubMenu</div>
+  //     )
+  //   },
+  // ];
+
+  const data = build_categories_tree();
 
   return (
     <form
@@ -86,7 +89,7 @@ function TransactionForm(props) {
           />
         </LabeledInput>
         <LabeledInput style={{flexBasis: "100%"}} label="Category">
-          <NestedSelector/>
+          <NestedSelector data={data}/>
         </LabeledInput>
       </div>
 
