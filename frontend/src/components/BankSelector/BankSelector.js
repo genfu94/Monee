@@ -7,7 +7,7 @@ import "./BankSelector.style.css";
 import { userInfo } from "../../keycloak.js";
 import { COUNTRY_CODES, selectStyle } from "./constants.js";
 import useBankSelector from "./hook.js";
-import {bankConnect} from "./utility.js";
+import { bankConnect } from "./utility.js";
 
 function BankSelector() {
   const [
@@ -16,6 +16,10 @@ function BankSelector() {
     selectedInstitution,
     setSelectedInstitution,
   ] = useBankSelector();
+
+  const onCountrySelected = (c) => setInstitutionsByCountry(c.value);
+  const onClickConnect = () =>
+    bankConnect(selectedInstitution, userInfo.username);
 
   return (
     <div className="bank-selector-container">
@@ -29,7 +33,7 @@ function BankSelector() {
       <Select
         styles={selectStyle}
         options={COUNTRY_CODES}
-        onChange={(c) => setInstitutionsByCountry(c.value)}
+        onChange={onCountrySelected}
       />
       <div className="select-label">Select your Bank</div>
       <Select
@@ -41,9 +45,7 @@ function BankSelector() {
       <Button
         variant="outlined"
         disabled={selectedInstitution ? false : true}
-        onClick={() =>
-          bankConnect(selectedInstitution, userInfo.username)
-        }
+        onClick={onClickConnect}
       >
         Connect
       </Button>
