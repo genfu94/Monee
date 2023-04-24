@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import "./BankSelector.style.css";
 import { BsBank } from "react-icons/bs";
 import { userInfo } from "../../keycloak.js";
+import { bankConnect } from "./utility";
 
 class BankSelector extends React.Component {
   constructor(props) {
@@ -32,29 +33,6 @@ class BankSelector extends React.Component {
             label: institution["name"],
           });
         });
-      });
-  }
-
-  bankConnect() {
-    let institution = {
-      id: this.state.selected_institution["value"],
-      name: this.state.selected_institution["label"],
-    };
-    console.log("Institution selected", institution);
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(institution),
-    };
-    fetch(
-      `http://localhost:8000/bank_connect?username=${userInfo.username}`,
-      requestOptions
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        let bank_connection_link = data.link;
-        window.location.replace(bank_connection_link);
       });
   }
 
@@ -92,7 +70,7 @@ class BankSelector extends React.Component {
         <Button
           variant="outlined"
           disabled={this.state.selected_institution ? false : true}
-          onClick={this.bankConnect.bind(this)}
+          onClick={() => bankConnect(this.state.selected_institution, userInfo.username)}
         >
           Connect
         </Button>
