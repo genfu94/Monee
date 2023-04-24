@@ -20,6 +20,7 @@ function BankSelector() {
   const onCountrySelected = (c) => setInstitutionsByCountry(c.value);
   const onClickConnect = () =>
     bankConnect(selectedInstitution, userInfo.username);
+  const isInstitutionSelected = selectedInstitution ? false : true;
 
   return (
     <div className="bank-selector-container">
@@ -44,7 +45,7 @@ function BankSelector() {
 
       <Button
         variant="outlined"
-        disabled={selectedInstitution ? false : true}
+        disabled={isInstitutionSelected}
         onClick={onClickConnect}
       >
         Connect
