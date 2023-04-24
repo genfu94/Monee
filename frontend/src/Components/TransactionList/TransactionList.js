@@ -6,7 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListSubheader from "@mui/material/ListSubheader";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import TransactionEditor from "../TransactionEditor/TransactionEditor.js";
+import TransactionForm from "../TransactionForm/TransactionForm.js";
 
 export default class TransactionList extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ export default class TransactionList extends React.Component {
           onClose={() => this.setState({ transactionSelected: null })}
         >
           <Box sx={style}>
-            <TransactionEditor transaction={this.state.transactionSelected}/>
+            <TransactionForm transaction={this.state.transactionSelected}/>
           </Box>
         </Modal>
       </>

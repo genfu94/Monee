@@ -3,8 +3,6 @@ import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { TextField } from "@mui/material";
-import { AiOutlineQuestion } from "react-icons/ai";
-import { MdRestaurant } from "react-icons/md";
 
 import "./TransactionForm.style.css";
 import { AmountTextField } from "./constants.js";

@@ -1,6 +1,6 @@
 import React from "react";
 import SideMenuLayout from "./SideMenuLayout.js";
-import TransactionList from "../components/TransactionList/TransactionList.js"
+import TransactionList from "../Components/TransactionList/TransactionList.js"
 import "./style.css";
 
 class Transactions extends React.Component {

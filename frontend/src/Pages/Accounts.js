@@ -1,10 +1,11 @@
 import React from "react";
-import AccountManager from "../components/AccountManager/AccountManager.js";
-import "./style.css";
-import SideMenuLayout from "./SideMenuLayout.js";
 import Modal from "@mui/material/Modal";
 import Box from '@mui/material/Box';
-import BankSelector from "../components/BankSelector/BankSelector.js";
+
+import "./style.css";
+import AccountManager from "../Components/AccountManager/AccountManager.js";
+import SideMenuLayout from "./SideMenuLayout.js";
+import BankSelector from "../Components/BankSelector/BankSelector.js";
 
 
 class Home extends React.Component {
