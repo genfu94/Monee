@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { TextField } from "@mui/material";
 
+import { formatDate } from "./helpers.js";
 import "./TransactionForm.style.css";
 import { AmountTextField } from "./constants.js";
 import LabeledInput from "./LabeledInput.js";
@@ -13,14 +14,9 @@ import dayjs from "dayjs";
 import NestedSelector from "./NestedSelector/NestedSelector.js";
 import { build_categories_tree } from "../categories.js";
 
-function formatDate(v) {
-  return `${v["$y"]}-${(v["$M"] + 1).toString().padStart(2, "0")}-${v["$D"]
-    .toString()
-    .padStart(2, "0")}`;
-}
-
 function TransactionForm(props) {
   const { transaction_amount, origin, text, booking_date } = props.transaction;
+  const data = build_categories_tree();
 
   const formik = useFormik({
     initialValues: {
@@ -36,14 +32,13 @@ function TransactionForm(props) {
     },
   });
 
-  const data = build_categories_tree();
-
   return (
     <form
       className="transaction-editor__container"
       onSubmit={formik.handleSubmit}
     >
       <div className="transaction-editor__header">Edit transaction</div>
+
       <div className="transaction-editor__main-info-container">
         <LabeledInput style={{ marginRight: "50px" }} label="Amount">
           <AmountTextField
@@ -57,7 +52,6 @@ function TransactionForm(props) {
           <ToggleButtonSelector
             id="type-selector"
             values={["expense", "income", "transfer"]}
-            labels={["Expense", "Income", "Transfer"]}
             value={formik.values.type}
             onChange={(v) => formik.setFieldValue("type", v)}
           />

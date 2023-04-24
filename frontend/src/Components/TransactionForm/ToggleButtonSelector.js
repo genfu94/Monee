@@ -5,6 +5,8 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import {buttonToggleStyle} from "./constants.js";
 
 function ToggleButtonSelector({id, values, labels, value, onChange}) {
+  labels = labels === undefined ? values.map((v) => v[0].toUpperCase() + v.substring(1)) : labels;
+  
   return (
     <ToggleButtonGroup
       id={id}
@@ -19,7 +21,7 @@ function ToggleButtonSelector({id, values, labels, value, onChange}) {
           sx={buttonToggleStyle}
           value={item}
         >
-          {labels[idx][0].toUpperCase() + labels[idx].substring(1)}
+          {labels[idx]}
         </ToggleButton>
       ))}
     </ToggleButtonGroup>
