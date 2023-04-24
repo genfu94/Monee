@@ -5,6 +5,7 @@ import "./BankSelector.style.css";
 import { BsBank } from "react-icons/bs";
 import { userInfo } from "../../keycloak.js";
 import { bankConnect } from "./utility";
+import { onCountrySelect } from "./utility.js";
 
 class BankSelector extends React.Component {
   constructor(props) {
@@ -19,21 +20,6 @@ class BankSelector extends React.Component {
       institutions: [],
       selected_institution: null,
     };
-  }
-
-  onCountrySelect(selected_country) {
-    fetch(
-      `http://localhost:8000/get_available_institutions?country_code=${selected_country.value}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        data.forEach((institution) => {
-          this.state.institutions.push({
-            value: institution["id"],
-            label: institution["name"],
-          });
-        });
-      });
   }
 
   render() {
@@ -56,7 +42,7 @@ class BankSelector extends React.Component {
         <Select
           styles={selectStyle}
           options={this.countries}
-          onChange={this.onCountrySelect.bind(this)}
+          onChange={(c) => {this.setState({"institutions": onCountrySelect(c.value)})}}
         />
         <div className="select-label">Select your Bank</div>
         <Select

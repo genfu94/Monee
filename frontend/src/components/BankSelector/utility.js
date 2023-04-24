@@ -19,3 +19,22 @@ export function bankConnect(institution_info, username) {
       window.location.replace(bank_connection_link);
     });
 }
+
+export function onCountrySelect(selected_country) {
+  let available_institutions = [];
+
+  fetch(
+    `http://localhost:8000/get_available_institutions?country_code=${selected_country}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((institution) => {
+        available_institutions.push({
+          value: institution["id"],
+          label: institution["name"],
+        });
+      });
+    });
+  
+  return available_institutions;
+}
