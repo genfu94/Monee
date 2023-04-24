@@ -120,7 +120,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
                 'balances': account_data.balances,
                 'transactions': account_data.transactions,
                 'user': bank_link['user'],
-                'last_update': datetime.now().strftime("%Y/%m/%d, %H:%M:%S"),
+                'last_update': account_data.last_udpate,
                 'institution_name': bank_link['institution']['name'],
                 'bank_link_id': bank_link['_id']
             })
@@ -131,10 +131,10 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         grouped_transactions = defaultdict(list)
         for transaction_id, transaction in transaction_list.items():
             transaction_date = datetime.strptime(transaction['booking_date'], "%Y-%m-%d")
-            transaction_date = calendar.month_name[transaction_date.month] + ' ' + str(transaction_date.day) + ', ' + str(transaction_date.year)
             grouped_transactions[transaction_date].append(transaction)
         
-        return grouped_transactions
+        sorted_transaction_dates = sorted(list(grouped_transactions.keys()), reverse=True)
+        return {i.strftime("%B %d, %Y"): grouped_transactions[i] for i in sorted_transaction_dates}
 
 
     def fetch_linked_accounts(self, username: str):
@@ -150,7 +150,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             {
                 "$set": {
                     "balances": account_data["balances"],
-                    "last_update": datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
+                    "last_update": account_data["last_update"]
                 }
             },
             {

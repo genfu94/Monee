@@ -111,6 +111,8 @@ class NordigenBankSyncClient(BankSyncClient):
     def _psd2_to_transaction(self, psd2_transaction: dict) -> Dict:
         # Returns a dict representation of a bank_sync.types.Transaction object
         return {
+            "category": "Unknown",
+            "type": 'income' if float(psd2_transaction['transactionAmount']['amount']) > 0  else 'expense',
             "transaction_id": psd2_transaction['transactionId'],
             "booking_date": psd2_transaction['bookingDate'],
             "transaction_amount": dict(psd2_transaction['transactionAmount']),
@@ -119,13 +121,16 @@ class NordigenBankSyncClient(BankSyncClient):
         }
 
     def get_last_sync_time(self, last_update):
-        return last_update.replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
+        return datetime.now().replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
 
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         last_update = datetime.strptime(account_data.last_update, "%Y/%m/%d, %H:%M:%S") if account_data.last_update is not None else datetime.now() - relativedelta(years=1)
         last_sync_time = self.get_last_sync_time(last_update)
 
-        if account_data.last_update is None or last_update - relativedelta(hours=8) > last_sync_time:
+        print(last_update, last_sync_time)
+
+        if account_data.last_update is None or last_update < last_sync_time:
+            print("Syncing")
             account_api = self.nordigen_client.account_api(id=account_data.id)
             balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
             account_data.balances = [balances_dict]
@@ -134,5 +139,6 @@ class NordigenBankSyncClient(BankSyncClient):
             transactions_list = transactions_dict['booked'] + transactions_dict['pending']
 
             account_data.transactions = {psd2_trans['transactionId']:self._psd2_to_transaction(psd2_trans) for psd2_trans in transactions_list}
-        
+            account_data.last_update = datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
+
         return account_data
