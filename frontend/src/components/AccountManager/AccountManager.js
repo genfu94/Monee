@@ -1,6 +1,8 @@
 import React from "react";
-import "./style.css";
 import { AiFillBank } from "react-icons/ai";
+
+import "./style.css";
+import "../../styles/globals.style.css";
 
 class AccountManager extends React.Component {
   constructor(props) {

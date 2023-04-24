@@ -1,0 +1,9 @@
+.selectable-item {
+  box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
+  transition: box-shadow 0.5s;
+  cursor: pointer;
+}
+
+.selectable-item:hover {
+  box-shadow: 0 5px 5px rgb(0 0 0 / 0.05);
+}

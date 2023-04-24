@@ -38,30 +38,6 @@ function TransactionForm(props) {
     },
   });
 
-  // const data = [
-  //   {
-  //     value: 0,
-  //     text: "Unknown",
-  //     icon: (
-  //       <div style={{ backgroundColor: "#454545" }} className="circle">
-  //         <AiOutlineQuestion style={{ color: "white" }} />
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     value: 1,
-  //     text: "Food&Drink",
-  //     icon: (
-  //       <div style={{ backgroundColor: "red" }} className="circle">
-  //         <MdRestaurant style={{ color: "white" }} />
-  //       </div>
-  //     ),
-  //     submenu: (
-  //       <div>SubMenu</div>
-  //     )
-  //   },
-  // ];
-
   const data = build_categories_tree();
 
   return (
