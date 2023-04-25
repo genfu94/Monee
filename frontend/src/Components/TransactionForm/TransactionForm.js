@@ -12,12 +12,12 @@ import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import dayjs from "dayjs";
 import NestedSelector from "./NestedSelector/NestedSelector.js";
-import { build_categories_tree } from "../categories.js";
+import { category_tree } from "../categories.js";
 
 function TransactionForm(props) {
   const { category, type, transaction_amount, origin, text, booking_date } =
     props.transaction;
-  const data = build_categories_tree();
+  const data = category_tree;
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +26,7 @@ function TransactionForm(props) {
       datetime: dayjs(booking_date),
       origin: origin,
       reason: text,
-      category: "Groceries",
+      category: category,
     },
     onSubmit: (values) => {
       values["datetime"] = formatDate(values["datetime"]);

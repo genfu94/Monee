@@ -2,6 +2,7 @@ import React from "react";
 import "./TransactionItem.style.css";
 import { HiOutlineLightBulb } from "react-icons/hi";
 import { BsCircleFill } from "react-icons/bs";
+import { category_tree, findCategoryByValue } from "../../categories";
 
 export default function TransactionItem(props) {
   let transaction = props.transaction;
@@ -14,18 +15,9 @@ export default function TransactionItem(props) {
       <input type="checkbox" />
       <div className="flex-centered transaction-info">
         <div className="flex-centered transaction-info-category">
-          <span className="flex-centered circle">
-            <HiOutlineLightBulb style={{ color: "#fff" }} />
-          </span>
-          <span
-            style={{
-              fontWeight: 800,
-              fontSize: "0.8em",
-              fontFamily: "Montserrat",
-            }}
-          >
-            &nbsp;Energy, utilities
-          </span>
+          {
+            findCategoryByValue(category_tree, "", transaction.category)[2]
+          }
         </div>
         <div className="flex-centered transaction-info-account">
           <BsCircleFill

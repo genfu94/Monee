@@ -91,6 +91,26 @@ function _buildCategoriesApp(categories) {
   return subtree;
 }
 
-export function build_categories_tree() {
+function build_categories_tree() {
   return _buildCategoriesApp(CATEGORIES_ICON_ENUM);
 }
+
+export function findCategoryByValue(data, parent, value) {
+  for(const category of data) {
+    if(category.text === value && (category.submenu === undefined || category.submenu.length == 0)) {
+      return [[data], parent, category.label];
+    }
+
+    if(category.submenu !== undefined && category.submenu.length > 0) {
+      const [state, parent, label] = findCategoryByValue(category.submenu, category.text, value);
+
+      if(state.length > 0) {
+        return [state.concat([data]), parent, label];
+      }
+    }
+  }
+
+  return [[], "", null];
+}
+
+export const category_tree = build_categories_tree();
