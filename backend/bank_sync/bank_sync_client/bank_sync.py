@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
 
-from ..types import InstitutionInfo, BankLinkingDetailsBase, AccountData
+from ..types import InstitutionInfo, BankLinkingDetailsBase, AccountData, Transaction
 from ..database_client.database_client import AccountDatabaseClient
 
 

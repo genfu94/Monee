@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData, AccountStatus
+from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData, AccountStatus, Transaction
 from pymongo import MongoClient
 from typing import List, Dict
 from datetime import datetime
@@ -58,6 +58,10 @@ class AccountDatabaseClient(ABC):
 
     @abstractmethod
     def update_account(self, account_data: AccountData):
+        pass
+    
+    @abstractmethod
+    def update_transaction(self, username: str, transaction: Transaction):
         pass
 
 
@@ -166,3 +170,22 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         ]
 
         self.account_collection.update_one({"_id": account_data["id"]}, update_query, upsert=True)
+    
+    def update_transaction(self, account_id: str, transaction: Transaction):
+        update_query = [
+            {
+                "$set": {
+                    "transactions": {
+                        transaction.transaction_id: {
+                                "booking_date": transaction.booking_date,
+                                "transaction_amount": dict(transaction.transaction_amount),
+                                "origin": transaction.origin,
+                                "text": transaction.text,
+                                "category": transaction.category,
+                                "type": transaction.type
+                        }
+                    }
+                }
+            }
+        ]
+        self.account_collection.update_one({"_id": account_id}, update_query, upsert=True)
