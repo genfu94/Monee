@@ -1,11 +1,12 @@
 import { IoIosCafe, IoMdRestaurant } from "react-icons/io";
 import { IoFastFood } from "react-icons/io5";
 import { MdLocalGroceryStore } from "react-icons/md";
-import { FaShoppingBag, FaTshirt } from "react-icons/fa";
+import { FaShoppingBag, FaTshirt, FaQuestion } from "react-icons/fa";
 import { RiMedicineBottleFill, RiComputerFill } from "react-icons/ri";
 import { HiEmojiHappy } from "react-icons/hi";
 
 const CATEGORIES = {
+  UNKNOWN: "Unknown",
   FOOD_AND_DRINKS: "Food & Drinks",
   BAR_AND_CAFE: "Bar & Cafè",
   SHOPPING: "Shopping",
@@ -13,6 +14,11 @@ const CATEGORIES = {
 };
 
 const CATEGORIES_ICON_ENUM = [
+  {
+    name: CATEGORIES.UNKNOWN,
+    icon: <FaQuestion style={{color: "white"}}/>,
+    color: "rgb(60, 60, 60)"
+  },
   {
     name: CATEGORIES.FOOD_AND_DRINKS,
     icon: <IoFastFood style={{ color: "white" }} />,

@@ -15,16 +15,18 @@ import NestedSelector from "./NestedSelector/NestedSelector.js";
 import { build_categories_tree } from "../categories.js";
 
 function TransactionForm(props) {
-  const { transaction_amount, origin, text, booking_date } = props.transaction;
+  const { category, type, transaction_amount, origin, text, booking_date } =
+    props.transaction;
   const data = build_categories_tree();
 
   const formik = useFormik({
     initialValues: {
       amount: transaction_amount.amount,
-      type: transaction_amount.amount < 0 ? "expense" : "income",
-      datetime: dayjs(booking_date + " 00:00:00"),
+      type: type,
+      datetime: dayjs(booking_date),
       origin: origin,
       reason: text,
+      category: "Groceries",
     },
     onSubmit: (values) => {
       values["datetime"] = formatDate(values["datetime"]);
@@ -57,7 +59,12 @@ function TransactionForm(props) {
           />
         </LabeledInput>
         <LabeledInput style={{ flexBasis: "100%" }} label="Category">
-          <NestedSelector sx={{ Button: { height: "50px" } }} data={data} />
+          <NestedSelector
+            value={formik.values.category}
+            onChange={(c) => formik.setFieldValue("category", c)}
+            sx={{ Button: { height: "50px" } }}
+            data={data}
+          />
         </LabeledInput>
       </div>
 

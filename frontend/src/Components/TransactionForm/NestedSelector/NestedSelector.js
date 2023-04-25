@@ -9,17 +9,38 @@ import { IoChevronBackOutline } from "react-icons/io5";
 
 import "./NestedSelector.style.css";
 
-export default function NestedSelector({ data, sx }) {
+function findCategoryByValue(data, parent, value) {
+  for(const category of data) {
+    if(category.text === value && (category.submenu === undefined || category.submenu.length == 0)) {
+      return [[data], parent, category.label];
+    }
+
+    if(category.submenu !== undefined && category.submenu.length > 0) {
+      const [state, parent, label] = findCategoryByValue(category.submenu, category.text, value);
+
+      if(state.length > 0) {
+        return [state.concat([data]), parent, label];
+      }
+    }
+  }
+
+  return [[], "", null];
+}
+
+export default function NestedSelector({ data, sx, onChange, value="Unknown" }) {
+  const [state, parentCat, label] = findCategoryByValue(data, "", value);
+  console.log(state);
   const [open, setOpen] = useState(false);
-  const [level, setLevel] = useState([data]);
-  const [value, setValue] = useState(null);
-  const [parent, setParent] = useState("");
+  const [level, setLevel] = useState(state);
+  const [selectedValue, setSelectedValue] = useState(label);
+  const [parent, setParent] = useState(parentCat);
 
   const switchOpen = () => setOpen(!open);
   const addLevel = (v) => {
     if (v.submenu === null || v.submenu.length == 0) {
       setOpen(false);
-      setValue(v.label);
+      setSelectedValue(v.label);
+      onChange(v.value);
     } else {
       setParent(v.value);
       setLevel((oldLevel) => [v.submenu, ...oldLevel]);
@@ -39,6 +60,7 @@ export default function NestedSelector({ data, sx }) {
   const ref = useRef(null);
 
   const onClickOutside = () => setOpen(false);
+  value = selectedValue;
 
   useEffect(() => {
     const handleClickOutside = (event) => {

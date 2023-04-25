@@ -114,7 +114,7 @@ class NordigenBankSyncClient(BankSyncClient):
             "category": "Unknown",
             "type": 'income' if float(psd2_transaction['transactionAmount']['amount']) > 0  else 'expense',
             "transaction_id": psd2_transaction['transactionId'],
-            "booking_date": psd2_transaction['bookingDate'],
+            "booking_date": psd2_transaction['bookingDate'] + " 00:00:00",
             "transaction_amount": dict(psd2_transaction['transactionAmount']),
             "origin": psd2_transaction['creditorName'] if 'creditorName' in psd2_transaction else psd2_transaction['debtorName'],
             "text": psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
@@ -127,10 +127,7 @@ class NordigenBankSyncClient(BankSyncClient):
         last_update = datetime.strptime(account_data.last_update, "%Y/%m/%d, %H:%M:%S") if account_data.last_update is not None else datetime.now() - relativedelta(years=1)
         last_sync_time = self.get_last_sync_time(last_update)
 
-        print(last_update, last_sync_time)
-
         if account_data.last_update is None or last_update < last_sync_time:
-            print("Syncing")
             account_api = self.nordigen_client.account_api(id=account_data.id)
             balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
             account_data.balances = [balances_dict]

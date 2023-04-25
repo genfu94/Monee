@@ -120,7 +120,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
                 'balances': account_data.balances,
                 'transactions': account_data.transactions,
                 'user': bank_link['user'],
-                'last_update': account_data.last_udpate,
+                'last_update': account_data.last_update,
                 'institution_name': bank_link['institution']['name'],
                 'bank_link_id': bank_link['_id']
             })
@@ -130,7 +130,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def _group_transactions_by_date(self, transaction_list):
         grouped_transactions = defaultdict(list)
         for transaction_id, transaction in transaction_list.items():
-            transaction_date = datetime.strptime(transaction['booking_date'], "%Y-%m-%d")
+            transaction_date = datetime.strptime(transaction['booking_date'], "%Y-%m-%d %H:%M:%S")
             grouped_transactions[transaction_date].append(transaction)
         
         sorted_transaction_dates = sorted(list(grouped_transactions.keys()), reverse=True)
