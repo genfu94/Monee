@@ -14,8 +14,25 @@ import dayjs from "dayjs";
 import NestedSelector from "./NestedSelector/NestedSelector.js";
 import { category_tree } from "../categories.js";
 
+function update_transaction(transaction) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(transaction),
+  };
+
+  fetch(
+    `http://localhost:8000/update_transaction?account_id=${transaction.account_id}`,
+    requestOptions
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Transaction updated");
+    });
+}
+
 function TransactionForm(props) {
-  const { category, type, transaction_amount, origin, text, booking_date } =
+  const { transaction_id, account_id, category, type, transaction_amount, origin, text, booking_date } =
     props.transaction;
   const data = category_tree;
 
@@ -29,8 +46,16 @@ function TransactionForm(props) {
       category: category,
     },
     onSubmit: (values) => {
-      values["datetime"] = formatDate(values["datetime"]);
+      values["booking_date"] = formatDate(values["datetime"])
+      values["transaction_amount"] = {
+        "amount": transaction_amount.amount,
+        "currency": "EUR"
+      };
+      values["text"] = values["reason"];
+      values["account_id"] = account_id;
+      values["transaction_id"] = transaction_id;
       console.log(values);
+      update_transaction(values);
     },
   });
 
