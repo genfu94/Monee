@@ -54,7 +54,6 @@ function TransactionForm(props) {
       values["text"] = values["reason"];
       values["account_id"] = account_id;
       values["transaction_id"] = transaction_id;
-      console.log(values);
       update_transaction(values);
     },
   });
@@ -67,7 +66,7 @@ function TransactionForm(props) {
       <div className="transaction-editor__header">Edit transaction</div>
 
       <div className="transaction-editor__main-info-container">
-        <LabeledInput style={{ marginRight: "50px" }} label="Amount">
+        <LabeledInput label="Amount">
           <AmountTextField
             id="amount"
             value={formik.values.amount}
@@ -96,7 +95,7 @@ function TransactionForm(props) {
       <Divider style={{ margin: "7px 0px 7px 0px" }} />
 
       <div className="transaction-editor__general-info-container">
-        <LabeledInput style={{ flexBasis: "45%" }} label="Datetime">
+        <LabeledInput label="Datetime">
           <DatetimePicker
             id="datetime-selector"
             value={formik.values.datetime}
@@ -104,7 +103,7 @@ function TransactionForm(props) {
           />
         </LabeledInput>
 
-        <LabeledInput style={{ flexBasis: "45%" }} label="Payee">
+        <LabeledInput label="Payee">
           <TextField
             id="origin"
             value={formik.values.origin}
@@ -112,7 +111,7 @@ function TransactionForm(props) {
           />
         </LabeledInput>
 
-        <LabeledInput style={{ flexBasis: "100%" }} label="Reason">
+        <LabeledInput label="Reason">
           <TextField
             id="reason"
             fullWidth
