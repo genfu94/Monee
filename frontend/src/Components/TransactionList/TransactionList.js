@@ -1,11 +1,11 @@
 import React from "react";
-import "./TransactionList.style.css";
-import TransactionItem from "./TransactionItem/TransactionItem.js";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListSubheader from "@mui/material/ListSubheader";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+
+import TransactionItem from "./TransactionItem/TransactionItem.js";
 import TransactionForm from "../TransactionForm/TransactionForm.js";
 import { Tree } from "../NestedSelector/Tree";
 import { category_tree } from "../categories";

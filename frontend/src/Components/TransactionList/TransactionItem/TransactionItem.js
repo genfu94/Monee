@@ -1,8 +1,6 @@
 import React from "react";
 import "./TransactionItem.style.css";
-import { HiOutlineLightBulb } from "react-icons/hi";
 import { BsCircleFill } from "react-icons/bs";
-import { category_tree, findCategoryByValue } from "../../categories";
 
 export default function TransactionItem(props) {
   let transaction = props.transaction;
