@@ -10,25 +10,20 @@ const CATEGORIES = {
   FOOD_AND_DRINKS: "Food & Drinks",
   BAR_AND_CAFE: "Bar & Cafè",
   SHOPPING: "Shopping",
-  GROCERIES: "Groceries"
+  GROCERIES: "Groceries",
 };
 
 const CATEGORIES_ICON_ENUM = [
   {
     name: CATEGORIES.UNKNOWN,
-    icon: <FaQuestion style={{color: "white"}}/>,
-    color: "rgb(60, 60, 60)"
+    icon: <FaQuestion style={{ color: "white" }} />,
+    color: "rgb(60, 60, 60)",
   },
   {
     name: CATEGORIES.FOOD_AND_DRINKS,
     icon: <IoFastFood style={{ color: "white" }} />,
     color: "red",
     subCategories: [
-      {
-        name: CATEGORIES.FOOD_AND_DRINKS,
-        icon: <IoFastFood style={{ color: "white" }} />,
-        color: "red",
-      },
       {
         name: CATEGORIES.BAR_AND_CAFE,
         icon: <IoIosCafe style={{ color: "white" }} />,
@@ -42,15 +37,10 @@ const CATEGORIES_ICON_ENUM = [
     color: "blue",
     subCategories: [
       {
-        name: CATEGORIES.SHOPPING,
-        icon: <FaShoppingBag style={{ color: "white" }} />,
+        name: CATEGORIES.GROCERIES,
+        icon: <MdLocalGroceryStore style={{ color: "white" }} />,
         color: "blue",
       },
-      {
-        name: CATEGORIES.GROCERIES,
-        icon: <MdLocalGroceryStore style={{color: "white"}} />,
-        color: "blue"
-      }
     ],
   },
 ];
@@ -63,28 +53,29 @@ function _buildCategoriesApp(categories) {
 
   for (const item of categories) {
     let newCat = {
-      text: item.name,
-      value: item.name,
-      label: (
-        <>
-          <span
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "50%",
-              width: "30px",
-              height: "30px",
-              background: item.color,
-            }}
-          >
-            {item.icon}
-          </span>
-          &nbsp; {item.name}
-        </>
-      ),
+      key: item.name,
+      attributes: {
+        label: (
+          <>
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50%",
+                width: "30px",
+                height: "30px",
+                background: item.color,
+              }}
+            >
+              {item.icon}
+            </span>
+            &nbsp; {item.name}
+          </>
+        ),
+      },
     };
-    newCat.submenu = _buildCategoriesApp(item.subCategories);
+    newCat.children = _buildCategoriesApp(item.subCategories);
     subtree.push(newCat);
   }
 
@@ -96,15 +87,22 @@ function build_categories_tree() {
 }
 
 export function findCategoryByValue(data, parent, value) {
-  for(const category of data) {
-    if(category.text === value && (category.submenu === undefined || category.submenu.length == 0)) {
+  for (const category of data) {
+    if (
+      category.text === value &&
+      (category.submenu === undefined || category.submenu.length == 0)
+    ) {
       return [[data], parent, category.label];
     }
 
-    if(category.submenu !== undefined && category.submenu.length > 0) {
-      const [state, parent, label] = findCategoryByValue(category.submenu, category.text, value);
+    if (category.submenu !== undefined && category.submenu.length > 0) {
+      const [state, parent, label] = findCategoryByValue(
+        category.submenu,
+        category.text,
+        value
+      );
 
-      if(state.length > 0) {
+      if (state.length > 0) {
         return [state.concat([data]), parent, label];
       }
     }

@@ -11,7 +11,7 @@ import LabeledInput from "./LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import dayjs from "dayjs";
-import NestedSelector from "./NestedSelector/NestedSelector.js";
+import NestedSelector from "../NestedSelector/NestedSelector.js";
 import { category_tree } from "../categories.js";
 
 function update_transaction(transaction) {
@@ -84,7 +84,7 @@ function TransactionForm(props) {
         </LabeledInput>
         <LabeledInput style={{ flexBasis: "100%" }} label="Category">
           <NestedSelector
-            value={formik.values.category}
+            defaultValue={formik.values.category}
             onChange={(c) => formik.setFieldValue("category", c)}
             sx={{ Button: { height: "50px" } }}
             data={data}
