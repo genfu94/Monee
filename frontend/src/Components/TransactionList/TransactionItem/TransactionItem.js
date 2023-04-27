@@ -7,6 +7,8 @@ import { category_tree, findCategoryByValue } from "../../categories";
 export default function TransactionItem(props) {
   let transaction = props.transaction;
   let onItemClick = props.onItemClick;
+  let tree = props.tree;
+
   return (
     <div
       className="flex-centered selectable-item transaction"
@@ -16,7 +18,7 @@ export default function TransactionItem(props) {
       <div className="flex-centered transaction-info">
         <div className="flex-centered transaction-info-category">
           {
-            findCategoryByValue(category_tree, "", transaction.category)[2]
+            tree.find(transaction.category).attributes.label
           }
         </div>
         <div className="flex-centered transaction-info-account">

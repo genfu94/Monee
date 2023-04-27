@@ -7,6 +7,8 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import TransactionForm from "../TransactionForm/TransactionForm.js";
+import { Tree } from "../NestedSelector/Tree";
+import { category_tree } from "../categories";
 
 export default class TransactionList extends React.Component {
   constructor(props) {
@@ -15,6 +17,8 @@ export default class TransactionList extends React.Component {
     this.state = {
       transactionSelected: null
     };
+
+    this.tree = new Tree(category_tree);
   }
 
   render() {
@@ -48,7 +52,7 @@ export default class TransactionList extends React.Component {
                 {this.props.transactions[sectionId].map((item) => {
                   return (
                     <ListItem key={`item-${item.transaction_id}`}>
-                      <TransactionItem transaction={item} onItemClick={() => this.setState({"transactionSelected": item})}/>
+                      <TransactionItem tree={this.tree} transaction={item} onItemClick={() => this.setState({"transactionSelected": item})}/>
                     </ListItem>
                   );
                 })}
