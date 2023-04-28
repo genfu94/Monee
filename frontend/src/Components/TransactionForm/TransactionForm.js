@@ -5,55 +5,26 @@ import Divider from "@mui/material/Divider";
 import { TextField } from "@mui/material";
 
 import "./TransactionForm.style.css";
-import { AmountTextField } from "./constants.js";
+import { update_transaction } from "./api";
+import {
+  AmountTextField,
+  defaultFormValues,
+  formValuesToTransactionObject,
+} from "./constants.js";
 import LabeledInput from "./LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
-import dayjs from "dayjs";
 import NestedSelector from "../NestedSelector/NestedSelector.js";
 import { category_tree } from "../categories.js";
 
-function update_transaction(transaction) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(transaction),
-  };
-
-  fetch(
-    `http://localhost:8000/update_transaction?account_id=${transaction.account_id}`,
-    requestOptions
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Transaction updated");
-    });
-}
-
-function TransactionForm(props) {
-  const { transaction_id, account_id, category, type, transaction_amount, origin, text, booking_date } =
-    props.transaction;
+function TransactionForm({ transaction }) {
   const data = category_tree;
 
   const formik = useFormik({
-    initialValues: {
-      amount: transaction_amount.amount,
-      type: type,
-      datetime: dayjs(booking_date),
-      origin: origin,
-      reason: text,
-      category: category,
-    },
+    initialValues: defaultFormValues(transaction),
     onSubmit: (values) => {
-      values["booking_date"] = values['datetime'].format('YYYY-MM-DD HH:mm:ss')
-      values["transaction_amount"] = {
-        "amount": transaction_amount.amount,
-        "currency": "EUR"
-      };
-      values["text"] = values["reason"];
-      values["account_id"] = account_id;
-      values["transaction_id"] = transaction_id;
-      update_transaction(values);
+      const newTransaction = formValuesToTransactionObject(values);
+      update_transaction(newTransaction);
     },
   });
 

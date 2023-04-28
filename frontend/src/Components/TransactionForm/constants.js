@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField";
 import {styled} from "@mui/material/styles";
-
+import dayjs from "dayjs";
 
 export const labelStyle = {
   fontFamily: "Montserrat",
@@ -40,3 +40,31 @@ export const AmountTextField = styled(TextField)({
   }
 });
 
+export const defaultFormValues = (transaction) => {
+  return {
+    account_id: transaction.account_id,
+    transaction_id: transaction.transaction_id,
+    amount: transaction.transaction_amount.amount,
+    type: transaction.type,
+    datetime: dayjs(transaction.booking_date),
+    origin: transaction.origin,
+    reason: transaction.text,
+    category: transaction.category,
+  };
+}
+
+export const formValuesToTransactionObject = (formValues) => {
+  return {
+    "booking_date": formValues.datetime.format('YYYY-MM-DD HH:mm:ss'),
+    "transaction_amount": {
+      "amount": formValues.amount,
+      "currency": "EUR"
+    },
+    "origin": formValues.origin,
+    "category": formValues.category,
+    "type": formValues.type,
+    "text": formValues.reason,
+    "account_id": formValues.account_id,
+    "transaction_id": formValues.transaction_id
+  };
+}
