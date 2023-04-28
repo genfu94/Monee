@@ -1,17 +1,9 @@
-.selectable-item {
-  box-shadow: 0 0px 1px rgb(0 0 0 / 0.1);
-  transition: box-shadow 0.5s;
-  cursor:pointer;
-}
-
-.selectable-item:hover {
-  box-shadow: 0 5px 5px rgb(0 0 0 / 0.05); 
-}
-
-.flex-centered {
+.info-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content:left;
+  gap: 15px;
+  flex: 1;
 }
 
 .flex-centered-vertical {
@@ -24,7 +16,6 @@
 .transaction {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex: 1;
   height: 50px;
   border-radius: 0.3em;
@@ -32,23 +23,8 @@
   padding: 15px 10px;
 }
 
-.transaction-info-container {
-  justify-content: space-between;
-  flex: 1;
-}
-
-.transaction-info {
-  justify-content: space-between;
-  flex-basis: 90%;
-}
-
 .transaction-info-category {
   flex-basis: 20%;
-}
-
-.transaction-info-account {
-  font-size: 0.7em;
-  flex-basis: 30%;
 }
 
 .transaction-info-entity {
@@ -61,10 +37,6 @@
   color: #7f8fa4;
   font-size: 0.7em;
   flex-basis: 20%;
-}
-
-.transaction-amount-section {
-  font-size: 0.9em;
 }
 
 .target-currency-transaction-amount {
@@ -81,11 +53,4 @@
   color: #7f8fa4;
   font-size: 0.8em;
   margin-left: auto;
-}
-
-.circle {
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  background-color: coral;
 }

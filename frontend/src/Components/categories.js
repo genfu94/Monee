@@ -56,22 +56,23 @@ function _buildCategoriesApp(categories) {
       key: item.name,
       attributes: {
         label: (
-          <>
-            <span
+          <div style={{display: "flex", gap: "5px", alignItems: "center"}}>
+            <div
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: "50%",
                 width: "30px",
                 height: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                flexShrink: 0,
                 background: item.color,
               }}
             >
               {item.icon}
-            </span>
-            &nbsp; <span style={{fontSize: '13px'}}>{item.name}</span>
-          </>
+            </div>
+            &nbsp; <div style={{float: "right", fontSize: '13px'}}>{item.name}</div>
+          </div>
         ),
       },
     };
