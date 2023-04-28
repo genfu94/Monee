@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { TextField } from "@mui/material";
 
-import { formatDate } from "./helpers.js";
 import "./TransactionForm.style.css";
 import { AmountTextField } from "./constants.js";
 import LabeledInput from "./LabeledInput.js";
@@ -46,7 +45,7 @@ function TransactionForm(props) {
       category: category,
     },
     onSubmit: (values) => {
-      values["booking_date"] = formatDate(values["datetime"])
+      values["booking_date"] = values['datetime'].format('YYYY-MM-DD HH:mm:ss')
       values["transaction_amount"] = {
         "amount": transaction_amount.amount,
         "currency": "EUR"
