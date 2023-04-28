@@ -70,7 +70,7 @@ function _buildCategoriesApp(categories) {
             >
               {item.icon}
             </span>
-            &nbsp; {item.name}
+            &nbsp; <span style={{fontSize: '13px'}}>{item.name}</span>
           </>
         ),
       },

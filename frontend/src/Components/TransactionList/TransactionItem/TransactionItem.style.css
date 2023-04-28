@@ -48,21 +48,18 @@
 
 .transaction-info-account {
   font-size: 0.7em;
-  font-family: "Montserrat";
   flex-basis: 30%;
 }
 
 .transaction-info-entity {
   color: #7f8fa4;
   font-size: 0.7em;
-  font-family: "Montserrat";
   flex: 0 0 30%;
 }
 
 .transaction-info-description {
   color: #7f8fa4;
   font-size: 0.7em;
-  font-family: "Montserrat";
   flex-basis: 20%;
 }
 
@@ -73,6 +70,7 @@
 .target-currency-transaction-amount {
   color: #fe3b2c;
   margin-left: auto;
+  font-size: 14px;
 }
 
 .transaction-income {
