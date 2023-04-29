@@ -142,11 +142,14 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
 
 
     def fetch_linked_accounts(self, username: str):
-        accounts = list(self.account_collection.find({'user': username}, {'bank_link_id': 0}))
+        accounts = list(self.account_collection.find({'user': username}, {"transactions": {"$slice": 1}, 'bank_link_id': 0}))
         for account in accounts:
             account['transactions'] = self._group_transactions_by_date(account['transactions'])
         
         return accounts
+
+    def fetch_transactions_by_date(self, account_data: AccountData, date_from):
+        pass
  
     def update_account(self, account_data: AccountData):
         account_data=json.loads(account_data.json())
@@ -160,9 +163,9 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             {
                 "$set": {
                     "transactions": {
-                        "$mergeObjects": [
-                            "$transactions",
-                            account_data["transactions"]
+                        "$concatArrays": [
+                            account_data["transactions"],
+                            "$transactions"
                         ]
                     }
                 }

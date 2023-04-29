@@ -105,7 +105,6 @@ class NordigenBankSyncClient(BankSyncClient):
 
         bank_accounts_info =  [self._fetch_bank_account_details(bank_linking_details, account) for account in bank_accounts['accounts']]
         bank_accounts_info = list(filter(lambda item: item is not None, bank_accounts_info))
-
         return bank_accounts_info
 
     def _psd2_to_transaction(self, account_id: str, psd2_transaction: dict) -> Dict:
@@ -136,7 +135,7 @@ class NordigenBankSyncClient(BankSyncClient):
             transactions_dict = account_api.get_transactions(date_from=last_update.strftime('%Y-%m-%d'))['transactions']
             transactions_list = transactions_dict['booked'] + transactions_dict['pending']
 
-            account_data.transactions = {psd2_trans['transactionId']:self._psd2_to_transaction(account_data.id, psd2_trans) for psd2_trans in transactions_list}
+            account_data.transactions = [self._psd2_to_transaction(account_data.id, psd2_trans) for psd2_trans in transactions_list]
             account_data.last_update = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
         return account_data

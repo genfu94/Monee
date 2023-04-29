@@ -15,13 +15,17 @@ function TransactionList({ transactions }) {
   const [transactionSelected, setTransactionSelected] = useState(null);
   const tree = new Tree(category_tree);
 
+  const changeTransaction = (newTransaction) => {
+    transactionSelected.type = newTransaction.type;
+  };
+
   return (
     <>
       <List disablePadding>
         {Object.keys(transactions).map((sectionId) => (
-          <li key={`section-${sectionId}`}>
+          <li key={sectionId}>
             <ul>
-              <ListSubheader disableGutters style={listSubheaderStyle}>
+              <ListSubheader style={listSubheaderStyle}>
                 {sectionId}
               </ListSubheader>
               
@@ -47,7 +51,7 @@ function TransactionList({ transactions }) {
         onClose={() => setTransactionSelected(null)}
       >
         <Box sx={modalStyle}>
-          <TransactionForm transaction={transactionSelected} />
+          <TransactionForm onChange={changeTransaction} transaction={transactionSelected} />
         </Box>
       </Modal>
     </>

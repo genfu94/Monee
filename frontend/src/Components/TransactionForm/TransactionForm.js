@@ -17,7 +17,7 @@ import DatetimePicker from "./DateTimePicker.js";
 import NestedSelector from "../NestedSelector/NestedSelector.js";
 import { category_tree } from "../categories.js";
 
-function TransactionForm({ transaction }) {
+function TransactionForm({ transaction, onChange }) {
   const data = category_tree;
 
   const formik = useFormik({
@@ -25,6 +25,7 @@ function TransactionForm({ transaction }) {
     onSubmit: (values) => {
       const newTransaction = formValuesToTransactionObject(values);
       update_transaction(newTransaction);
+      onChange(newTransaction);
     },
   });
 
