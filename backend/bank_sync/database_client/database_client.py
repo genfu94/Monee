@@ -63,7 +63,10 @@ class AccountDatabaseClient(ABC):
     @abstractmethod
     def update_transaction(self, username: str, transaction: Transaction):
         pass
-
+    
+    @abstractmethod
+    def fetch_transactions(self, account_data: AccountData, date_from: datetime, date_to: datetime=None) -> List[Transaction]:
+        pass
 
 class MongoAccountDatabaseClient(AccountDatabaseClient):
     def __init__(self, connection_string: str):
@@ -133,7 +136,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
 
     def _group_transactions_by_date(self, transaction_list):
         grouped_transactions = defaultdict(list)
-        for transaction_id, transaction in transaction_list.items():
+        for transaction in transaction_list:
             transaction_date = datetime.strptime(transaction['booking_date'], "%Y-%m-%d %H:%M:%S")
             grouped_transactions[transaction_date].append(transaction)
         
@@ -142,14 +145,30 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
 
 
     def fetch_linked_accounts(self, username: str):
-        accounts = list(self.account_collection.find({'user': username}, {"transactions": {"$slice": 1}, 'bank_link_id': 0}))
+        accounts = list(self.account_collection.find({'user': username}, {"transactions": {"$slice": 10}, 'bank_link_id': 0}))
         for account in accounts:
             account['transactions'] = self._group_transactions_by_date(account['transactions'])
         
         return accounts
 
-    def fetch_transactions_by_date(self, account_data: AccountData, date_from):
-        pass
+    def fetch_transactions(self, account_data: AccountData, date_from: datetime, date_to: datetime=None) -> List[Transaction]:
+        account = list(self.account_collection.find({"_id": account_data.id}, {
+            "transactions": {
+                "$filter": {
+                    "input": "$transactions",
+                    "as": "transaction",
+                    "cond": {
+                        "$gte": ["$$transaction.booking_date", date_from.strftime("%Y-%m-%d")]
+                    }
+                }
+            }
+        }))
+
+        if account == []:
+            return []
+        
+        return account[0]['transactions']
+
  
     def update_account(self, account_data: AccountData):
         account_data=json.loads(account_data.json())

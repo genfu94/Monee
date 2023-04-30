@@ -122,20 +122,29 @@ class NordigenBankSyncClient(BankSyncClient):
 
     def get_last_sync_time(self, last_update):
         return datetime.now().replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
+    
+    def _fetch_new_transactions(self, account_data: AccountData, last_update: datetime) -> List[Transaction]:
+        old_transactions = self.account_db_client.fetch_transactions(account_data, last_update)
+        old_transactions_ids = [t['transaction_id'] for t in old_transactions]
+        account_api = self.nordigen_client.account_api(id=account_data.id)
+        transactions_dict = account_api.get_transactions(date_from=last_update.strftime('%Y-%m-%d'))['transactions']
+        transactions_list = transactions_dict['booked'] + transactions_dict['pending']
+        transactions = [self._psd2_to_transaction(account_data.id, psd2_trans) for psd2_trans in transactions_list]
+
+        transactions = list(filter(lambda x: x['transaction_id'] not in old_transactions_ids, transactions))
+
+        return transactions
 
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         last_update = datetime.strptime(account_data.last_update, "%Y-%m-%d, %H:%M:%S") if account_data.last_update is not None else datetime.now() - relativedelta(years=1)
         last_sync_time = self.get_last_sync_time(last_update)
-
+        
         if account_data.last_update is None or last_update < last_sync_time:
             account_api = self.nordigen_client.account_api(id=account_data.id)
             balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
             account_data.balances = [balances_dict]
 
-            transactions_dict = account_api.get_transactions(date_from=last_update.strftime('%Y-%m-%d'))['transactions']
-            transactions_list = transactions_dict['booked'] + transactions_dict['pending']
-
-            account_data.transactions = [self._psd2_to_transaction(account_data.id, psd2_trans) for psd2_trans in transactions_list]
+            account_data.transactions = self._fetch_new_transactions(account_data, last_update)
             account_data.last_update = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
         return account_data

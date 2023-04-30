@@ -7,7 +7,7 @@ import "./TransactionItem.style.css";
 export default function TransactionItem({ transaction, onItemClick, tree }) {
   return (
     <div className="selectable-item transaction" onClick={onItemClick}>
-      <div class="info-container">
+      <div className="info-container">
         <input type="checkbox" />
 
         <div style={{flexBasis: "30%"}}>{tree.find(transaction.category).attributes.label}</div>

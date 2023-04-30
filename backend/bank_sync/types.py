@@ -61,7 +61,7 @@ class AccountData(BaseModel):
     last_update: str = None
     bank_linking_details: NordigenBankLinkingDetails | BankLinkingDetailsBase = None
     balances: List[Balance] = []
-    transactions: Dict = {}
+    transactions: List[Transaction] = []
 
 
 @dataclass_json
