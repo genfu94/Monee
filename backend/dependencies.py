@@ -1,5 +1,5 @@
 from bank_sync.types import APICredentials
-from bank_sync.bank_sync_client.nordigen_client import NordigenBankSyncClient
+from bank_sync.bank_sync_client.nordigen.nordigen_client import NordigenBankSyncClient
 from bank_sync.database_client.database_client import MongoAccountDatabaseClient
 from bank_sync.bank_sync_client.bank_sync import BankSyncClient
 import configparser

@@ -3,5 +3,9 @@
     "files.exclude": {
         "**/__pycache__": true,
         "**/node_modules": true
-    }
+    },
+    "python.formatting.autopep8Args": [
+        "--max-line-length", "120",
+        "--experimental"
+    ],
 }
