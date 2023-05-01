@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from datetime import datetime
 from typing import List
 
-from ..types import InstitutionInfo, BankLinkingDetailsBase, AccountData, Transaction
+from models.bank_link_types import InstitutionInfo, BankLinkingDetailsBase
+from models.bank_account_types import AccountData
 from ..database_client.database_client import AccountDatabaseClient
 
 

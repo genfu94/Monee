@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountData, AccountStatus, Transaction
+from models.bank_link_types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountStatus
+from models.bank_account_types import AccountData, Transaction
 from pymongo import MongoClient
 from typing import List, Dict
 from datetime import datetime
 import json
 from collections import defaultdict
-import calendar
 
 
 def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLinkingDetails:

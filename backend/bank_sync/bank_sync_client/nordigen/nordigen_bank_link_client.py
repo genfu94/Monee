@@ -1,12 +1,7 @@
-import os
-import sys
-#sys.path.insert(0, os.path.abspath('..'))
-#print("#########", sys.path)
-
 from uuid import uuid4
 from typing import List
 from ..bank_sync import BankLinkClient
-from bank_sync.types import InstitutionInfo, BankLinkingDetailsBase, NordigenBankLinkingDetails, AccountStatus
+from models.bank_link_types import InstitutionInfo, BankLinkingDetailsBase, NordigenBankLinkingDetails, AccountStatus
 from bank_sync.database_client.database_client import AccountDatabaseClient
 
 
