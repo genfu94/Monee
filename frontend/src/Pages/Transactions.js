@@ -1,46 +1,45 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import SideMenuLayout from "./SideMenuLayout.js";
-import TransactionList from "../Components/TransactionList/TransactionList.js"
+import TransactionList from "../Components/TransactionList/TransactionList.js";
 import "./style.css";
 
-class Transactions extends React.Component {
-  constructor(props) {
-    super(props);
+function Transactions() {
+  const [transactions, setTransactions] = useState([]);
+  const [item, setItem] = useState(0);
 
-    this.state = {
-      transactions: {},
-      accounts: [],
-    };
-
-    fetch(`http://localhost:8000/fetch_linked_accounts?username=user`)
+  const fetchTransactions = () => {
+    fetch(
+      `http://localhost:8000/fetch_linked_accounts?username=user&item=${item}`
+    )
       .then((res) => res.json())
       .then((data) => {
-        let all_transactions = {};
-        let all_accounts = [];
+        let new_transactions = [];
         for (const account of data) {
-          all_transactions = Object.assign(
-            all_transactions,
-            account.transactions
-          );
-          all_accounts.push(account.institution_name + " - " + account.name);
+          new_transactions = [...new_transactions, ...account.transactions];
         }
-        this.setState({
-          transactions: all_transactions,
-          accounts: all_accounts,
-        });
+
+        setTransactions([...transactions, ...new_transactions]);
+        setItem(item + new_transactions.length);
       });
   }
+  
+  useEffect(() => {
+    fetchTransactions()
+  }, [])
 
-  render() {
-    return (
-      <>
-        <SideMenuLayout
-          sideMenuTitle="Transactions"
-          content={<TransactionList transactions={this.state.transactions} />}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <SideMenuLayout
+        sideMenuTitle="Transactions"
+        content={
+          <TransactionList
+            transactions={transactions}
+            fetchData={fetchTransactions}
+          />
+        }
+      />
+    </>
+  );
 }
 
 export default Transactions;

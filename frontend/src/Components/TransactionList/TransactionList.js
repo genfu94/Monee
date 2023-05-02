@@ -10,8 +10,9 @@ import TransactionForm from "../TransactionForm/TransactionForm.js";
 import { Tree } from "../NestedSelector/Tree";
 import { category_tree } from "../categories";
 import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-function TransactionList({ transactions }) {
+function TransactionList({ transactions, fetchData }) {
   const [transactionSelected, setTransactionSelected] = useState(null);
   const tree = new Tree(category_tree);
 
@@ -22,7 +23,7 @@ function TransactionList({ transactions }) {
   return (
     <>
       <List disablePadding>
-        {Object.keys(transactions).map((sectionId) => (
+        {/*Object.keys(transactions).map((sectionId) => (
           <li key={sectionId}>
             <ul>
               <ListSubheader style={listSubheaderStyle}>
@@ -42,7 +43,28 @@ function TransactionList({ transactions }) {
               })}
             </ul>
           </li>
-        ))}
+            ))*/}
+        <InfiniteScroll
+          dataLength={transactions.length}
+          next={fetchData}
+          hasMore={true} // Replace with a condition based on your data source
+          loader={<p>Loading...</p>}
+          endMessage={<p>No more data to load.</p>}
+        >
+          {transactions.map((transaction) => (
+            <li>
+              <ul>
+                <ListItem key={transaction.transaction_id}>
+                  <TransactionItem
+                    tree={tree}
+                    transaction={transaction}
+                    onItemClick={() => setTransactionSelected(transaction)}
+                  />
+                </ListItem>
+              </ul>
+            </li>
+          ))}
+        </InfiniteScroll>
       </List>
 
       <Modal
@@ -51,7 +73,10 @@ function TransactionList({ transactions }) {
         onClose={() => setTransactionSelected(null)}
       >
         <Box sx={modalStyle}>
-          <TransactionForm onChange={changeTransaction} transaction={transactionSelected} />
+          <TransactionForm
+            onChange={changeTransaction}
+            transaction={transactionSelected}
+          />
         </Box>
       </Modal>
     </>

@@ -1,6 +1,6 @@
 from nordigen import NordigenClient
 from datetime import datetime
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 from typing import List, Dict
 from uuid import uuid4
 
