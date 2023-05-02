@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-from services.bank_sync.bank_link_types import InstitutionInfo
-from services.bank_sync.bank_account_types import Transaction
+from services.bank_sync.data_types import InstitutionInfo, Transaction
 from dependencies import get_bank_sync_client
 
 router = APIRouter()

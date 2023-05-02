@@ -1,7 +1,6 @@
 from ...database_client import AccountDatabaseClient
 from ...bank_sync import BankAccountClient
-from ...bank_link_types import BankLinkingDetailsBase
-from ...bank_account_types import Transaction, AccountData
+from ...data_types import BankLinkingDetailsBase, Transaction, AccountData
 from typing import List, Dict
 from datetime import datetime
 from dateutil.relativedelta import relativedelta

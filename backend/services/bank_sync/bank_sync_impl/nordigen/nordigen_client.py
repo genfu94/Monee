@@ -2,7 +2,7 @@ from nordigen import NordigenClient
 from .nordigen_bank_link_client import NordigenBankLinkClient
 from .nordigen_bank_account_client import NordigenBankAccountClient
 from ...bank_sync import BankSyncClient
-from ...bank_link_types import APICredentials
+from ...data_types import APICredentials
 from ...database_client import AccountDatabaseClient
 
 

@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from .bank_link_types import InstitutionInfo, BankLinkingDetailsBase
-from .bank_account_types import AccountData
+from .data_types import InstitutionInfo, BankLinkingDetailsBase, AccountData
 from .database_client import AccountDatabaseClient
 
 

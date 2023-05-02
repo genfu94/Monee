@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import Union
+from typing import Union, List
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 
 class AccountStatus(int, Enum):
@@ -46,3 +46,30 @@ class NordigenBankLinkingDetails(BankLinkingDetailsBase):
 
 
 BankLinkingDetails = Union[NordigenBankLinkingDetails, BankLinkingDetailsBase]
+
+
+@dataclass
+class Balance:
+    currency: str
+    amount: float
+
+
+@dataclass
+class Transaction:
+    transaction_id: str
+    booking_date: str
+    transaction_amount: Balance
+    origin: str
+    text: str
+    category: str
+    type: str
+
+@dataclass_json
+@dataclass
+class AccountData:
+    id: str
+    name: str
+    last_update: str = None
+    bank_linking_details: BankLinkingDetails = None
+    balances: List[Balance] = field(default_factory=lambda : [])
+    transactions: List[Transaction] = field(default_factory=lambda : [])
