@@ -1,11 +1,11 @@
-from services.bank_sync.data_types import APICredentials
-from services.bank_sync.bank_sync_impl.nordigen.nordigen_client import NordigenBankSyncClient
-from services.bank_sync.database_client import MongoAccountDatabaseClient
-from services.bank_sync.bank_sync import BankSyncClient
+from services.banksync.types import APICredentials
+from services.banksync.bank_client import NordigenBankSyncClient
+from services.banksync.database_client import MongoAccountDatabaseClient
+from services.banksync.bank_client.bank_client_interface import BankSyncClientInterface
 import configparser
 
 
-bank_sync_client:BankSyncClient = None
+bank_sync_client:BankSyncClientInterface = None
 
 def initialize_bank_sync_client():
     global bank_sync_client

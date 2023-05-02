@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from services.bank_sync.data_types import InstitutionInfo, Transaction
+from services.banksync.types import InstitutionInfo, Transaction
 from dependencies import get_bank_sync_client
 
 router = APIRouter()
@@ -18,8 +18,8 @@ async def bank_connect(username:str, institution: InstitutionInfo):
 @router.get("/update_bank_links")
 async def update_bank_links(username:str):
     if get_bank_sync_client().nordigen_client:
-        get_bank_sync_client().bank_link_client.update_bank_links_statuses(username)
-        get_bank_sync_client().bank_account_client.synchronize_user_accounts(username)
+        get_bank_sync_client().update_bank_links_statuses(username)
+        get_bank_sync_client().synchronize_user_accounts(username)
 
 
 @router.get("/fetch_linked_accounts")

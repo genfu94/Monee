@@ -2,10 +2,10 @@
 {
     "files.exclude": {
         "**/__pycache__": true,
-        "**/node_modules": true
+        "**/node_modules": true,
+        "**/__init__.py": true
     },
-    "python.formatting.autopep8Args": [
-        "--max-line-length", "120",
-        "--experimental"
+    "python.formatting.blackArgs": [
+        "--line-length", "80"
     ],
 }
