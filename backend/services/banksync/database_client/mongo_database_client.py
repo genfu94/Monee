@@ -87,9 +87,9 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         sorted_transaction_dates = sorted(list(grouped_transactions.keys()), reverse=True)
         return {i.strftime("%B %d, %Y"): grouped_transactions[i] for i in sorted_transaction_dates}'''
 
-    def fetch_linked_accounts(self, username: str, item:int):
+    def fetch_linked_accounts(self, username: str, start_item_idx: int, n_items: int):
         accounts = list(self.account_collection.find({'user': username}, {
-                        "transactions": {"$slice": [item, item+30]}, 'bank_link_id': 0}))
+                        "transactions": {"$slice": [start_item_idx, n_items]}, 'bank_link_id': 0}))
         #for account in accounts:
         #    account['transactions'] = self._group_transactions_by_date(account['transactions'])
 
