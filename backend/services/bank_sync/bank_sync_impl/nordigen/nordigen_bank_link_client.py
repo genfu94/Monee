@@ -1,8 +1,8 @@
 from uuid import uuid4
 from typing import List
-from ..bank_sync import BankLinkClient
-from models.bank_link_types import InstitutionInfo, BankLinkingDetailsBase, NordigenBankLinkingDetails, AccountStatus
-from bank_sync.database_client.database_client import AccountDatabaseClient
+from ...bank_sync import BankLinkClient
+from ...bank_link_types import InstitutionInfo, BankLinkingDetailsBase, NordigenBankLinkingDetails, AccountStatus
+from ...database_client import AccountDatabaseClient
 
 
 class NordigenBankLinkClient(BankLinkClient):

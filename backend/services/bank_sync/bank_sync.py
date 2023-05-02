@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from models.bank_link_types import InstitutionInfo, BankLinkingDetailsBase
-from models.bank_account_types import AccountData
-from ..database_client.database_client import AccountDatabaseClient
+from .bank_link_types import InstitutionInfo, BankLinkingDetailsBase
+from .bank_account_types import AccountData
+from .database_client import AccountDatabaseClient
 
 
 class BankLinkClient(ABC):

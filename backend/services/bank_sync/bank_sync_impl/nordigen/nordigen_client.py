@@ -1,10 +1,10 @@
 from nordigen import NordigenClient
 from .nordigen_bank_link_client import NordigenBankLinkClient
 from .nordigen_bank_account_client import NordigenBankAccountClient
-from ..bank_sync import BankSyncClient
-from models.bank_link_types import APICredentials, BankLinkingDetailsBase
-from models.bank_account_types import Transaction, AccountData
-from ...database_client.database_client import AccountDatabaseClient
+from ...bank_sync import BankSyncClient
+from ...bank_link_types import APICredentials, BankLinkingDetailsBase
+from ...bank_account_types import Transaction, AccountData
+from ...database_client import AccountDatabaseClient
 from typing import List, Dict
 from datetime import datetime
 

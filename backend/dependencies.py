@@ -1,7 +1,7 @@
-from models.bank_link_types import APICredentials
-from bank_sync.bank_sync_client.nordigen.nordigen_client import NordigenBankSyncClient
-from bank_sync.database_client.database_client import MongoAccountDatabaseClient
-from bank_sync.bank_sync_client.bank_sync import BankSyncClient
+from services.bank_sync.bank_link_types import APICredentials
+from services.bank_sync.bank_sync_impl.nordigen.nordigen_client import NordigenBankSyncClient
+from services.bank_sync.database_client import MongoAccountDatabaseClient
+from services.bank_sync.bank_sync import BankSyncClient
 import configparser
 
 

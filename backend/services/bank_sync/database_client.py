@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from models.bank_link_types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountStatus
-from models.bank_account_types import AccountData, Transaction
+from .bank_link_types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountStatus
+from .bank_account_types import AccountData, Transaction
 from pymongo import MongoClient
 from typing import List, Dict
 from datetime import datetime
