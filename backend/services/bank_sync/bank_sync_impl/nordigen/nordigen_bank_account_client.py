@@ -24,7 +24,7 @@ class NordigenBankAccountClient(BankAccountClient):
           return None
       
       return AccountData(
-          _id=account_id,
+          id=account_id,
           name=account_details_json['name'],
           bank_linking_details=bank_linking_details
         )

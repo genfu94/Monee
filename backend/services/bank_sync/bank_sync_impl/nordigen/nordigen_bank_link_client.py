@@ -24,7 +24,7 @@ class NordigenBankLinkClient(BankLinkClient):
       
     def get_available_institutions(self, country_code: str) -> List[InstitutionInfo]:
       raw_institutions = self.nordigen_client.institution.get_institutions(country_code)
-      institution_list = [InstitutionInfo.parse_obj(r) for r in raw_institutions]
+      institution_list = [InstitutionInfo(name=r['name'], id=r['id']) for r in raw_institutions]
 
       return institution_list
     

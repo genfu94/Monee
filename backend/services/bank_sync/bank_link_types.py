@@ -1,9 +1,8 @@
-from pydantic import BaseModel
 from enum import Enum
 from typing import Union
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-
+from dataclasses_json import dataclass_json
 
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
@@ -17,19 +16,23 @@ class APICredentials:
     secret_key: str
 
 
-class InstitutionInfo(BaseModel):
+@dataclass
+class InstitutionInfo:
     name: str
     id: str
 
 
-class BankLinkingDetailsBase(BaseModel, ABC):
+@dataclass_json
+@dataclass
+class BankLinkingDetailsBase(ABC):
     client: str
 
     @abstractmethod
     def get_identifiers(self):
         pass
 
-
+@dataclass_json
+@dataclass
 class NordigenBankLinkingDetails(BankLinkingDetailsBase):
     requisition_id: str
     institution: InstitutionInfo
