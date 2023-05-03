@@ -42,14 +42,13 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def find_account(self, account_id: str):
         account = self.account_collection.find_one({
             "_id": account_id
-        })
+        }, {"transactions": 0})
 
         return AccountData(
             id=account['_id'],
             name=account['name'],
             last_update=account['last_update'],
-            balances=account['balances'],
-            transactions=account['transactions']) if account is not None else None
+            balances=account['balances']) if account is not None else None
 
     def remove_unauthorized_bank_links(self, username: str):
         remove_query = {
