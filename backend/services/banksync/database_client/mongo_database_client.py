@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from typing import List
-from collections import defaultdict
 from datetime import datetime
 import json
 
@@ -80,20 +79,10 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         else:
             self.update_account(account_data)
 
-    '''def _group_transactions_by_date(self, transaction_list):
-        grouped_transactions = defaultdict(list)
-        for transaction in transaction_list:
-            transaction_date = datetime.strptime(transaction['booking_date'], "%Y-%m-%d %H:%M:%S")
-            grouped_transactions[transaction_date].append(transaction)
-
-        sorted_transaction_dates = sorted(list(grouped_transactions.keys()), reverse=True)
-        return {i.strftime("%B %d, %Y"): grouped_transactions[i] for i in sorted_transaction_dates}'''
 
     def fetch_linked_accounts(self, username: str, start_item_idx: int, n_items: int):
         accounts = list(self.account_collection.find({'user': username}, {
                         "transactions": {"$slice": [start_item_idx, n_items]}, 'bank_link_id': 0}))
-        # for account in accounts:
-        #    account['transactions'] = self._group_transactions_by_date(account['transactions'])
 
         return accounts
 
