@@ -47,7 +47,7 @@ class NordigenBankLinkingDetails(BankLinkingDetailsBase):
 
 BankLinkingDetails = Union[NordigenBankLinkingDetails, BankLinkingDetailsBase]
 
-
+@dataclass_json
 @dataclass
 class Balance:
     currency: str

@@ -10,27 +10,22 @@ import TransactionForm from "../TransactionForm/TransactionForm.js";
 import { Tree } from "../NestedSelector/Tree";
 import { category_tree } from "../categories";
 import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
-import InfiniteScroll from 'react-infinite-scroll-component';
 
-function TransactionList({ transactions, fetchData, hasMore }) {
+function TransactionList({ transactionsGroupedByDate, onTransactionEdit }) {
   const [transactionSelected, setTransactionSelected] = useState(null);
   const tree = new Tree(category_tree);
-
-  const changeTransaction = (newTransaction) => {
-    transactionSelected.type = newTransaction.type;
-  };
-
+  
   return (
     <>
       <List disablePadding>
-        {/*Object.keys(transactions).map((sectionId) => (
+        {Object.keys(transactionsGroupedByDate).map((sectionId) => (
           <li key={sectionId}>
             <ul>
               <ListSubheader style={listSubheaderStyle}>
                 {sectionId}
               </ListSubheader>
               
-              {transactions[sectionId].map((item) => {
+              {transactionsGroupedByDate[sectionId].map((item) => {
                 return (
                   <ListItem key={item.transaction_id}>
                     <TransactionItem
@@ -43,28 +38,7 @@ function TransactionList({ transactions, fetchData, hasMore }) {
               })}
             </ul>
           </li>
-            ))*/}
-        <InfiniteScroll
-          dataLength={transactions.length}
-          next={fetchData}
-          hasMore={hasMore} // Replace with a condition based on your data source
-          loader={<p>Loading...</p>}
-          endMessage={<p>No more data to load.</p>}
-        >
-          {transactions.map((transaction) => (
-            <li>
-              <ul>
-                <ListItem key={transaction.transaction_id}>
-                  <TransactionItem
-                    tree={tree}
-                    transaction={transaction}
-                    onItemClick={() => setTransactionSelected(transaction)}
-                  />
-                </ListItem>
-              </ul>
-            </li>
-          ))}
-        </InfiniteScroll>
+            ))}
       </List>
 
       <Modal
@@ -74,7 +48,7 @@ function TransactionList({ transactions, fetchData, hasMore }) {
       >
         <Box sx={modalStyle}>
           <TransactionForm
-            onChange={changeTransaction}
+            onChange={onTransactionEdit}
             transaction={transactionSelected}
           />
         </Box>

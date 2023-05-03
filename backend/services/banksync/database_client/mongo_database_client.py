@@ -144,7 +144,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
                     "transactions": {
                         transaction.transaction_id: {
                             "booking_date": transaction.booking_date,
-                            "transaction_amount": dict(transaction.transaction_amount),
+                            "transaction_amount": transaction.transaction_amount.to_dict(),
                             "origin": transaction.origin,
                             "text": transaction.text,
                             "category": transaction.category,
