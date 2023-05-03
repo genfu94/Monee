@@ -7,6 +7,7 @@ import json
 from .database_client_interface import AccountDatabaseClient, BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER
 from ..types import BankLinkingDetails, AccountData, AccountStatus, Transaction
 
+
 class MongoAccountDatabaseClient(AccountDatabaseClient):
     def __init__(self, connection_string: str):
         self.connection_string = connection_string
@@ -27,7 +28,8 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self.bank_link_collection.insert_one(bank_linking_details_json)
 
     def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
-        user_bank_link_details_list = self.bank_link_collection.find({'user': username})
+        user_bank_link_details_list = self.bank_link_collection.find({
+                                                                     'user': username})
         return [BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER[bank_link_detail['client']](bank_link_detail) for bank_link_detail in user_bank_link_details_list]
 
     def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
@@ -63,7 +65,8 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def add_account(self, account_data: AccountData):
         account = self.account_collection.find_one({"_id": account_data.id})
         if account is None:
-            bank_link = self._find_bank_linking_details_id(account_data.bank_linking_details)
+            bank_link = self._find_bank_linking_details_id(
+                account_data.bank_linking_details)
             self.account_collection.insert_one({
                 '_id': account_data.id,
                 'name': account_data.name,
@@ -89,7 +92,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def fetch_linked_accounts(self, username: str, start_item_idx: int, n_items: int):
         accounts = list(self.account_collection.find({'user': username}, {
                         "transactions": {"$slice": [start_item_idx, n_items]}, 'bank_link_id': 0}))
-        #for account in accounts:
+        # for account in accounts:
         #    account['transactions'] = self._group_transactions_by_date(account['transactions'])
 
         return accounts
@@ -134,23 +137,22 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             }
         ]
 
-        self.account_collection.update_one({"_id": account_data["id"]}, update_query, upsert=True)
+        self.account_collection.update_one(
+            {"_id": account_data["id"]}, update_query, upsert=True)
 
     def update_transaction(self, account_id: str, transaction: Transaction):
-        update_query = [
-            {
+        find_query = {"_id": account_id,
+                      "transactions.transaction_id": transaction.transaction_id}
+        update_query = {
                 "$set": {
-                    "transactions": {
-                        transaction.transaction_id: {
-                            "booking_date": transaction.booking_date,
-                            "transaction_amount": transaction.transaction_amount.to_dict(),
-                            "origin": transaction.origin,
-                            "text": transaction.text,
-                            "category": transaction.category,
-                            "type": transaction.type
-                        }
-                    }
+                    "transactions.$.booking_date": transaction.booking_date,
+                    "transactions.$.transaction_amount": transaction.transaction_amount.to_dict(),
+                    "transactions.$.origin": transaction.origin,
+                    "transactions.$.text": transaction.text,
+                    "transactions.$.category": transaction.category,
+                    "transactions.$.type": transaction.type
                 }
             }
-        ]
-        self.account_collection.update_one({"_id": account_id}, update_query, upsert=True)
+        
+        self.account_collection.update_one(
+            find_query, update_query, upsert=True)

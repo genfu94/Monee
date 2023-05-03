@@ -33,7 +33,7 @@ function Transactions() {
         newTransactions[i] = editedTransaction;
       }
     }
-
+    
     setTransactions(newTransactions);
   }
 
@@ -48,6 +48,8 @@ function Transactions() {
         <TransactionListAdapter
           transactionList={transactions}
           onTransactionEdit={onTransactionEdit}
+          fetchMore={fetchTransactions}
+          hasMore={hasMore}
         />
       }
     />

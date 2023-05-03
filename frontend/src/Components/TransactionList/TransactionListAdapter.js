@@ -21,16 +21,14 @@ function groupTransactionsByDate(transactionList) {
   return transactionsGroupedByDate;
 }
 
-function TransactionListAdapter({ transactionList, onTransactionEdit }) {
+function TransactionListAdapter({ transactionList, onTransactionEdit, fetchMore, hasMore }) {
   const transactionsGroupedByDate = groupTransactionsByDate(transactionList);
 
   return (
     <InfiniteScroll
       dataLength={transactionList.length}
-      next={() => console.log("Fetch more data")}
-      hasMore={true}
-      loader={<p>Loading...</p>}
-      endMessage={<p>No more data to load.</p>}
+      next={fetchMore}
+      hasMore={hasMore}
     >
       <TransactionList
         transactionsGroupedByDate={transactionsGroupedByDate}
