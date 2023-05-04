@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SideMenuLayout from "./SideMenuLayout.js";
 import TransactionListAdapter from "../Components/TransactionList/TransactionListAdapter.js";
 import "./style.css";
+import DateRangeSelector from "../Components/DateRangeSelector/DateRangeSelector.js";
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -28,14 +29,16 @@ function Transactions() {
 
   const onTransactionEdit = (editedTransaction) => {
     let newTransactions = [...transactions];
-    for(let i = 0; i < newTransactions.length; i++) {
-      if(newTransactions[i].transaction_id === editedTransaction.transaction_id) {
+    for (let i = 0; i < newTransactions.length; i++) {
+      if (
+        newTransactions[i].transaction_id === editedTransaction.transaction_id
+      ) {
         newTransactions[i] = editedTransaction;
       }
     }
-    
+
     setTransactions(newTransactions);
-  }
+  };
 
   useEffect(() => {
     fetchTransactions();
@@ -45,12 +48,15 @@ function Transactions() {
     <SideMenuLayout
       sideMenuTitle="Transactions"
       content={
-        <TransactionListAdapter
-          transactionList={transactions}
-          onTransactionEdit={onTransactionEdit}
-          fetchMore={fetchTransactions}
-          hasMore={hasMore}
-        />
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <DateRangeSelector/>
+          <TransactionListAdapter
+            transactionList={transactions}
+            onTransactionEdit={onTransactionEdit}
+            fetchMore={fetchTransactions}
+            hasMore={hasMore}
+          />
+        </div>
       }
     />
   );
