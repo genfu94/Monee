@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-
 import Button from "@mui/material/Button/Button";
 import { GoTriangleDown } from "react-icons/go";
+
+import "./DateRangeSelector.style.css";
+import { useInput } from "./hooks";
+import DateRangeOptions from "./DateRangeOptions";
 
 export const defaultSx = {
   Button: {
@@ -20,10 +23,19 @@ export const defaultSx = {
 };
 
 function DateRangeSelector() {
+  const [open, switchOpen] = useInput();
+
   return (
-    <Button variant="outlined" sx={defaultSx.Button}>
-      <GoTriangleDown style={{ color: "black", fontSize: '10px', marginLeft: "auto" }} />
-    </Button>
+    <div>
+      <div className="date-range-selector-container">
+        <Button variant="outlined" sx={defaultSx.Button} onClick={switchOpen}>
+          <GoTriangleDown
+            style={{ color: "black", fontSize: "10px", marginLeft: "auto" }}
+          />
+        </Button>
+        {open && <DateRangeOptions/>}
+      </div>
+    </div>
   );
 }
 

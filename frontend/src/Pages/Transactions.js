@@ -3,6 +3,8 @@ import SideMenuLayout from "./SideMenuLayout.js";
 import TransactionListAdapter from "../Components/TransactionList/TransactionListAdapter.js";
 import "./style.css";
 import DateRangeSelector from "../Components/DateRangeSelector/DateRangeSelector.js";
+import Select from "react-select";
+import Tooltip from "@mui/material/Tooltip";
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -48,8 +50,14 @@ function Transactions() {
     <SideMenuLayout
       sideMenuTitle="Transactions"
       content={
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-          <DateRangeSelector/>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <DateRangeSelector />
           <TransactionListAdapter
             transactionList={transactions}
             onTransactionEdit={onTransactionEdit}

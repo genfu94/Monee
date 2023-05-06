@@ -1,0 +1,16 @@
+.date-range-selector-container {
+  position: relative;
+}
+
+.date-range-selector-options {
+  position: absolute;
+  width: 300px;
+  border-color: inherit;
+  z-index: 2;
+  border-radius: 2px;
+  box-shadow: 0 0px 10px rgb(0 0 0 / 0.2);
+  top: 50px;
+  left: -25px;
+  padding: 10px;
+  background-color: white;
+}
