@@ -4,19 +4,24 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 
-import { useOptions } from "./hooks";
+import "./NestedSelector.style.css";
+import { useNestedNavigation, useOptions } from "./hooks";
 
-export default function OptionSelector({ node, onChange, onBack, headerHeight }) {
+export default function NestedSelectorMenu({ data, defaultValue, onChange }) {
+  const [
+    node,
+    setNodeByKey,
+    goBack
+  ] = useNestedNavigation({data, defaultValue, onChange});
   const [isChild, parentLabel, options] = useOptions({
     node,
   });
 
   return (
-    <div className="options">
+    <div>
       <div
         className="header"
         style={{
-          height: headerHeight,
           margin: 0,
           display: "flex",
           alignItems: "center",
@@ -24,7 +29,7 @@ export default function OptionSelector({ node, onChange, onBack, headerHeight })
       >
         {isChild && (
           <>
-            <IconButton size="small" onClick={onBack}>
+            <IconButton size="small" onClick={goBack}>
               <IoChevronBackOutline />
             </IconButton>
             <span>{parentLabel}</span>
@@ -35,7 +40,7 @@ export default function OptionSelector({ node, onChange, onBack, headerHeight })
         {options.map((item) => {
           return (
             <ListItem
-              onClick={() => onChange(item.key)}
+              onClick={() => setNodeByKey(item.key)}
               key={item.key}
               className="select-item"
             >

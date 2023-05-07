@@ -21,7 +21,7 @@ export const dropdownStyle = {
 
 function DropDownMenu({onChange}) {
   return (
-    <div onClick={() => onChange()}>ASD</div>
+    <div onClick={() => onChange("ASD", "ASD")}>ASD</div>
   );
 }
 
