@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button/Button";
-import { GoTriangleDown } from "react-icons/go";
 
 import "./DateRangeSelector.style.css";
-import { useInput } from "./hooks";
-import DateRangeOptions from "./DateRangeOptions";
+import DropDownBase from "../DropDownBase/DropDownBase";
 
-export const defaultSx = {
+export const dropdownStyle = {
   Button: {
     width: "250px",
     height: "40px",
@@ -22,21 +19,16 @@ export const defaultSx = {
   },
 };
 
-function DateRangeSelector() {
-  const [open, switchOpen] = useInput();
-
+function DropDownMenu({onChange}) {
   return (
-    <div>
-      <div className="date-range-selector-container">
-        <Button variant="outlined" sx={defaultSx.Button} onClick={switchOpen}>
-          <GoTriangleDown
-            style={{ color: "black", fontSize: "10px", marginLeft: "auto" }}
-          />
-        </Button>
-        {open && <DateRangeOptions/>}
-      </div>
-    </div>
+    <div onClick={() => onChange()}>ASD</div>
   );
+}
+
+function DateRangeSelector() {
+  return (
+    <DropDownBase sx={dropdownStyle} menu={DropDownMenu}/>
+  ) 
 }
 
 export default DateRangeSelector;
