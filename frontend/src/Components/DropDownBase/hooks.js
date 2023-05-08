@@ -21,7 +21,7 @@ export const useClickOut = (onClickOutside) => {
   return [selectorContainerRef];
 };
 
-export const useDropdown = () => {
+export const useDropdownInput = () => {
   const [open, setOpen] = useState(false);
   const [containerRef] = useClickOut(() => setOpen(false));
 

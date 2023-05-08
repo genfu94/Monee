@@ -5,16 +5,14 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 
 import "./NestedSelector.style.css";
-import { useNestedNavigation, useOptions } from "./hooks";
+import { useOptions } from "./hooks";
 
-export default function NestedSelectorMenu({ data, defaultValue, onChange }) {
-  const [
+export default function NestedSelectorMenu({ updateLabel, node, setNode, tree }) {
+  const [isChild, parentLabel, options, setNodeByKey, goBack] = useOptions({
     node,
-    setNodeByKey,
-    goBack
-  ] = useNestedNavigation({data, defaultValue, onChange});
-  const [isChild, parentLabel, options] = useOptions({
-    node,
+    setNode,
+    tree,
+    updateLabel
   });
 
   return (
@@ -40,7 +38,9 @@ export default function NestedSelectorMenu({ data, defaultValue, onChange }) {
         {options.map((item) => {
           return (
             <ListItem
-              onClick={() => setNodeByKey(item.key)}
+              onClick={() => {
+                setNodeByKey(item.key);
+              }}
               key={item.key}
               className="select-item"
             >

@@ -1,25 +1,21 @@
-import React,{useState} from "react";
+import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import { GoTriangleDown } from "react-icons/go";
 
 import { defaultSx } from "./constants";
-import { useDropdown } from "./hooks";
+import { useDropdownInput } from "./hooks";
 import "./DropDownBase.style.css";
 
-function DropDownBase({ sx={}, defaultValue=null, data=null, menu: Menu, onChange=() => {} }) {
+function DropDownBase({ sx={}, initialLabel=null, menu: Menu, children }) {
   const buttonStyle = {
     ...defaultSx.Button,
     ...sx.Button,
   };
 
-  const [containerRef, open, switchOpen] = useDropdown();
-  const [value, setValue] = useState(defaultValue);
-  const [label, setLabel] = useState(null);
-
-  const setChoice = (v, l) => {
-    setValue(v);
+  const [label, setLabel] = useState(initialLabel);
+  const [containerRef, open, switchOpen] = useDropdownInput();
+  const updateLabel = (l) => {
     setLabel(l);
-    onChange(v);
     switchOpen();
   }
 
@@ -36,7 +32,7 @@ function DropDownBase({ sx={}, defaultValue=null, data=null, menu: Menu, onChang
       </Button>
       {open && (
         <div className="drop-down-menu">
-          <Menu defaultValue={defaultValue} data={data} onChange={setChoice} />
+          <Menu updateLabel={updateLabel}/>
         </div>
       )}
     </div>
