@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -8,7 +8,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { dateRanges, radioStyle, datePickerStyle } from "./constants";
 
 
-function DateRangeOptions() {
+function DateRangeOptions({setMenuValue, setMenuLabel, handleClose, defaultValue}) {
+  const [value, setValue] = useState(defaultValue);
+
   return (
     <div>
       <div style={{fontFamily: "Montserrat", color: "#222", fontWeight: "700", marginBottom: "10px"}}>Choose period</div>
@@ -18,6 +20,14 @@ function DateRangeOptions() {
           defaultValue="last_7_days"
           name="radio-buttons-group"
           style={{ display: "flex", flexDirection: "row" }}
+          value={value}
+          onChange={(_, value) => {
+            const label = dateRanges.find((item) => item.value === value).label;
+            setMenuLabel(label);
+            setMenuValue(value);
+            setValue(value);
+            handleClose();
+          }}
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
             {dateRanges.slice(0, 6).map((item) => (
