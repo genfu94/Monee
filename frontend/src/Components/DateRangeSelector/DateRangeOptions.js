@@ -5,69 +5,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import "./DateRangeSelector.style.css";
+import { dateRanges, radioStyle, datePickerStyle } from "./constants";
+
 
 function DateRangeOptions() {
-  const dateRanges = [
-    {
-      value: "last_7_days",
-      label: "Last 7 days",
-    },
-    {
-      value: "last_30_days",
-      label: "Last 30 days",
-    },
-    {
-      value: "last_90_days",
-      label: "Last 90 days",
-    },
-    {
-      value: "last_12_months",
-      label: "Last 12 months",
-    },
-    {
-      value: "all",
-      label: "All",
-    },
-    {
-      value: "custom_range",
-      label: "Custom Range",
-    },
-    {
-      value: "today",
-      label: "Today",
-    },
-    {
-      value: "this_week",
-      label: "This week",
-    },
-    {
-      value: "this_month",
-      label: "This month",
-    },
-    {
-      value: "this_year",
-      label: "This year",
-    },
-  ];
-
-  const radioStyle = {
-    padding: "0px 5px 0px 0px",
-    "& svg": {
-      width: "13px",
-      height: "13px",
-      opacity: "0.6",
-    },
-  };
-
-  const datePickerStyle = {
-    "& .MuiOutlinedInput-input": {
-      fontSize: 14
-    }
-  }
-
   return (
-    <div className="date-range-selector-options">
+    <div>
       <div style={{fontFamily: "Montserrat", color: "#222", fontWeight: "700", marginBottom: "10px"}}>Choose period</div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <RadioGroup

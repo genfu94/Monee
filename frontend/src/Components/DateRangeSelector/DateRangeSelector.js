@@ -1,34 +1,20 @@
 import React, { useState } from "react";
 
-import "./DateRangeSelector.style.css";
+import { dropdownStyle } from "./constants";
 import DropDownBase from "../DropDownBase/DropDownBase";
-
-export const dropdownStyle = {
-  Button: {
-    width: "250px",
-    height: "40px",
-    textTransform: "none",
-    backgroundColor: "white",
-    "&.MuiButton-outlined": {
-      borderColor: "#dadada",
-      "&:hover": {
-        borderColor: "blue",
-        backgroundColor: "white !important",
-      },
-    },
-  },
-};
-
-function DropDownMenu({onChange}) {
-  return (
-    <div onClick={() => onChange("ASD", "ASD")}>ASD</div>
-  );
-}
+import DateRangeOptions from "./DateRangeOptions";
 
 function DateRangeSelector() {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+
+  const handleClose = () => setOpen(false);
+
   return (
-    <DropDownBase sx={dropdownStyle} menu={DropDownMenu}/>
-  ) 
+    <DropDownBase sx={dropdownStyle} open={open} value={value} onOpen={setOpen} onClose={handleClose}>
+      <DateRangeOptions/>
+    </DropDownBase>
+  );
 }
 
 export default DateRangeSelector;

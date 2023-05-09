@@ -4,13 +4,17 @@ import { GoTriangleDown } from "react-icons/go";
 
 import { defaultSx } from "./constants";
 import { useClickOut } from "./hooks";
-import "./DropDownBase.style.css";
 
 function DropDownBase({ sx = {}, value = null, onOpen, onClose, open, children }) {
   const buttonStyle = {
     ...defaultSx.Button,
     ...sx.Button,
   };
+
+  const menuStyle = {
+    ...defaultSx.Menu,
+    ...sx.Menu
+  }
 
   const [containerRef] = useClickOut(onClose);
   const switchOpen = open ? onClose : onOpen;
@@ -26,7 +30,7 @@ function DropDownBase({ sx = {}, value = null, onOpen, onClose, open, children }
         {value}
         <GoTriangleDown style={{ marginLeft: "auto" }} />
       </Button>
-      {open && <div className="drop-down-menu">{children}</div>}
+      {open && <div style={menuStyle}>{children}</div>}
     </div>
   );
 }
