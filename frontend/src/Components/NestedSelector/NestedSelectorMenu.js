@@ -7,12 +7,9 @@ import ListItem from "@mui/material/ListItem";
 import "./NestedSelector.style.css";
 import { useOptions } from "./hooks";
 
-export default function NestedSelectorMenu({ updateLabel, node, setNode, tree }) {
-  const [isChild, parentLabel, options, setNodeByKey, goBack] = useOptions({
+export default function NestedSelectorMenu({ node, setNodeByKey, goBack }) {
+  const [isChild, parentLabel, options] = useOptions({
     node,
-    setNode,
-    tree,
-    updateLabel
   });
 
   return (

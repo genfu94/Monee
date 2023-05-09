@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
 export const useClickOut = (onClickOutside) => {
   const selectorContainerRef = useRef(null);
@@ -19,13 +19,4 @@ export const useClickOut = (onClickOutside) => {
   }, [onClickOutside]);
 
   return [selectorContainerRef];
-};
-
-export const useDropdownInput = () => {
-  const [open, setOpen] = useState(false);
-  const [containerRef] = useClickOut(() => setOpen(false));
-
-  const switchOpen = () => setOpen(!open);
-
-  return [containerRef, open, switchOpen];
 };
