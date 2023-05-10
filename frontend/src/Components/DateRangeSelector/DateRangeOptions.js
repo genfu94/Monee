@@ -15,7 +15,7 @@ function DateRangeOptions({
   const [value, setValue] = useState(defaultValue);
   const [dateFrom, setDateFrom] = useState(dayjs().subtract(30, "day"));
   const [dateTo, setDateTo] = useState(dayjs());
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(0);
 
   return (
     <div>
@@ -118,12 +118,13 @@ function DateRangeOptions({
       </div>
       {value === "custom_range" && (
         <DatePicker
+          selected={selectedDate === 0 ? dateFrom.toDate() : dateTo.toDate()}
           minDate={selectedDate === 1 ? dateFrom.toDate() : null}
-          maxDate={dayjs().toDate()}
+          maxDate={selectedDate === 0 ? dateTo.toDate() : dayjs().toDate()}
           onChange={(date) => {
-            selectedDate === 0 ? setDateFrom(dayjs(date[0])) : setDateTo(dayjs(date[0]))
+            selectedDate === 0 ? setDateFrom(dayjs(date)) : setDateTo(dayjs(date));
+            setMenuLabel(dateFrom.format('DD-MM-YYYY') + " - " + dateTo.format('DD-MM-YYYY'))
           }}
-          selectsRange
           inline
         />
       )}

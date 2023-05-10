@@ -12,7 +12,7 @@ function DateRangeSelector() {
   const handleClose = () => setOpen(false);
 
   return (
-    <DropDownBase sx={dropdownStyle} open={true} value={label} onOpen={setOpen} onClose={handleClose}>
+    <DropDownBase sx={dropdownStyle} open={open} value={label} onOpen={setOpen} onClose={handleClose}>
       <DateRangeOptions defaultValue={value} setMenuValue={setValue} setMenuLabel={setLabel} handleClose={handleClose}/>
     </DropDownBase>
   );
