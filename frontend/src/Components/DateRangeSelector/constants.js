@@ -74,6 +74,6 @@ export const radioStyle = {
 
 export const datePickerStyle = {
   "& .MuiOutlinedInput-input": {
-    fontSize: 11
+    fontSize: 12,
   }
 }
