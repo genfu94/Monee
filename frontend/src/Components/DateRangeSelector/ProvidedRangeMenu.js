@@ -27,15 +27,15 @@ export default function ProvidedRangeMenu({value, onChange}) {
     <>
       <RadioGroup
         defaultValue="last_7_days"
-        style={{ display: "flex", flexDirection: "row" }}
+        style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "center"}}
         value={value}
         onChange={(_, v) => onChange(v)}
       >
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column", marginLeft: "auto"}}>
           {renderRadioButtons(0, 6)}
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column", marginLeft: "auto"}}>
           {renderRadioButtons(6, 12)}
         </div>
       </RadioGroup>
