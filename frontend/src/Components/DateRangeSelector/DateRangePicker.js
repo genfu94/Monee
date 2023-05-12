@@ -37,9 +37,13 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
 
   const [dateFrom, dateTo] = value;
   const [selectedDate, setSelectedDate] = useState("dateFrom");
-  const date = disabled ? null : selectedDate; 
+  const date = disabled ? null : selectedDate;
   const updateSelectedDate = (_, v) => {
     if (v !== null) setSelectedDate(v);
+  };
+  const updateDatePicker = (date) => {
+    if(selectedDate === "dateFrom") onChange(dayjs(date), dateTo);
+    else onChange(dateFrom, dayjs(date));
   };
 
   return (
@@ -71,11 +75,7 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
           maxDate={
             selectedDate === "dateFrom" ? dateTo.toDate() : dayjs().toDate()
           }
-          onChange={(date) => {
-            selectedDate === 0
-              ? onChange(dayjs(date), dateTo)
-              : onChange(dateFrom, dayjs(date));
-          }}
+          onChange={updateDatePicker}
           inline
         />
       )}

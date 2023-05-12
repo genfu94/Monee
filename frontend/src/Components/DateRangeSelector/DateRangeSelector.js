@@ -12,7 +12,7 @@ function DateRangeSelector() {
 
   return (
     <DropDownBase sx={dropdownStyle} open={open} value={value} onOpen={setOpen} onClose={handleClose}>
-      <DateRangeOptions value={value} onChange={setValue} handleClose={handleClose}/>
+      <DateRangeOptions value={value} onChange={setValue}/>
     </DropDownBase>
   );
 }

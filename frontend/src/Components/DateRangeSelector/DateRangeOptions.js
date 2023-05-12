@@ -5,11 +5,14 @@ import DateRangePicker from "./DateRangePicker";
 
 function DateRangeOptions({
   value,
-  onChange,
-  handleClose
+  onChange
 }) {
   const [dateFrom, setDateFrom] = useState(dayjs().subtract(30, "day"));
   const [dateTo, setDateTo] = useState(dayjs());
+  const updateDate = (from, to) => {
+    setDateFrom(from);
+    setDateTo(to);
+  }
 
   return (
     <div>
@@ -29,7 +32,7 @@ function DateRangeOptions({
 
       <DateRangePicker
         value={[dateFrom, dateTo]}
-        onChange={(v) => console.log("New date range picked", v)}
+        onChange={updateDate}
         disabled={value !== 'custom_range'}
       />
     </div>
