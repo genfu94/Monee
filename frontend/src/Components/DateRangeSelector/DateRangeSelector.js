@@ -8,12 +8,11 @@ import { dateRanges } from "./constants";
 function DateRangeSelector() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(dateRanges[0].value);
-  const [label, setLabel] = useState(dateRanges[0].label);
   const handleClose = () => setOpen(false);
 
   return (
-    <DropDownBase sx={dropdownStyle} open={open} value={label} onOpen={setOpen} onClose={handleClose}>
-      <DateRangeOptions defaultValue={value} setMenuValue={setValue} setMenuLabel={setLabel} handleClose={handleClose}/>
+    <DropDownBase sx={dropdownStyle} open={open} value={value} onOpen={setOpen} onClose={handleClose}>
+      <DateRangeOptions value={value} onChange={setValue} handleClose={handleClose}/>
     </DropDownBase>
   );
 }

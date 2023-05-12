@@ -4,15 +4,12 @@ import ProvidedRangeMenu from "./ProvidedRangeMenu";
 import DateRangePicker from "./DateRangePicker";
 
 function DateRangeOptions({
-  setMenuValue,
-  setMenuLabel,
-  handleClose,
-  defaultValue,
+  value,
+  onChange,
+  handleClose
 }) {
-  const [value, setValue] = useState(defaultValue);
   const [dateFrom, setDateFrom] = useState(dayjs().subtract(30, "day"));
   const [dateTo, setDateTo] = useState(dayjs());
-  const [selectedDate, setSelectedDate] = useState(0);
 
   return (
     <div>
@@ -27,7 +24,7 @@ function DateRangeOptions({
         Choose period
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <ProvidedRangeMenu value={value} onChange={(v) => setMenuLabel(v)} />
+        <ProvidedRangeMenu value={value} onChange={onChange} />
       </div>
 
       <DateRangePicker
