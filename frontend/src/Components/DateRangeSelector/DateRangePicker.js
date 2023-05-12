@@ -11,7 +11,7 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
     "& .MuiToggleButtonGroup-grouped": {
       margin: "10px",
       "&.Mui-disabled": {
-        border: 0
+        border: `1px solid #ddd !important`,
       },
       "&:not(:last-of-type)": {
         border: `1px solid gray`,
