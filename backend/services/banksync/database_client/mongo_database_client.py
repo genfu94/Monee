@@ -80,21 +80,27 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
             self.update_account(account_data)
 
 
-    def fetch_linked_accounts(self, username: str, start_item_idx: int, n_items: int):
+    def fetch_linked_accounts(self, username: str):
+        #accounts = list(self.account_collection.find({'user': username}, {
+        #                "transactions": {"$slice": [start_item_idx, n_items]}, 'bank_link_id': 0}))
         accounts = list(self.account_collection.find({'user': username}, {
-                        "transactions": {"$slice": [start_item_idx, n_items]}, 'bank_link_id': 0}))
+                        "transactions": 0, 'bank_link_id': 0}))
 
         return accounts
 
     def fetch_transactions(
-            self, account_data: AccountData, date_from: datetime, date_to: datetime = None) -> List[Transaction]:
-        account = list(self.account_collection.find({"_id": account_data.id}, {
+            self, account_id: str, date_from: datetime, date_to: datetime = None) -> List[Transaction]:
+        print(account_id, date_from, date_to)
+        account = list(self.account_collection.find({"_id": account_id}, {
             "transactions": {
                 "$filter": {
                     "input": "$transactions",
                     "as": "transaction",
                     "cond": {
-                        "$gte": ["$$transaction.booking_date", date_from.strftime("%Y-%m-%d")]
+                        "$and": [
+                            {"$gte": ["$$transaction.booking_date", date_from.strftime('%Y-%m-%d %H:%M:%S')]},
+                            {"$lte": ["$$transaction.booking_date", date_to.strftime('%Y-%m-%d %H:%M:%S')]},
+                        ]
                     }
                 }
             }

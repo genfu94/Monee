@@ -34,8 +34,8 @@ class BankAccountClientInterface(ABC):
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
         pass
 
-    def fetch_linked_accounts(self, username: str, start_item_idx: int, n_items: int):
-        return self.account_db_client.fetch_linked_accounts(username, start_item_idx, n_items)
+    def fetch_linked_accounts(self, username: str):
+        return self.account_db_client.fetch_linked_accounts(username)
 
 
 class BankSyncClientInterface(ABC):

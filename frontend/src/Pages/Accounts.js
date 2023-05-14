@@ -20,7 +20,6 @@ class Home extends React.Component {
     fetch(`http://localhost:8000/fetch_linked_accounts?username=user`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         this.setState({
           accounts: data,
         });

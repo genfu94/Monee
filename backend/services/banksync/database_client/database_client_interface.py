@@ -62,5 +62,5 @@ class AccountDatabaseClient(ABC):
 
     @abstractmethod
     def fetch_transactions(
-            self, account_data: AccountData, date_from: datetime, date_to: datetime = None) -> List[Transaction]:
+            self, account_id: str, date_from: datetime, date_to: datetime = None) -> List[Transaction]:
         pass

@@ -25,13 +25,13 @@ function DateRangeSelector({onChange}) {
     setValue(v);
     if(v !== "custom_range") {
       setOpen(false);
-      onChange && onChange(dateRanges.find((item) => item.value == value).dateRange);
+      onChange && onChange(dateRanges.find((item) => item.value === v).dateRange);
     }
   }
 
   const renderValue = (value) => {
     if(value !== "custom_range") {
-      return dateRanges.find((item) => item.value == value).label;
+      return dateRanges.find((item) => item.value === value).label;
     }
     
     return `${dateFrom.format('DD-MM-YYYY')} - ${dateTo.format('DD-MM-YYYY')}`

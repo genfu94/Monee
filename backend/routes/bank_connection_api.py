@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from services.banksync.types import InstitutionInfo, Transaction
 from dependencies import get_bank_sync_client
+from datetime import datetime
 
 router = APIRouter()
 
@@ -23,8 +24,15 @@ async def update_bank_links(username:str):
 
 
 @router.get("/fetch_linked_accounts")
-async def fetch_linked_accounts(username: str, start_item_idx: int, n_items: int):
-    return get_bank_sync_client().bank_account_client.fetch_linked_accounts(username, start_item_idx, n_items)
+async def fetch_linked_accounts(username: str):
+    return get_bank_sync_client().bank_account_client.fetch_linked_accounts(username)
+
+
+@router.get("/fetch_transactions")
+async def fetch_linked_accounts(account_id: str, date_from: str, date_to: str):
+    date_from = datetime.strptime(date_from, "%d-%m-%Y")
+    date_to = datetime.strptime(date_to, "%d-%m-%Y")
+    return get_bank_sync_client().account_db_client.fetch_transactions(account_id, date_from, date_to)
 
 
 @router.post("/update_transaction")

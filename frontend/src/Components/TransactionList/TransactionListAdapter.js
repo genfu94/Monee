@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import React from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+//import InfiniteScroll from "react-infinite-scroll-component";
 
 import TransactionList from "./TransactionList.js";
 
@@ -21,20 +21,23 @@ function groupTransactionsByDate(transactionList) {
   return transactionsGroupedByDate;
 }
 
-function TransactionListAdapter({ transactionList, onTransactionEdit, fetchMore, hasMore }) {
+function TransactionListAdapter({ transactionList, onTransactionEdit }) {
   const transactionsGroupedByDate = groupTransactionsByDate(transactionList);
 
-  return (
+    /*
     <InfiniteScroll
       dataLength={transactionList.length}
       next={fetchMore}
       hasMore={hasMore}
     >
-      <TransactionList
+      
+    </InfiniteScroll>
+    */
+  return (
+    <TransactionList
         transactionsGroupedByDate={transactionsGroupedByDate}
         onTransactionEdit={onTransactionEdit}
       />
-    </InfiniteScroll>
   );
 }
 
