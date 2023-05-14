@@ -3,11 +3,10 @@ import React, { useState } from "react";
 import { dropdownStyle } from "./constants";
 import DropDownBase from "../DropDownBase/DropDownBase";
 import { dateRanges } from "./constants";
-import dayjs from "dayjs";
 import ProvidedRangeMenu from "./ProvidedRangeMenu";
 import DateRangePicker from "./DateRangePicker";
 
-function DateRangeSelector() {
+function DateRangeSelector({onChange}) {
   const initialDate = dateRanges[1];
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(initialDate.value);
@@ -19,7 +18,16 @@ function DateRangeSelector() {
   const updateDate = (from, to) => {
     setDateFrom(from);
     setDateTo(to);
+    onChange && onChange([from, to]);
   };
+
+  const onDateSelection = (v) => {
+    setValue(v);
+    if(v !== "custom_range") {
+      setOpen(false);
+      onChange && onChange(dateRanges.find((item) => item.value == value).dateRange);
+    }
+  }
 
   const renderValue = (value) => {
     if(value !== "custom_range") {
@@ -50,7 +58,7 @@ function DateRangeSelector() {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <ProvidedRangeMenu value={value} onChange={setValue}/>
+        <ProvidedRangeMenu value={value} onChange={onDateSelection}/>
       </div>
 
       <DateRangePicker
