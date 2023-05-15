@@ -9,13 +9,11 @@ function Transactions() {
   const [transactions, setTransactions] = useState([]);
 
   const fetchTransactions = (dateFrom, dateTo) => {
-    console.log("Eccomi");
     fetch(
       `http://localhost:8000/fetch_transactions?account_id=8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4&date_from=${dateFrom.format('DD-MM-YYYY')}&date_to=${dateTo.format('DD-MM-YYYY')}`
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(dateFrom, dateTo)
         setTransactions(data);
       });
   };
@@ -34,7 +32,7 @@ function Transactions() {
   };
 
   useEffect(() => {
-    fetchTransactions(dayjs(), dayjs().subtract(30, "day"));
+    fetchTransactions(dayjs().subtract(30, "day"), dayjs());
   }, []);
 
   return (
