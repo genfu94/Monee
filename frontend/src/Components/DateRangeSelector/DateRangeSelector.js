@@ -1,40 +1,34 @@
 import React, { useState } from "react";
 
 import { dropdownStyle } from "./constants";
+import dayjs from "dayjs";
 import DropDownBase from "../DropDownBase/DropDownBase";
-import { dateRanges } from "./constants";
-import ProvidedRangeMenu from "./ProvidedRangeMenu";
+import DateRangePresetSelector from "./ProvidedRangeMenu";
 import DateRangePicker from "./DateRangePicker";
 
-function DateRangeSelector({onChange}) {
-  const initialDate = dateRanges[1];
+function DateRangeSelector({ preset, value, onChange, presets }) {
+  let date_range_presets = [...presets];
+  date_range_presets.push({
+    presetId: "custom_range",
+    label: "Custom range",
+    value: [dayjs().subtract(30, "day"), dayjs()],
+  });
+
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(initialDate.value);
   const handleClose = () => setOpen(false);
+  const [dateFrom, dateTo] = value;
 
-  const [dateFrom, setDateFrom] = useState(initialDate.dateRange[0]);
-  const [dateTo, setDateTo] = useState(initialDate.dateRange[1]);
-
-  const updateDate = (from, to) => {
-    setDateFrom(from);
-    setDateTo(to);
-    onChange && onChange([from, to]);
-  };
-
-  const onDateSelection = (v) => {
-    setValue(v);
-    if(v !== "custom_range") {
-      setOpen(false);
-      onChange && onChange(dateRanges.find((item) => item.value === v).dateRange);
-    }
+  const onPresetSelection = (v) => {
+    onChange(v, date_range_presets.find(item => item.presetId === v).value);
   }
+  const onDatePick = (dateStart, dateTo) => onChange("custom_range", [dateStart, dateTo]);
 
-  const renderValue = (value) => {
-    if(value !== "custom_range") {
-      return dateRanges.find((item) => item.value === value).label;
+  const renderValue = () => {
+    if (preset !== "custom_range") {
+      return date_range_presets.find((item) => item.presetId === preset).label;
     }
-    
-    return `${dateFrom.format('DD-MM-YYYY')} - ${dateTo.format('DD-MM-YYYY')}`
+
+    return `${dateFrom.format("DD-MM-YYYY")} - ${dateTo.format("DD-MM-YYYY")}`;
   };
 
   return (
@@ -58,13 +52,17 @@ function DateRangeSelector({onChange}) {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <ProvidedRangeMenu value={value} onChange={onDateSelection}/>
+        <DateRangePresetSelector
+          options={date_range_presets}
+          value={preset}
+          onChange={onPresetSelection}
+        />
       </div>
 
       <DateRangePicker
         value={[dateFrom, dateTo]}
-        onChange={updateDate}
-        disabled={value !== "custom_range"}
+        onChange={onDatePick}
+        disabled={preset !== "custom_range"}
       />
     </DropDownBase>
   );
