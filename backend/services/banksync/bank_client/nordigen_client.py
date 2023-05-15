@@ -55,7 +55,7 @@ class NordigenBankAccountClient(BankAccountClientInterface):
 
     def _fetch_new_transactions(self, account_data: AccountData, last_update: datetime) -> List[Transaction]:
         old_transactions = self.account_db_client.fetch_transactions(
-            account_data, last_update)
+            account_data.id, last_update)
         old_transactions_ids = [t['transaction_id'] for t in old_transactions]
         account_api = self.nordigen_client.account_api(id=account_data.id)
         transactions_dict = account_api.get_transactions(

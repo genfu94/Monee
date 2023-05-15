@@ -90,7 +90,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
 
     def fetch_transactions(
             self, account_id: str, date_from: datetime, date_to: datetime = None) -> List[Transaction]:
-        print(account_id, date_from, date_to)
+        date_to = date_to if date_to != None else datetime.today()
         account = list(self.account_collection.find({"_id": account_id}, {
             "transactions": {
                 "$filter": {
