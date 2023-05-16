@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
 import Home from "./Pages/Home.js";
-import Transactions from "./Pages/Transactions.js";
+import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
 import Accounts from "./Pages/Accounts.js"
 import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
