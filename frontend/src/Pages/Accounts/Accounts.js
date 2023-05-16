@@ -7,7 +7,7 @@ import "./style.css";
 import { dialogStyle } from "./Accounts.style";
 import { GET_request } from "../../Utils/network";
 import SideMenuLayout from "../SideMenuLayout.js";
-import BankSelector from "../../Components/BankSelector/BankSelector.js";
+import BankSelector from "./BankSelector/BankSelector.js";
 
 function renderAccountItem(item) {
   return (

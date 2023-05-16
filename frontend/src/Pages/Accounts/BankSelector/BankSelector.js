@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { BsBank } from "react-icons/bs";
 
 import "./BankSelector.style.css";
-import { userInfo } from "../../keycloak.js";
+import { userInfo } from "../../../keycloak.js";
 import { COUNTRY_CODES, selectStyle } from "./constants.js";
 import useBankSelector from "./hook.js";
 import { bankConnect } from "./utility.js";
