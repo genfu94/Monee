@@ -3,7 +3,8 @@ import "../style.css";
 import React, { useState, useEffect } from "react";
 import SideMenuLayout from "../SideMenuLayout.js";
 
-import {DATE_RANGE_PRESETS} from "../../Utils/date";
+import { GET_request } from "../../Utils/network";
+import { DATE_RANGE_PRESETS } from "../../Utils/date";
 import TransactionListAdapter from "../../Components/TransactionList/TransactionListAdapter.js";
 import DateRangeSelector from "../../Components/DateRangeSelector/DateRangeSelector.js";
 
@@ -16,11 +17,14 @@ function Transactions() {
   );
 
   const fetchTransactions = (dateStart, dateEnd) => {
-    fetch(
-      `http://localhost:8000/fetch_transactions?account_id=8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4&date_from=${dateStart.format(
-        "DD-MM-YYYY"
-      )}&date_to=${dateEnd.format("DD-MM-YYYY")}`
-    )
+    const endpoint = "http://localhost:8000/fetch_transactions";
+    const params = {
+      account_id: "8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4",
+      date_from: dateStart.format("DD-MM-YYYY"),
+      date_to: dateEnd.format("DD-MM-YYYY"),
+    };
+
+    GET_request(endpoint, params)
       .then((res) => res.json())
       .then((data) => {
         setTransactions(data);
@@ -42,7 +46,7 @@ function Transactions() {
 
   useEffect(() => {
     fetchTransactions(value[0], value[1]);
-  }, []);
+  }, [value]);
 
   return (
     <SideMenuLayout
@@ -62,7 +66,7 @@ function Transactions() {
             onChange={(preset, value) => {
               setValue(value);
               setSelectedPreset(preset);
-              fetchTransactions(value[0], value[1])
+              fetchTransactions(value[0], value[1]);
             }}
           />
           <TransactionListAdapter
