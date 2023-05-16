@@ -8,6 +8,7 @@ import { userInfo } from "../../../keycloak.js";
 import { COUNTRY_CODES, selectStyle } from "./constants.js";
 import useBankSelector from "./hook.js";
 import { bankConnect } from "./utility.js";
+import LabeledInput from "../../../Components/LabeledInput/LabeledInput";
 
 function BankSelector() {
   const [
@@ -27,21 +28,24 @@ function BankSelector() {
       <div className="bank-selector-header">SEARCH YOUR BANK</div>
 
       <div className="bank-icon">
-        <BsBank/>
+        <BsBank />
       </div>
-      <div className="select-label">Select your Country</div>
 
-      <Select
-        styles={selectStyle}
-        options={COUNTRY_CODES}
-        onChange={onCountrySelected}
-      />
-      <div className="select-label">Select your Bank</div>
-      <Select
-        styles={selectStyle}
-        options={institutions}
-        onChange={setSelectedInstitution}
-      />
+      <LabeledInput label="Select your country">
+        <Select
+          styles={selectStyle}
+          options={COUNTRY_CODES}
+          onChange={onCountrySelected}
+        />
+      </LabeledInput>
+
+      <LabeledInput label="Select your bank">
+        <Select
+          styles={selectStyle}
+          options={institutions}
+          onChange={setSelectedInstitution}
+        />
+      </LabeledInput>
 
       <Button
         variant="outlined"

@@ -11,7 +11,7 @@ import {
   defaultFormValues,
   formValuesToTransactionObject,
 } from "./constants.js";
-import LabeledInput from "./LabeledInput.js";
+import LabeledInput from "../LabeledInput/LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import NestedSelector from "../NestedSelector/NestedSelector.js";

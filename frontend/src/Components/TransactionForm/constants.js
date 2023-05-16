@@ -2,14 +2,6 @@ import TextField from "@mui/material/TextField";
 import {styled} from "@mui/material/styles";
 import dayjs from "dayjs";
 
-export const labelStyle = {
-  fontFamily: "Montserrat",
-  fontSize: "14px",
-  fontWeight: "600",
-  color: "rgb(50, 50, 50)",
-  margin: "7px 0px 7px 0px"
-};
-
 export const buttonToggleStyle = {
   "&": {
     textTransform: "none",
