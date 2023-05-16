@@ -4,7 +4,7 @@ import { dropdownStyle } from "./constants";
 import dayjs from "dayjs";
 import DropDownBase from "../DropDownBase/DropDownBase";
 import DateRangePresetSelector from "./ProvidedRangeMenu";
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
 function DateRangeSelector({ preset, value, onChange, presets }) {
   let date_range_presets = [...presets];
