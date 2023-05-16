@@ -25,7 +25,6 @@ function Transactions() {
     };
 
     GET_request(endpoint, params)
-      .then((res) => res.json())
       .then((data) => {
         setTransactions(data);
       });
