@@ -2,48 +2,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  border-radius: 0.3em;
-  background-color: white;
-  padding: 15px 15px;
-  margin-bottom: 10px;
-  font-family: "Montserrat";
+  background: white;
+  padding: 0.9rem 0.9rem;
 }
 
 .account-icon {
-  border-radius: 7px;
+  border-radius: 15%;
   background-color: rgb(255, 160, 0);
-  margin: 5px;
-  padding: 3px 5px;
-  font-size: 20px;
+  margin: 0.5rem;
+  padding: 0.1em 0.15em;
+  font-size: 2rem;
   color: #ffffff;
-}
-
-.account-type {
-  display: flex;
-  flex-basis: 15%;
-  color: #7f8fa4;
-  font-size: 12px;
 }
 
 .account-name {
   flex-basis: 40%;
   font-weight: 600;
   color: rgb(45, 45, 45);
-  font-size: 15px;
+  font-size: 0.9rem;
+}
+
+.account-type {
+  color: #7f8fa4;
+  flex-basis: 15%;
+  font-size: 0.8rem;
 }
 
 .account-balance {
-  display: flex;
+  margin-left:auto;
   color: rgb(45, 45, 45);
-  justify-content: right;
-  align-items: right;
-  flex-grow: 1;
   font-weight: 600;
 }
 
 #account-label {
   font-weight: 700;
   color: rgb(30, 30, 30);
-  font-size: 24px;
+  font-size: 1.5rem;
 }

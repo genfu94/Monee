@@ -4,28 +4,30 @@
 }
 
 .bank-selector-header {
-  background: #fafbfc;
-  padding: 10px 0px 10px 20px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid rgb(150, 150, 150);
-  font-family: 'Montserrat';
-  font-weight: 500;
+  padding: 0.5rem 0 0.5rem 0;
+  font-weight: 600;
 }
 
 .bank-icon {
-  border-radius: 50%;
-  background-color: rgb(86, 176, 255);
-  width: 200px;
-  height: 200px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: rgb(86, 176, 255);
+  width: min-content;
+  font-size: 4rem;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 50%;
+  margin: 1.5rem;
+}
+
+.bank-selector-container > .bank-icon {
   align-self: center;
-  margin: 40px;
+}
+
+.bank-icon > * {
+  align-self: center;
 }
 
 .select-label {
-  font-family: "Montserrat";
-  margin-bottom: 5px;
-  font-size: 13px;
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
 }

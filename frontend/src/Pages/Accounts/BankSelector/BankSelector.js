@@ -27,7 +27,7 @@ function BankSelector() {
       <div className="bank-selector-header">SEARCH YOUR BANK</div>
 
       <div className="bank-icon">
-        <BsBank style={{ fontSize: "100px", color: "white" }} />
+        <BsBank/>
       </div>
       <div className="select-label">Select your Country</div>
 
