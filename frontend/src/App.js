@@ -6,7 +6,7 @@ import WebFont from "webfontloader";
 import Home from "./Pages/Home.js";
 import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
-import Accounts from "./Pages/Accounts.js"
+import Accounts from "./Pages/Accounts/Accounts.js"
 import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
 
 class App extends React.Component {

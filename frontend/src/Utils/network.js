@@ -1,19 +1,22 @@
-const objectMap = (obj, fn) => Object.entries(obj).map(([k, v], i) => fn(k, v, i));
+const objectMap = (obj, fn) =>
+  Object.entries(obj).map(([k, v], i) => fn(k, v, i));
 
-async function _REST_call(endpoint, method, params=[], body=null) {
+async function _REST_call(endpoint, method, params = [], body = null) {
   const requestOptions = {
     method: method,
     headers: { "Content-Type": "application/json" },
-    body: body === null ? null : JSON.stringify(body)
+    body: body === null ? null : JSON.stringify(body),
   };
 
-  return fetch(endpoint + _build_params_string(params), requestOptions);
+  return fetch(endpoint + _build_params_string(params), requestOptions).then(
+    (res) => res.json()
+  );
 }
 
 function _build_params_string(params) {
-  const paramString = objectMap(params, (k, v) => `${k}=${v}`)
+  const paramString = objectMap(params, (k, v) => `${k}=${v}`);
   console.log(paramString);
-  return "?" + paramString.join('&');
+  return "?" + paramString.join("&");
 }
 
 export async function GET_request(endpoint, params) {
