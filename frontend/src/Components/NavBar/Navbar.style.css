@@ -25,18 +25,18 @@
 .nav-bar-menu {
     margin: 0;
     padding: 0;
+    margin-right: auto;
+}
+
+.nav-bar-content {
+    max-width: 1500px;
+    width: 100%;
 }
 
 .nav-bar-link:hover {
     color: #354052;
     text-shadow: .25px 0px .1px,
                   -.25px 0px .1px;
-}
-
-.nav-bar-content {
-    justify-content: space-between !important;
-    min-width: 1200px;
-    max-width: 1500px;
 }
 
 .nav-bar-logo {
