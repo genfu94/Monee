@@ -3,6 +3,7 @@ from typing import Union, List
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
+from pydantic import BaseModel
 
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
@@ -16,8 +17,7 @@ class APICredentials:
     secret_key: str
 
 
-@dataclass
-class InstitutionInfo:
+class InstitutionInfo(BaseModel):
     name: str
     id: str
 

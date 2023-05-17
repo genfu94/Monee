@@ -8,6 +8,7 @@ import { dialogStyle } from "./Accounts.style";
 import { GET_request } from "../../Utils/network";
 import SideMenuLayout from "../SideMenuLayout.js";
 import BankSelector from "./BankSelector/BankSelector.js";
+import urlJoin from "url-join";
 
 function renderAccountItem(item) {
   return (
@@ -31,7 +32,7 @@ function Accounts() {
   const closeDialog = () => setDialog(false);
 
   useEffect(() => {
-    const endpoint = "http://localhost:8000/fetch_linked_accounts";
+    const endpoint = urlJoin(process.env.REACT_APP_BACKEND_ENDPOINT, "fetch_linked_accounts");
     const params = {
       username: "user",
     };

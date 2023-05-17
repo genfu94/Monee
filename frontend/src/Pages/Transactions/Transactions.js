@@ -3,6 +3,7 @@ import "../style.css";
 import React, { useState, useEffect } from "react";
 import SideMenuLayout from "../SideMenuLayout.js";
 
+import urlJoin from "url-join";
 import { GET_request } from "../../Utils/network";
 import { DATE_RANGE_PRESETS } from "../../Utils/date";
 import TransactionListAdapter from "../../Components/TransactionList/TransactionListAdapter.js";
@@ -17,7 +18,7 @@ function Transactions() {
   );
 
   const fetchTransactions = (dateStart, dateEnd) => {
-    const endpoint = "http://localhost:8000/fetch_transactions";
+    const endpoint = urlJoin(process.env.REACT_APP_BACKEND_ENDPOINT, "fetch_transactions");
     const params = {
       account_id: "8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4",
       date_from: dateStart.format("DD-MM-YYYY"),

@@ -6,8 +6,10 @@ import WebFont from "webfontloader";
 import Home from "./Pages/Home.js";
 import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
-import Accounts from "./Pages/Accounts/Accounts.js"
+import Accounts from "./Pages/Accounts/Accounts.js";
 import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
+import urlJoin from "url-join";
+import { GET_request } from "./Utils/network.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -16,7 +18,6 @@ class App extends React.Component {
     this.state = {
       loading: true,
     };
-
     this.initKeycloak();
 
     this.handleLoadingComplete = () => this.setState({ loading: false });
@@ -30,13 +31,15 @@ class App extends React.Component {
       .then((authenticated) => {
         keycloak.loadUserProfile().then((value) => {
           setUserInfo(value);
-          fetch(
-            `http://localhost:8000/update_bank_links?username=${userInfo.username}`
-          )
-            .then((res) => res.json())
-            .then((data) => {
+          const endpoint = urlJoin(
+            process.env.REACT_APP_BACKEND_ENDPOINT,
+            "update_bank_links"
+          );
+          GET_request(endpoint, { username: userInfo.username }).then(
+            (data) => {
               this.handleLoadingComplete();
-            });
+            }
+          );
         });
       })
       .catch(function () {
@@ -60,10 +63,10 @@ class App extends React.Component {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
         }}
       >
         <div

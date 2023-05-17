@@ -137,7 +137,7 @@ class NordigenBankLinkClient(BankLinkClientInterface):
             client="Nordigen",
             link=init.link,
             requisition_id=init.requisition_id,
-            institution=institution
+            institution=dict(institution)
         )
 
         self.account_db_client.add_bank(username, bank_linking_details)
