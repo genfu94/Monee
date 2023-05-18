@@ -10,7 +10,6 @@ export function update_transaction(transaction) {
     account_id: transaction.account_id,
   };
   POST_request(endpoint, params, transaction)
-    .then((res) => res.json())
     .then((data) => {
       console.log("Transaction updated");
     });

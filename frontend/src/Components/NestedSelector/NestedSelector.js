@@ -4,7 +4,7 @@ import NestedSelectorMenu from "./NestedSelectorMenu";
 import DropDownBase from "../DropDownBase/DropDownBase";
 import { useNestedNavigation } from "./hooks";
 
-export default function NestedSelector({ data, defaultValue, sx }) {
+export default function NestedSelector({ data, defaultValue, sx, onChange }) {
   const [open, setOpen] = useState(false);
   const [label, setLabel] = useState(null);
   const handleClose = () => setOpen(false);
@@ -13,7 +13,8 @@ export default function NestedSelector({ data, defaultValue, sx }) {
     data,
     defaultValue,
     handleClose,
-    setLabel
+    setLabel,
+    onChange
   });
   
 

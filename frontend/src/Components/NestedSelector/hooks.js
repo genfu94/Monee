@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Tree } from "./Tree";
 
-export const useNestedNavigation = ({ data, defaultValue, handleClose, setLabel }) => {
+export const useNestedNavigation = ({ data, defaultValue, handleClose, setLabel, onChange }) => {
   const tree = new Tree(data);
 
   const startNode = tree.find(defaultValue);
@@ -18,6 +18,7 @@ export const useNestedNavigation = ({ data, defaultValue, handleClose, setLabel 
     if (currNode.children.length === 0) {
       handleClose();
       setLabel(currNode.attributes.label);
+      onChange(currNode.key);
     } else {
       setNode(currNode);
     }
