@@ -17,7 +17,7 @@ function TransactionList({ transactionsGroupedByDate, onTransactionEdit }) {
   
   return (
     <>
-      <List disablePadding>
+      <List style={{alignSelf: "stretch"}} disablePadding>
         {Object.keys(transactionsGroupedByDate).map((sectionId) => (
           <li key={sectionId}>
             <ul>
