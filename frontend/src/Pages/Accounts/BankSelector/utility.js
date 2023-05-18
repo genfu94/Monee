@@ -7,21 +7,14 @@ export function bankConnect(institution_info, username) {
     name: institution_info["label"],
   };
 
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: institution,
-  };
-
   const endpoint = urlJoin(
     process.env.REACT_APP_BACKEND_ENDPOINT,
     "bank_connect"
   );
-  POST_request(endpoint, { username: username }, requestOptions).then(
+  POST_request(endpoint, { username: username }, institution).then(
     (data) => {
       let bank_connection_link = data.link;
-      console.log("ASD", data, bank_connection_link);
-      //window.location.replace(bank_connection_link);
+      window.location.replace(bank_connection_link);
     }
   );
 }
