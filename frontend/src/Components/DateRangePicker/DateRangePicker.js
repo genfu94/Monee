@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React from "react";
 import { ToggleButton } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDateRange, useDatePicker } from "./useDateRange";
 
 import {
   StyledToggleButtonGroup,
@@ -11,12 +12,14 @@ import {
 
 export default function DateRangePicker({ value, onChange, disabled = false }) {
   const [dateFrom, dateTo] = value;
-  const [selectedDate, setSelectedDate] = useState("dateFrom");
-  const date = disabled ? null : selectedDate;
-  const updateSelectedDate = (_, v) => {
-    if (v !== null) setSelectedDate(v);
-  };
-  const updateDatePicker = (date) => {
+  const [selectedDate, updateSelectedDate] = useDateRange();
+  const [pickerDateSelected, pickerMinDate, pickerMaxDate] = useDatePicker(
+    selectedDate,
+    dateFrom,
+    dateTo
+  );
+
+  const onDatePicked = (date) => {
     if (selectedDate === "dateFrom") onChange(dayjs(date), dateTo);
     else onChange(dateFrom, dayjs(date));
   };
@@ -25,7 +28,6 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
     <>
       <StyledToggleButtonGroup
         exclusive
-        value={date}
         onChange={updateSelectedDate}
         disabled={disabled}
       >
@@ -43,14 +45,10 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
 
       {!disabled && (
         <DatePicker
-          selected={
-            selectedDate === "dateFrom" ? dateFrom.toDate() : dateTo.toDate()
-          }
-          minDate={selectedDate === "dateTo" ? dateFrom.toDate() : null}
-          maxDate={
-            selectedDate === "dateFrom" ? dateTo.toDate() : dayjs().toDate()
-          }
-          onChange={updateDatePicker}
+          selected={pickerDateSelected}
+          minDate={pickerMinDate}
+          maxDate={pickerMaxDate}
+          onChange={onDatePicked}
           inline
         />
       )}
