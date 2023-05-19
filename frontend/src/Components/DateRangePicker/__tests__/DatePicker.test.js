@@ -8,7 +8,6 @@ function resetTime(d) {
 }
 
 let startDate, endDate;
-
 beforeEach(() => {
   var customParseFormat = require('dayjs/plugin/customParseFormat')
   dayjs.extend(customParseFormat)
@@ -16,8 +15,8 @@ beforeEach(() => {
   endDate = dayjs("30-05-2020", "DD-MM-YYYY");
 })
 
-describe("Date picker state updated correctly", () => {
-  it("Max date is set to endDate if date from is selected", () => {
+describe("When selected button is dateFrom", () => {
+  it("the max selectable date is set to dateTo", () => {
     const [pickerDateSelected, pickerMinDate, pickerMaxDate] = useDatePicker(
       "dateFrom",
       startDate,
@@ -26,7 +25,19 @@ describe("Date picker state updated correctly", () => {
     expect(pickerMaxDate.getTime()).toBe(endDate.toDate().getTime());
   });
 
-  it("Max date is set to today if date to is selected", () => {
+  it("min date is set to null", () => {
+    const [pickerDateSelected, pickerMinDate, pickerMaxDate] = useDatePicker(
+      "dateFrom",
+      startDate,
+      endDate
+    );
+      
+    expect(pickerMinDate).toBe(null);
+  });
+})
+
+describe("When selected button is dateTo", () => {
+  it("max date is set to today", () => {
     const [pickerDateSelected, pickerMinDate, pickerMaxDate] = useDatePicker(
       "dateTo",
       startDate,
@@ -36,11 +47,10 @@ describe("Date picker state updated correctly", () => {
     resetTime(pickerMaxDate);
     resetTime(today);
     
-    
     expect(pickerMaxDate.getTime()).toBe(today.getTime());
   });
 
-  it("Min date is set to dateFrom if dateTo is selected", () => {
+  it("min date is set to dateFrom", () => {
     const [pickerDateSelected, pickerMinDate, pickerMaxDate] = useDatePicker(
       "dateTo",
       startDate,
@@ -50,15 +60,4 @@ describe("Date picker state updated correctly", () => {
 
     expect(pickerMinDate.getTime()).toBe(startDate.toDate().getTime());
   });
-
-  it("Min date is set to null if dateFrom is selected", () => {
-    const [pickerDateSelected, pickerMinDate, pickerMaxDate] = useDatePicker(
-      "dateFrom",
-      startDate,
-      endDate
-    );
-      
-    expect(pickerMinDate).toBe(null);
-  });
-
 });
