@@ -59,23 +59,40 @@ describe("On component mount", () =>  {
 })
 
 describe("When the user select a new preset", () => {
-  it("shows the new selected value", () => {
-    /*const button = screen.getAllByRole("radio")[1];
-    console.log(button)
+  it("invokes the onchange method with the new value", async () => {
+    render(dateRangeSelector);
+
+    const button = screen.getAllByRole("radio")[1];
     fireEvent.click(button);
-
-    expect(mockOnChange).toHaveBeenCalled();*/
-  });
-
-  it("invokes the onchange method with the new value", () => {
-
+    expect(mockOnChange).toHaveBeenCalled();
+    expect(mockOnChange.mock.calls[0][0]).toBe(presets[1].presetId);
   });
 
   it("closes the dropdown if the value is not custom range", () => {
+    render(dateRangeSelectorMenu);
 
+    const button = screen.getAllByRole("radio")[1];
+    fireEvent.click(button);
+    expect(mockHandleClose).toHaveBeenCalled();
   });
 
-  it("doesn't close the dropdown and shows the date picker if the selected preset is custom range ", () => {
+  it("doesn't close the dropdown if the selected preset is custom range", () => {
+    render(dateRangeSelectorMenu);
 
+    const button = screen.getAllByRole("radio")[2];
+    fireEvent.click(button);
+    expect(mockHandleClose).not.toHaveBeenCalled();
+  });
+
+  it("shows the date range picker if the selected preset is custom range", () => {
+    const {container} = render(<DateRangeSelectorMenu
+      handleClose={mockHandleClose}
+      onChange={mockOnChange}
+      presets={presets}
+      preset="custom_range"
+      value={[startDate, endDate]}
+    />);
+    expect(container.querySelector('#date-range-picker')).toBeVisible();
+    
   })
 })

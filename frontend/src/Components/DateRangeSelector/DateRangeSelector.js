@@ -11,8 +11,7 @@ function DateRangeSelector({ preset, value, onChange, presets, defaultOpen = fal
   const handleClose = () => setOpen(false);
 
   const [dateFrom, dateTo] = value;
-  const dateRangePresets = appendCustomRangePreset(presets);
-
+  
   return (
     <DropDownBase
       sx={dropdownStyle}
@@ -21,10 +20,10 @@ function DateRangeSelector({ preset, value, onChange, presets, defaultOpen = fal
       onOpen={setOpen}
       onClose={handleClose}
       renderValue={() =>
-        renderValue(preset, dateRangePresets, dateFrom, dateTo)
+        renderValue(preset, presets, dateFrom, dateTo)
       }
     >
-      <DateRangeSelectorMenu handleClose={handleClose} onChange={onChange} presets={dateRangePresets} value={value} preset={preset}/>
+      <DateRangeSelectorMenu handleClose={handleClose} onChange={onChange} presets={presets} value={value} preset={preset}/>
     </DropDownBase>
   );
 }

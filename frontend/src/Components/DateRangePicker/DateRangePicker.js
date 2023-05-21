@@ -45,6 +45,7 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
 
       {!disabled && (
         <DatePicker
+          id="date-range-picker"
           selected={pickerDateSelected}
           minDate={pickerMinDate}
           maxDate={pickerMaxDate}
