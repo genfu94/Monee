@@ -34,6 +34,7 @@ function DropDownBase({
         onClick={switchOpen}
         fullWidth
         variant="outlined"
+        data-testid="dropdown-button"
       >
         {renderValue ? renderValue(value) : value}
         <GoTriangleDown style={{ marginLeft: "auto" }} />

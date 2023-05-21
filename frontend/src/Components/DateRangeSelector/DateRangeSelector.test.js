@@ -1,40 +1,81 @@
-import dayjs from "dayjs";
-import { render, screen, getByTestId } from "@testing-library/react";
+import DateRangeSelectorMenu from "./DateRangeSelectorMenu";
 import DateRangeSelector from "./DateRangeSelector";
-import DropDownBase from "../DropDownBase/DropDownBase";
+import dayjs from "dayjs";
+import {render, screen, fireEvent, findByText} from "@testing-library/react";
+import '@testing-library/jest-dom';
 
-const mockChildComponent = jest.fn();
-jest.mock("../DropDownBase/DropDownBase", () => (props) => {
-  mockChildComponent(props);
-  return <mock-childComponent>
-    <button test-dataid="presetSelector">Select</button>
-  </mock-childComponent>;
-});
+let dateRangeSelectorMenu;
+let dateRangeSelector;
+const mockHandleClose = jest.fn();
+const mockOnChange = jest.fn();
+var customParseFormat = require('dayjs/plugin/customParseFormat')
+dayjs.extend(customParseFormat);
+const startDate = dayjs("25-05-2020", "DD-MM-YYYY");
+const endDate = dayjs("30-05-2020", "DD-MM-YYYY");
+const presets = [
+  {
+    presetId: "last_7_days",
+    label: "Last 7 days",
+    value: [null, null]
+  },
+  {
+    presetId: "last_30_days",
+    label: "Last 30 days",
+    value: [null, null]
+  }
+];
 
-describe("When a preset is clicked", () => {
-  it("", () => {
-    const { container } = render(
-      <DateRangeSelector
-        value={[null, null]}
-        preset="last_7_days"
-        onChange={() => {}}
-        presets={[
-          {
-            presetId: "last_7_days",
-            label: "Last 7 days",
-            value: [null, null],
-          },
-        ]}
-      />
-    );
-    expect(mockChildComponent).toHaveBeenCalled();
-    screen.findAllByTestId("presetSelector");
+const defaultPreset = presets[0];
 
-    /*expect(mockChildComponent).toHaveBeenCalledWith(
-    expect.objectContaining({
-      open: true,
-      data: "some data",
-    })
-  );*/
+beforeEach(() => {
+  dateRangeSelectorMenu = (
+    <DateRangeSelectorMenu
+      handleClose={mockHandleClose}
+      onChange={mockOnChange}
+      presets={presets}
+      preset={defaultPreset.presetId}
+      value={[startDate, endDate]}
+    />
+  );
+
+  dateRangeSelector = (
+    <DateRangeSelector
+      onChange={mockOnChange}
+      presets={presets}
+      preset={defaultPreset.presetId}
+      defaultOpen={true}
+      value={[startDate, endDate]}
+    />
+  )
+})
+
+describe("On component mount", () =>  {
+  it("the selected value is the default preset", async () => {
+    render(dateRangeSelector);
+
+    const dropdownButton = screen.getByTestId("dropdown-button");
+    expect(await findByText(dropdownButton, defaultPreset.label)).toBeVisible()
   });
-});
+})
+
+describe("When the user select a new preset", () => {
+  it("shows the new selected value", () => {
+    /*const button = screen.getAllByRole("radio")[1];
+    console.log(button)
+    fireEvent.click(button);
+
+    expect(mockOnChange).toHaveBeenCalled();*/
+  });
+
+  it("invokes the onchange method with the new value", () => {
+
+  });
+
+  it("closes the dropdown if the value is not custom range", () => {
+
+  });
+
+  it("doesn't close the dropdown and shows the date picker if the selected preset is custom range ", () => {
+
+  })
+})

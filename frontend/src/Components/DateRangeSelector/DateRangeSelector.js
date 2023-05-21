@@ -6,8 +6,8 @@ import { renderValue } from "./utils";
 import DropDownBase from "../DropDownBase/DropDownBase";
 import DateRangeSelectorMenu from "./DateRangeSelectorMenu";
 
-function DateRangeSelector({ preset, value, onChange, presets }) {
-  const [open, setOpen] = useState(false);
+function DateRangeSelector({ preset, value, onChange, presets, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
   const handleClose = () => setOpen(false);
 
   const [dateFrom, dateTo] = value;
