@@ -84,6 +84,11 @@ describe("When the user select a new preset", () => {
     expect(mockHandleClose).not.toHaveBeenCalled();
   });
 
+  it("hide date range picker if selected preset is not custom range", () => {
+    const {container} = render(dateRangeSelectorMenu);
+    expect(container.querySelector('.react-datepicker')).toBe(null);    
+  })
+
   it("shows the date range picker if the selected preset is custom range", () => {
     const {container} = render(<DateRangeSelectorMenu
       handleClose={mockHandleClose}
@@ -92,7 +97,7 @@ describe("When the user select a new preset", () => {
       preset="custom_range"
       value={[startDate, endDate]}
     />);
-    expect(container.querySelector('#date-range-picker')).toBeVisible();
-    
+
+    expect(container.querySelector('.react-datepicker')).toBeVisible();    
   })
 })
