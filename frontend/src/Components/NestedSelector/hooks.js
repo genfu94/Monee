@@ -1,23 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Tree } from "./Tree";
 
-export const useNestedNavigation = ({ data, defaultValue, handleClose, setLabel, onChange }) => {
+export const useNestedNavigation = ({ data, value, handleClose, onChange }) => {
   const tree = new Tree(data);
-
-  const startNode = tree.find(defaultValue);
-  
-  useEffect(() => {
-    setLabel(startNode.attributes.label);
-  }, []);
-
-  const [node, setNode] = useState(startNode.parent);
+  console.log(tree);
+  const [node, setNode] = useState(tree.find(value).parent);
 
   const setNodeByKey = (key) => {
     const currNode = tree.find(key);
-    if (currNode.children.length === 0) {
+    if (currNode.children === undefined || currNode.children.length === 0) {
       handleClose();
-      setLabel(currNode.attributes.label);
       onChange(currNode.key);
     } else {
       setNode(currNode);
@@ -29,8 +22,8 @@ export const useNestedNavigation = ({ data, defaultValue, handleClose, setLabel,
 };
 
 export const useOptions = ({ node }) => {
-  const isChild = node.key !== "_root_";
-  const parentLabel = node.key === "_root_" ? "" : node.key;
+  const isChild = node.value !== "_root_";
+  const parentLabel = node.value === "_root_" ? "" : node.value;
   const options = node.children;
 
   return [isChild, parentLabel, options];

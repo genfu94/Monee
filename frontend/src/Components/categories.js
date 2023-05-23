@@ -53,7 +53,7 @@ function _buildCategoriesApp(categories) {
 
   for (const item of categories) {
     let newCat = {
-      key: item.name,
+      value: item.name,
       attributes: {
         label: (
           <div style={{display: "flex", gap: "5px", alignItems: "center"}}>

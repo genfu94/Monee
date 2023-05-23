@@ -55,7 +55,7 @@ function TransactionForm({ transaction, onChange }) {
         </LabeledInput>
         <LabeledInput style={{ flexBasis: "100%" }} label="Category">
           <NestedSelector
-            defaultValue={formik.values.category}
+            value={formik.values.category}
             onChange={(c) => formik.setFieldValue("category", c)}
             sx={{ Button: { height: "50px" } }}
             data={data}

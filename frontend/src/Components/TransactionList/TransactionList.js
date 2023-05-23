@@ -14,7 +14,6 @@ import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
 function TransactionList({ transactionsGroupedByDate, onTransactionEdit }) {
   const [transactionSelected, setTransactionSelected] = useState(null);
   const tree = new Tree(category_tree);
-  
   return (
     <>
       <List style={{alignSelf: "stretch"}} disablePadding>

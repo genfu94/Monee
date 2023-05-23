@@ -5,13 +5,15 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 
 import "./NestedSelector.style.css";
-import { useOptions } from "./hooks";
 
-export default function NestedSelectorMenu({ node, setNodeByKey, goBack }) {
-  const [isChild, parentLabel, options] = useOptions({
-    node,
-  });
-
+export default function NestedSelectorMenu({
+  isChild,
+  parentLabel = null,
+  renderValue,
+  options,
+  onChange,
+  onBack,
+}) {
   return (
     <div>
       <div
@@ -23,25 +25,26 @@ export default function NestedSelectorMenu({ node, setNodeByKey, goBack }) {
         }}
       >
         {isChild && (
-          <>
-            <IconButton size="small" onClick={goBack}>
+          <div data-testid="nested-menu-navigation">
+            <IconButton data-testid="go-back-button" size="small" onClick={onBack}>
               <IoChevronBackOutline />
             </IconButton>
             <span>{parentLabel}</span>
-          </>
+          </div>
         )}
       </div>
       <List style={{ margin: 0, padding: 0 }}>
         {options.map((item) => {
           return (
             <ListItem
+              data-testid="nested-menu-option"
               onClick={() => {
-                setNodeByKey(item.key);
+                onChange(item.value);
               }}
-              key={item.key}
+              key={item.value}
               className="select-item"
             >
-              {item.attributes.label}
+              {renderValue(item.value)}
             </ListItem>
           );
         })}

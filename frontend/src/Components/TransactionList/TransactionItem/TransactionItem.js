@@ -10,7 +10,7 @@ export default function TransactionItem({ transaction, onItemClick, tree }) {
       <div className="info-container">
         <input type="checkbox" />
 
-        <div style={{flexBasis: "30%"}}>{tree.find(transaction.category).attributes.label}</div>
+        <div style={{flexBasis: "30%"}}>{tree.find(transaction.category).value}</div>
 
         <div style={{fontSize: '12px'}}>
           <BsCircleFill
