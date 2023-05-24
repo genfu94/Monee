@@ -5,9 +5,8 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-import TransactionItem from "./TransactionItem/TransactionItem.js";
+import TransactionItem from "./TransactionItem.js";
 import TransactionForm from "../TransactionForm/TransactionForm.js";
-import { CATEGORIES_TREE } from "../categories";
 import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
 
 function TransactionList({ transactionsGroupedByDate, onTransactionEdit }) {
