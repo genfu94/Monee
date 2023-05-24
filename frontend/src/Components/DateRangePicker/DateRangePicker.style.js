@@ -2,8 +2,10 @@ import { styled } from "@mui/material/styles";
 import {ToggleButtonGroup} from "@mui/material";
 
 export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-evenly',
   "& .MuiToggleButtonGroup-grouped": {
-    margin: "10px",
     "&.Mui-disabled": {
       border: `1px solid #ddd !important`,
     },

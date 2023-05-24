@@ -4,7 +4,13 @@ import { appendCustomRangePreset } from "./utils";
 import DateRangePresetSelector from "./DateRangePresetSelector";
 import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
-const DateRangeSelectorMenu = ({ handleClose, onChange, presets, value, preset }) => {
+const DateRangeSelectorMenu = ({
+  handleClose,
+  onChange,
+  presets,
+  value,
+  preset,
+}) => {
   const [dateFrom, dateTo] = value;
   const dateRangePresets = appendCustomRangePreset(presets);
 
@@ -38,7 +44,6 @@ const DateRangeSelectorMenu = ({ handleClose, onChange, presets, value, preset }
           onChange={onPresetSelection}
         />
       </div>
-
       <DateRangePicker
         data-testid="date-range-picker"
         value={[dateFrom, dateTo]}
@@ -48,6 +53,5 @@ const DateRangeSelectorMenu = ({ handleClose, onChange, presets, value, preset }
     </>
   );
 };
-
 
 export default DateRangeSelectorMenu;
