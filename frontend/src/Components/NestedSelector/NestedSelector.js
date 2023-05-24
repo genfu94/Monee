@@ -8,12 +8,17 @@ export default function NestedSelector({
   data,
   renderValue,
   value,
-  sx,
   onChange,
+  styles={},
   defaultOpen = false
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const handleClose = () => setOpen(false);
+
+  styles.Menu = {
+    ...styles.Menu,
+    top: 0
+  }
 
   const [node, setNodeByKey, goBack] = useNestedNavigation({
     data,
@@ -25,7 +30,7 @@ export default function NestedSelector({
   const [isChild, parentLabel] = useOptions({ node });
   return (
     <DropDownBase
-      sx={sx}
+      styles={styles}
       value={value}
       open={open}
       onClose={handleClose}

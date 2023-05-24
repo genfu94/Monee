@@ -1,7 +1,7 @@
 export const dropdownStyle = {
   Button: {
-    width: "250px",
-    height: "40px",
+    width: "100%",
+    height: "2.5rem",
     textTransform: "none",
     backgroundColor: "white",
     "&.MuiButton-outlined": {
@@ -13,9 +13,8 @@ export const dropdownStyle = {
     },
   },
   Menu: {
-    left: "-25px",
-    top: "50px",
     width: "300px",
+    marginTop: '10px',
     padding: "20px"
   }
 };

@@ -14,7 +14,7 @@ function DateRangeSelector({ preset, value, onChange, presets, defaultOpen = fal
   
   return (
     <DropDownBase
-      sx={dropdownStyle}
+      styles={dropdownStyle}
       open={open}
       value={value}
       onOpen={setOpen}

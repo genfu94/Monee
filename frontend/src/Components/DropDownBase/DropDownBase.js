@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { GoTriangleDown } from "react-icons/go";
 
-import { defaultSx } from "./constants";
+import { getBaseStyles } from "./constants";
 import { useClickOut } from "./hooks";
 
 function DropDownBase({
-  sx = {},
+  styles = {},
   value = null,
   onOpen,
   onClose,
@@ -14,14 +14,16 @@ function DropDownBase({
   renderValue,
   children,
 }) {
+  const baseStyles = getBaseStyles();
+
   const buttonStyle = {
-    ...defaultSx.Button,
-    ...sx.Button,
+    ...baseStyles.Button,
+    ...styles.Button,
   };
 
   const menuStyle = {
-    ...defaultSx.Menu,
-    ...sx.Menu,
+    ...baseStyles.Menu,
+    ...styles.Menu,
   };
 
   const [containerRef] = useClickOut(onClose);
