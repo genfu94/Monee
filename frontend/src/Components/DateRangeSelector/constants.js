@@ -13,23 +13,23 @@ export const dropdownStyle = {
     },
   },
   Menu: {
-    width: "300px",
-    marginTop: '10px',
-    padding: "20px"
+    width: "19rem",
+    marginTop: '0.6rem',
+    padding: "1.25rem"
   }
 };
 
 export const radioStyle = {
-  padding: "0px 5px 0px 0px",
+  padding: "0px 0.5rem 0px 0px",
   "& svg": {
-    width: "13px",
-    height: "13px",
+    width: "0.8rem",
+    height: "0.8rem",
     opacity: "0.6",
   },
 };
 
 export const datePickerStyle = {
   "& .MuiOutlinedInput-input": {
-    fontSize: 12,
+    fontSize: '0.8rem',
   }
 }

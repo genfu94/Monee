@@ -8,7 +8,7 @@ export const buttonToggleStyle = {
     fontFamily: "Montserrat",
     color: "rgb(150, 150, 150)",
     borderColor: "blue",
-    height: "47px",
+    height: "3rem",
   },
   "&.Mui-selected": {
     backgroundColor: "blue !important",
@@ -22,10 +22,10 @@ export const buttonToggleStyle = {
 
 export const AmountTextField = styled(TextField)({
   display: "inline-block",
-  width: "100px",
+  width: "7rem",
   input: {
-    height: "14px",
-    fontSize: "20px",
+    height: "0.9rem",
+    fontSize: "1.2rem",
     color: "#c6d065",
     fontWeight: "700",
     fontFamily: "Montserrat",

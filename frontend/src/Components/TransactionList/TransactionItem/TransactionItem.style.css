@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content:left;
-  gap: 15px;
+  gap: 1rem;
   flex: 1;
 }
 
@@ -17,10 +17,10 @@
   display: flex;
   align-items: center;
   flex: 1;
-  height: 50px;
+  height: 3rem;
   border-radius: 0.3em;
   background-color: white;
-  padding: 15px 10px;
+  padding: 1rem 0.7rem;
 }
 
 .transaction-info-category {
@@ -29,20 +29,20 @@
 
 .transaction-info-entity {
   color: #7f8fa4;
-  font-size: 0.7em;
+  font-size: 0.7rem;
   flex: 0 0 30%;
 }
 
 .transaction-info-description {
   color: #7f8fa4;
-  font-size: 0.7em;
+  font-size: 0.7rem;
   flex-basis: 20%;
 }
 
 .target-currency-transaction-amount {
   color: #fe3b2c;
   margin-left: auto;
-  font-size: 14px;
+  font-size: 0.9rem;
 }
 
 .transaction-income {
@@ -51,6 +51,6 @@
 
 .original-currency-transaction-amount {
   color: #7f8fa4;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   margin-left: auto;
 }

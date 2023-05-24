@@ -31,7 +31,7 @@ const DateRangeSelectorMenu = ({
           fontFamily: "Montserrat",
           color: "#222",
           fontWeight: "700",
-          marginBottom: "10px",
+          marginBottom: "0.8rem",
         }}
       >
         Choose period

@@ -12,7 +12,7 @@ export const getBaseStyles = () => (
       zIndex: "1050",
       border: "1px solid",
       borderColor: "inherit",
-      borderRadius: "5px",
+      borderRadius: "0.4rem",
       backgroundColor: "white",
       left: '50%',
       transform: "translate(-50%, 0%)"

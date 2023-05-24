@@ -6,11 +6,11 @@ import "../../../Styles/globals.style.css";
 import "./TransactionItem.style.css";
 
 const renderValue = (value) => (
-  <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+  <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
     <div
       style={{
-        width: "30px",
-        height: "30px",
+        width: "2rem",
+        height: "2rem",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -21,7 +21,7 @@ const renderValue = (value) => (
     >
       {CATEGORIES_ICON_ENUM[value].icon}
     </div>
-    &nbsp; <div style={{ float: "right", fontSize: "13px" }}>{value}</div>
+    &nbsp; <div style={{ float: "right", fontSize: "0.8rem" }}>{value}</div>
   </div>
 );
 

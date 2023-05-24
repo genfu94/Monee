@@ -78,13 +78,13 @@ function TransactionForm({ transaction, onChange }) {
             renderValue={renderValue}
             value={formik.values.category}
             onChange={(c) => formik.setFieldValue("category", c)}
-            sx={{ Button: { height: "50px" } }}
+            sx={{ Button: { height: "3rem" } }}
             data={data}
           />
         </LabeledInput>
       </div>
 
-      <Divider style={{ margin: "7px 0px 7px 0px" }} />
+      <Divider style={{ margin: "0.45rem 0px 0.45rem 0px" }} />
 
       <div className="transaction-editor__general-info-container">
         <LabeledInput label="Datetime">

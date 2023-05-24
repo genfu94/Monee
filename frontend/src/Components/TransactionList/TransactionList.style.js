@@ -3,16 +3,15 @@ export const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
-  height: 500,
+  width: '31rem',
   bgcolor: "background.paper",
-  borderRadius: "10px",
+  borderRadius: "0.7rem",
   boxShadow: 24,
   p: 3,
 };
 
 export const listSubheaderStyle = {
   backgroundColor: "#eff0f2",
-  fontSize: "12px",
+  fontSize: "0.8rem",
   fontWeight: "900",
 }

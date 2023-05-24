@@ -79,7 +79,7 @@ class App extends React.Component {
           <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
           <div style={{ fontFamily: "Montserrat" }}>Budget App</div>
         </div>
-        <ClipLoader size="20" />
+        <ClipLoader size="2rem" />
       </div>
     );
   }
