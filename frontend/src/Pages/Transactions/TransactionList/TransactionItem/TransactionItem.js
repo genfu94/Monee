@@ -2,7 +2,7 @@ import React from "react";
 import { BsCircleFill } from "react-icons/bs";
 import { CATEGORIES_ICON_ENUM } from "../../categories";
 
-import "../../../Styles/globals.style.css";
+import "../../../../Styles/globals.style.css";
 import "./TransactionItem.style.css";
 
 const renderValue = (value) => (

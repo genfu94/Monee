@@ -7,13 +7,11 @@ import Box from "@mui/material/Box";
 
 import TransactionItem from "./TransactionItem/TransactionItem.js";
 import TransactionForm from "../TransactionForm/TransactionForm.js";
-import { Tree } from "../NestedSelector/Tree";
 import { CATEGORIES_TREE } from "../categories";
 import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
 
 function TransactionList({ transactionsGroupedByDate, onTransactionEdit }) {
   const [transactionSelected, setTransactionSelected] = useState(null);
-  const tree = new Tree(CATEGORIES_TREE);
   return (
     <>
       <List style={{alignSelf: "stretch"}} disablePadding>
