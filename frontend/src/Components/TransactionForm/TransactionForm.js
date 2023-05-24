@@ -11,11 +11,11 @@ import {
   defaultFormValues,
   formValuesToTransactionObject,
 } from "./constants.js";
-import LabeledInput from "../../../Components/LabeledInput/LabeledInput.js";
+import LabeledInput from "../LabeledInput/LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
-import NestedSelector from "../../../Components/NestedSelector/NestedSelector.js";
-import { CATEGORIES_TREE, CATEGORIES_ICON_ENUM } from "../categories.js";
+import NestedSelector from "../NestedSelector/NestedSelector.js";
+import { CATEGORIES_TREE, CATEGORIES_ICON_ENUM } from "../../Pages/Transactions/categories.js";
 
 function TransactionForm({ transaction, onChange }) {
   const data = CATEGORIES_TREE;

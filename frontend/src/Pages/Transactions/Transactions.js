@@ -6,7 +6,7 @@ import SideMenuLayout from "../SideMenuLayout.js";
 import urlJoin from "url-join";
 import { GET_request } from "../../Utils/network";
 import { DATE_RANGE_PRESETS } from "../../Utils/date";
-import TransactionListAdapter from "./TransactionList/TransactionListAdapter.js";
+import TransactionList from "./TransactionList.js";
 import DateRangeSelector from "../../Components/DateRangeSelector/DateRangeSelector.js";
 
 function Transactions() {
@@ -69,8 +69,8 @@ function Transactions() {
               fetchTransactions(value[0], value[1]);
             }}
           />
-          <TransactionListAdapter
-            transactionList={transactions}
+          <TransactionList
+            transactions={transactions}
             onTransactionEdit={onTransactionEdit}
           />
         </div>

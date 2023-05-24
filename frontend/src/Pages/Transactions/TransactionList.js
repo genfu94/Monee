@@ -5,12 +5,31 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
+import dayjs from "dayjs";
 import TransactionItem from "./TransactionItem.js";
-import TransactionForm from "../TransactionForm/TransactionForm.js";
+import TransactionForm from "../../Components/TransactionForm/TransactionForm.js";
 import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
 
-function TransactionList({ transactionsGroupedByDate, onTransactionEdit }) {
+function groupTransactionsByDate(transactionList) {
+  let transactionsGroupedByDate = {};
+
+  for (const transaction of transactionList) {
+    const dates = Object.keys(transactionsGroupedByDate);
+    const booking_date = dayjs(transaction.booking_date).format("MMM DD, YYYY");
+
+    if (!dates.includes(booking_date)) {
+      transactionsGroupedByDate[booking_date] = [];
+    }
+
+    transactionsGroupedByDate[booking_date].push(transaction);
+  }
+
+  return transactionsGroupedByDate;
+}
+
+function TransactionList({ transactions, onTransactionEdit }) {
   const [transactionSelected, setTransactionSelected] = useState(null);
+  const transactionsGroupedByDate = groupTransactionsByDate(transactions);
   return (
     <>
       <List style={{alignSelf: "stretch"}} disablePadding>
