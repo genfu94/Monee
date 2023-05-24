@@ -15,10 +15,10 @@ import LabeledInput from "../LabeledInput/LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import NestedSelector from "../NestedSelector/NestedSelector.js";
-import { category_tree } from "../categories.js";
+import { CATEGORIES_TREE, CATEGORIES_ICON_ENUM } from "../categories.js";
 
 function TransactionForm({ transaction, onChange }) {
-  const data = category_tree;
+  const data = CATEGORIES_TREE;
 
   const formik = useFormik({
     initialValues: defaultFormValues(transaction),
@@ -28,6 +28,26 @@ function TransactionForm({ transaction, onChange }) {
       onChange(newTransaction);
     },
   });
+
+  const renderValue = (value) => (
+    <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+      <div
+        style={{
+          width: "30px",
+          height: "30px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "50%",
+          flexShrink: 0,
+          background: CATEGORIES_ICON_ENUM[value].color,
+        }}
+      >
+        {CATEGORIES_ICON_ENUM[value].icon}
+      </div>
+      &nbsp; <div style={{ float: "right", fontSize: "13px" }}>{value}</div>
+    </div>
+  );
 
   return (
     <form
@@ -55,6 +75,7 @@ function TransactionForm({ transaction, onChange }) {
         </LabeledInput>
         <LabeledInput style={{ flexBasis: "100%" }} label="Category">
           <NestedSelector
+            renderValue={renderValue}
             value={formik.values.category}
             onChange={(c) => formik.setFieldValue("category", c)}
             sx={{ Button: { height: "50px" } }}

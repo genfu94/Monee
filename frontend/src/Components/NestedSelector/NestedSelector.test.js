@@ -25,7 +25,7 @@ const ValueToLabel = {
 };
 const renderValue = (v) => ValueToLabel[v];
 
-let mockOnChange, mockNestedSelector;
+let mockOnChange, mockNestedSelector, mockRootNestedSelector;
 
 beforeEach(() => {
   mockOnChange = jest.fn();
@@ -39,6 +39,12 @@ beforeEach(() => {
       onChange={mockOnChange}
     />
   );
+});
+
+it("Doesn't show the parent header if the selected value is child of root", () => {
+  render(mockNestedSelector);
+
+  expect(screen.queryByTestId('nested-menu-navigation')).toBe(null);
 });
 
 it("Renders the selected value correctly", () => {
@@ -76,4 +82,5 @@ it("Invokes the onChange callback when selected option is leaf", () => {
   renderedOptions = screen.getAllByTestId("nested-menu-option");
   fireEvent.click(renderedOptions[0]);
   expect(mockOnChange.mock.calls.length).toBe(1);
+  expect(mockOnChange.mock.calls[0][0]).toBe("value3");
 });

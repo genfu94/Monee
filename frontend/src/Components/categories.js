@@ -5,7 +5,7 @@ import { FaShoppingBag, FaTshirt, FaQuestion } from "react-icons/fa";
 import { RiMedicineBottleFill, RiComputerFill } from "react-icons/ri";
 import { HiEmojiHappy } from "react-icons/hi";
 
-const CATEGORIES = {
+export const CATEGORIES = {
   UNKNOWN: "Unknown",
   FOOD_AND_DRINKS: "Food & Drinks",
   BAR_AND_CAFE: "Bar & Cafè",
@@ -13,78 +13,47 @@ const CATEGORIES = {
   GROCERIES: "Groceries",
 };
 
-const CATEGORIES_ICON_ENUM = [
-  {
-    name: CATEGORIES.UNKNOWN,
+export const CATEGORIES_ICON_ENUM = {
+  [CATEGORIES.UNKNOWN]: {
     icon: <FaQuestion style={{ color: "white" }} />,
     color: "rgb(60, 60, 60)",
   },
-  {
-    name: CATEGORIES.FOOD_AND_DRINKS,
+  [CATEGORIES.FOOD_AND_DRINKS]: {
     icon: <IoFastFood style={{ color: "white" }} />,
     color: "red",
-    subCategories: [
+  },
+  [CATEGORIES.BAR_AND_CAFE]: {
+    icon: <IoIosCafe style={{ color: "white" }} />,
+    color: "red",
+  },
+  [CATEGORIES.SHOPPING]: {
+    icon: <FaShoppingBag style={{ color: "white" }} />,
+    color: "blue",
+  },
+  [CATEGORIES.GROCERIES]: {
+    icon: <MdLocalGroceryStore style={{ color: "white" }} />,
+    color: "blue",
+  },
+};
+
+export const CATEGORIES_TREE = [
+  {
+    value: CATEGORIES.UNKNOWN,
+  },
+  {
+    value: CATEGORIES.FOOD_AND_DRINKS,
+    children: [
       {
-        name: CATEGORIES.BAR_AND_CAFE,
-        icon: <IoIosCafe style={{ color: "white" }} />,
-        color: "red",
+        value: CATEGORIES.BAR_AND_CAFE,
       },
     ],
   },
   {
-    name: CATEGORIES.SHOPPING,
-    icon: <FaShoppingBag style={{ color: "white" }} />,
-    color: "blue",
-    subCategories: [
+    value: CATEGORIES.SHOPPING,
+    children: [
       {
-        name: CATEGORIES.GROCERIES,
-        icon: <MdLocalGroceryStore style={{ color: "white" }} />,
-        color: "blue",
+        value: CATEGORIES.GROCERIES,
       },
     ],
   },
 ];
-
-function _buildCategoriesApp(categories) {
-  let subtree = [];
-  if (categories === undefined) {
-    return [];
-  }
-
-  for (const item of categories) {
-    let newCat = {
-      value: item.name,
-      attributes: {
-        label: (
-          <div style={{display: "flex", gap: "5px", alignItems: "center"}}>
-            <div
-              style={{
-                width: "30px",
-                height: "30px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "50%",
-                flexShrink: 0,
-                background: item.color,
-              }}
-            >
-              {item.icon}
-            </div>
-            &nbsp; <div style={{float: "right", fontSize: '13px'}}>{item.name}</div>
-          </div>
-        ),
-      },
-    };
-    newCat.children = _buildCategoriesApp(item.subCategories);
-    subtree.push(newCat);
-  }
-
-  return subtree;
-}
-
-function build_categories_tree() {
-  return _buildCategoriesApp(CATEGORIES_ICON_ENUM);
-}
-
-export const category_tree = build_categories_tree();
