@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Box, Typography } from "@mui/material";
 
 function LabeledInput(props) {
   const labelStyle = {
@@ -10,10 +10,10 @@ function LabeledInput(props) {
   };
 
   return (
-    <div {...props}>
-      <div style={labelStyle}>{props.label}</div>
+    <Box {...props}>
+      <Typography style={labelStyle}>{props.label}</Typography>
       {props.children}
-    </div>
+    </Box>
   );
 }
 

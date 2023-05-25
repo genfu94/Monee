@@ -1,10 +1,7 @@
 import React from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-
 import "./NestedSelector.style.css";
+import { Box, ListItem, List, IconButton, Typography } from "@mui/material";
 
 export default function NestedSelectorMenu({
   isChild,
@@ -15,8 +12,8 @@ export default function NestedSelectorMenu({
   onBack,
 }) {
   return (
-    <div>
-      <div
+    <Box>
+      <Box
         className="header"
         style={{
           margin: 0,
@@ -25,14 +22,14 @@ export default function NestedSelectorMenu({
         }}
       >
         {isChild && (
-          <div data-testid="nested-menu-navigation">
+          <Box data-testid="nested-menu-navigation">
             <IconButton data-testid="go-back-button" size="small" onClick={onBack}>
               <IoChevronBackOutline />
             </IconButton>
-            <span>{parentLabel}</span>
-          </div>
+            <Typography style={{display: 'inline'}}>{parentLabel}</Typography>
+          </Box>
         )}
-      </div>
+      </Box>
       <List style={{ margin: 0, padding: 0 }}>
         {options.map((item) => {
           return (
@@ -49,6 +46,6 @@ export default function NestedSelectorMenu({
           );
         })}
       </List>
-    </div>
+    </Box>
   );
 }
