@@ -24,7 +24,6 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
         bank_linking_details_json = bank_linking_details.to_dict()
         bank_linking_details_json['user'] = username
-        print(bank_linking_details_json)
         self.bank_link_collection.insert_one(bank_linking_details_json)
 
     def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
