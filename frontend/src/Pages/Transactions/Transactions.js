@@ -50,6 +50,7 @@ function Transactions() {
 
   return (
     <SideMenuLayout
+      page="Transactions"
       sideMenuTitle="Transactions"
       content={
         <div

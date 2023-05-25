@@ -4,7 +4,7 @@ import SideMenuLayout from "./SideMenuLayout.js";
 class Home extends React.Component {
   render() {
     return (
-      <SideMenuLayout sideMenuTitle="Accounts"/>
+      <SideMenuLayout page="Home" sideMenuTitle="Accounts"/>
     );
   }
 }

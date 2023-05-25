@@ -11,7 +11,7 @@ class SideMenuLayout extends React.Component {
   render() {
     return (
       <>
-        <NavBar/>
+        <NavBar page={this.props.page}/>
         <div className="main-container">
           <div className="side-menu">
             <div className="side-menu-title">

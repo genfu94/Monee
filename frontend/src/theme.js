@@ -5,6 +5,10 @@ export const theme = createTheme({
     fontFamily: 'Montserrat',
     small: {
       fontSize: '0.8rem'
+    },
+    h1: {
+      fontSize: '1.2rem',
+      color: '#555',
     }
   },
   shadows: {
@@ -16,8 +20,9 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
+      light: '#29c50d',
+      main: '#248d12',
+      accent: '#ffc50d',
       dark: '#002884',
       background: 'white',
     }

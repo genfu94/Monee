@@ -42,6 +42,7 @@ function Accounts() {
   return (
     <>
       <SideMenuLayout
+        page="Accounts"
         sideMenuTitle="Accounts"
         sideMenuContent={
           <div onClick={showDialog} className="add-account-btn">

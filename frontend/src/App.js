@@ -3,7 +3,7 @@ import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
-import {theme} from './theme';
+import { theme } from "./theme";
 import Home from "./Pages/Home.js";
 import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
@@ -12,6 +12,7 @@ import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
 import { GET_request } from "./Utils/network.js";
 import { ThemeProvider } from "@emotion/react";
+import SideMenuLayout from "./Pages/SideMenuLayout";
 
 class App extends React.Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class App extends React.Component {
             process.env.REACT_APP_BACKEND_ENDPOINT,
             "update_bank_links"
           );
-          GET_request(endpoint, { username: value['username'] }).then(
+          GET_request(endpoint, { username: value["username"] }).then(
             (data) => {
               this.handleLoadingComplete();
             }
@@ -52,7 +53,7 @@ class App extends React.Component {
   componentDidMount() {
     WebFont.load({
       google: {
-        families: ["Montserrat:300,400,500,600,700,800,900"],
+        families: ["Montserrat:300,400,500,600,700,800,900", "Kalam:400"],
       },
     });
   }

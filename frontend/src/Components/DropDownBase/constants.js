@@ -3,7 +3,6 @@ export const getBaseStyles = () => (
     Button: {
       width: "100%",
       height: "2.5rem",
-      borderColor: "inherit",
       textTransform: "none",
     },
     Menu: {
@@ -11,7 +10,6 @@ export const getBaseStyles = () => (
       width: "100%",
       zIndex: "1050",
       border: "1px solid",
-      borderColor: "inherit",
       borderRadius: "0.4rem",
       backgroundColor: "white",
       left: '50%',
