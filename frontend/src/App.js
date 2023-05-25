@@ -3,6 +3,7 @@ import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
+import {theme} from './theme';
 import Home from "./Pages/Home.js";
 import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
@@ -10,6 +11,7 @@ import Accounts from "./Pages/Accounts/Accounts.js";
 import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
 import urlJoin from "url-join";
 import { GET_request } from "./Utils/network.js";
+import { ThemeProvider } from "@emotion/react";
 
 class App extends React.Component {
   constructor(props) {
@@ -89,11 +91,17 @@ class App extends React.Component {
       return this.renderLoadingPage();
     } else {
       return (
-        <Routes>
-          <Route exact path="/" element={<Home />}></Route>
-          <Route exact path="/transactions" element={<Transactions />}></Route>
-          <Route exact path="/accounts" element={<Accounts />}></Route>
-        </Routes>
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route exact path="/" element={<Home />}></Route>
+            <Route
+              exact
+              path="/transactions"
+              element={<Transactions />}
+            ></Route>
+            <Route exact path="/accounts" element={<Accounts />}></Route>
+          </Routes>
+        </ThemeProvider>
       );
     }
   }
