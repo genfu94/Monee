@@ -2,7 +2,10 @@ import {createTheme} from "@mui/material/styles";
 
 export const theme = createTheme({
   typography: {
-    fontFamily: 'Montserrat'
+    fontFamily: 'Montserrat',
+    small: {
+      fontSize: '0.8rem'
+    }
   },
   shadows: {
     elevation_1: '0 0px 1px rgb(0 0 0 / 0.1)'

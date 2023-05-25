@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
+import {Button, Box} from "@mui/material";
 import { GoTriangleDown } from "react-icons/go";
 
 import { getBaseStyles } from "./constants";
@@ -30,7 +30,7 @@ function DropDownBase({
   const switchOpen = open ? onClose : onOpen;
 
   return (
-    <div ref={containerRef} style={{ position: "relative" }}>
+    <Box ref={containerRef} style={{ position: "relative" }}>
       <Button
         sx={buttonStyle}
         onClick={switchOpen}
@@ -41,8 +41,8 @@ function DropDownBase({
         {renderValue ? renderValue(value) : value}
         <GoTriangleDown style={{ marginLeft: "auto" }} />
       </Button>
-      {open && <div style={menuStyle}>{children}</div>}
-    </div>
+      {open && <Box style={menuStyle}>{children}</Box>}
+    </Box>
   );
 }
 

@@ -18,7 +18,7 @@ export default function DateRangePresetSelector({ options, value, onChange }) {
             key={item.presetId}
             value={item.presetId}
             control={<Radio sx={radioStyle} />}
-            label={<Typography>{item.label}</Typography>}
+            label={<Typography variant="small">{item.label}</Typography>}
           />
         ))}
       </>
