@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import {appendCustomRangePreset} from "./utils";
 import { dropdownStyle } from "./constants";
 import { renderValue } from "./utils";
 import DropDownBase from "../DropDownBase/DropDownBase";

@@ -3,6 +3,7 @@ import React from "react";
 import { appendCustomRangePreset } from "./utils";
 import DateRangePresetSelector from "./DateRangePresetSelector";
 import DateRangePicker from "../DateRangePicker/DateRangePicker";
+import { Typography, Box } from "@mui/material";
 
 const DateRangeSelectorMenu = ({
   handleClose,
@@ -26,24 +27,23 @@ const DateRangeSelectorMenu = ({
 
   return (
     <>
-      <div
+      <Typography
         style={{
-          fontFamily: "Montserrat",
           color: "#222",
           fontWeight: "700",
           marginBottom: "0.8rem",
         }}
       >
         Choose period
-      </div>
+      </Typography>
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <Box style={{ display: "flex", justifyContent: "center" }}>
         <DateRangePresetSelector
           options={dateRangePresets}
           value={preset}
           onChange={onPresetSelection}
         />
-      </div>
+      </Box>
       <DateRangePicker
         data-testid="date-range-picker"
         value={[dateFrom, dateTo]}
