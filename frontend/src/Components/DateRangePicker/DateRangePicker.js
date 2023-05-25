@@ -1,14 +1,40 @@
 import dayjs from "dayjs";
 import React from "react";
-import { ToggleButton } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, Box } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDateRange, useDatePicker } from "./useDateRange";
+import styled from "@emotion/styled";
 
-import {
-  StyledToggleButtonGroup,
-  toggleButtonStyle,
-} from "./DateRangePicker.style";
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "space-evenly",
+  "& .MuiToggleButtonGroup-grouped": {
+    "&.Mui-disabled": {
+      border: `1px solid ${theme.borders.disabled} !important`,
+      color: `${theme.borders.disabled} !important`,
+    },
+    "&:not(:last-of-type)": {
+      border: `1px solid ${theme.borders.color}`,
+      borderRadius: 4,
+    },
+    "&:not(:first-of-type)": {
+      border: `1px solid ${theme.borders.color}`,
+      borderRadius: 4,
+    },
+  },
+}));
+
+const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+  textTrasform: "none",
+  color: theme.borders.color,
+  "&.Mui-selected": {
+    color: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main + " !important",
+    background: "none",
+  },
+}));
 
 export default function DateRangePicker({ value, onChange, disabled = false }) {
   const [dateFrom, dateTo] = value;
@@ -25,22 +51,34 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1rem",
+        marginTop: "1rem",
+      }}
+    >
       <StyledToggleButtonGroup
         exclusive
         onChange={updateSelectedDate}
         disabled={disabled}
       >
-        <ToggleButton
-          sx={toggleButtonStyle}
+        <StyledToggleButton
+          selected={selectedDate === "dateFrom"}
           value="dateFrom"
           variant="outlined"
         >
           {dateFrom.format("DD-MM-YYYY")}
-        </ToggleButton>
-        <ToggleButton sx={toggleButtonStyle} value="dateTo" variant="outlined">
+        </StyledToggleButton>
+        <StyledToggleButton
+          selected={selectedDate === "dateTo"}
+          value="dateTo"
+          variant="outlined"
+        >
           {dateTo.format("DD-MM-YYYY")}
-        </ToggleButton>
+        </StyledToggleButton>
       </StyledToggleButtonGroup>
 
       {!disabled && (
@@ -53,6 +91,6 @@ export default function DateRangePicker({ value, onChange, disabled = false }) {
           inline
         />
       )}
-    </>
+    </Box>
   );
 }
