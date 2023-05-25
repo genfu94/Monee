@@ -1,8 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import { TextField } from "@mui/material";
+import { Box, TextField, Typography, Button, Divider } from "@mui/material";
 
 import "./TransactionForm.style.css";
 import { update_transaction } from "./api";
@@ -15,7 +13,10 @@ import LabeledInput from "../LabeledInput/LabeledInput.js";
 import ToggleButtonSelector from "./ToggleButtonSelector.js";
 import DatetimePicker from "./DateTimePicker.js";
 import NestedSelector from "../NestedSelector/NestedSelector.js";
-import { CATEGORIES_TREE, CATEGORIES_ICON_ENUM } from "../../Pages/Transactions/categories.js";
+import {
+  CATEGORIES_TREE,
+  CATEGORIES_ICON_ENUM,
+} from "../../Pages/Transactions/categories.js";
 
 function TransactionForm({ transaction, onChange }) {
   const data = CATEGORIES_TREE;
@@ -30,8 +31,8 @@ function TransactionForm({ transaction, onChange }) {
   });
 
   const renderValue = (value) => (
-    <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-      <div
+    <Box style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+      <Box
         style={{
           width: "30px",
           height: "30px",
@@ -44,9 +45,12 @@ function TransactionForm({ transaction, onChange }) {
         }}
       >
         {CATEGORIES_ICON_ENUM[value].icon}
-      </div>
-      &nbsp; <div style={{ float: "right", fontSize: "13px" }}>{value}</div>
-    </div>
+      </Box>
+      &nbsp;{" "}
+      <Typography style={{ float: "right", fontSize: "13px" }}>
+        {value}
+      </Typography>
+    </Box>
   );
 
   return (
@@ -54,9 +58,11 @@ function TransactionForm({ transaction, onChange }) {
       className="transaction-editor__container"
       onSubmit={formik.handleSubmit}
     >
-      <div className="transaction-editor__header">Edit transaction</div>
+      <Typography className="transaction-editor__header">
+        Edit transaction
+      </Typography>
 
-      <div className="transaction-editor__main-info-container">
+      <Box className="transaction-editor__main-info-container">
         <LabeledInput label="Amount">
           <AmountTextField
             id="amount"
@@ -82,11 +88,11 @@ function TransactionForm({ transaction, onChange }) {
             data={data}
           />
         </LabeledInput>
-      </div>
+      </Box>
 
       <Divider style={{ margin: "0.45rem 0px 0.45rem 0px" }} />
 
-      <div className="transaction-editor__general-info-container">
+      <Box className="transaction-editor__general-info-container">
         <LabeledInput label="Datetime">
           <DatetimePicker
             id="datetime-selector"
@@ -111,7 +117,7 @@ function TransactionForm({ transaction, onChange }) {
             onChange={formik.handleChange}
           />
         </LabeledInput>
-      </div>
+      </Box>
 
       <Button type="submit">Submit</Button>
     </form>
