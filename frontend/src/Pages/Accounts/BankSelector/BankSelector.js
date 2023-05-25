@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import { BsBank } from "react-icons/bs";
 
 import "./BankSelector.style.css";
-import { userInfo } from "../../../keycloak.js";
 import { COUNTRY_CODES, selectStyle } from "./constants.js";
 import useBankSelector from "./hook.js";
 import { bankConnect } from "./utility.js";
@@ -22,6 +21,8 @@ function BankSelector() {
   const onClickConnect = () =>
     bankConnect(selectedInstitution, userInfo.username);
   const isInstitutionSelected = selectedInstitution ? false : true;
+
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   return (
     <div className="bank-selector-container">

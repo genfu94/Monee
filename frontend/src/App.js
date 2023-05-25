@@ -8,7 +8,7 @@ import Home from "./Pages/Home.js";
 import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
 import Accounts from "./Pages/Accounts/Accounts.js";
-import { keycloak, setUserInfo, userInfo } from "./keycloak.js";
+import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
 import { GET_request } from "./Utils/network.js";
 import { ThemeProvider } from "@emotion/react";
@@ -32,12 +32,12 @@ class App extends React.Component {
       })
       .then((authenticated) => {
         keycloak.loadUserProfile().then((value) => {
-          setUserInfo(value);
+          localStorage.setItem("userInfo", JSON.stringify(value));
           const endpoint = urlJoin(
             process.env.REACT_APP_BACKEND_ENDPOINT,
             "update_bank_links"
           );
-          GET_request(endpoint, { username: userInfo.username }).then(
+          GET_request(endpoint, { username: value['username'] }).then(
             (data) => {
               this.handleLoadingComplete();
             }
