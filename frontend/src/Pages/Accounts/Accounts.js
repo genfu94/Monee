@@ -6,7 +6,7 @@ import { AiFillBank } from "react-icons/ai";
 import "./style.css";
 import { dialogStyle } from "./Accounts.style";
 import { GET_request } from "../../Utils/network";
-import SideMenuLayout from "../SideMenuLayout.js";
+import {SideMenuLayout} from "../../Components";
 import BankSelector from "./BankSelector/BankSelector.js";
 import urlJoin from "url-join";
 

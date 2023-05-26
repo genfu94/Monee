@@ -6,7 +6,15 @@ export const theme = createTheme({
     small: {
       fontSize: '0.8rem'
     },
+    logo: {
+      fontFamily: 'Kalam',
+    },
     h1: {
+      fontSize: '1.5rem',
+      color: '#555',
+      fontWeight: 600
+    },
+    h5: {
       fontSize: '1.2rem',
       color: '#555',
     }

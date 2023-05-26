@@ -12,7 +12,6 @@ import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
 import { GET_request } from "./Utils/network.js";
 import { ThemeProvider } from "@emotion/react";
-import SideMenuLayout from "./Pages/SideMenuLayout";
 
 class App extends React.Component {
   constructor(props) {

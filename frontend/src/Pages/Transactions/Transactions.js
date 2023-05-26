@@ -1,7 +1,7 @@
 import "../style.css";
 
 import React, { useState, useEffect } from "react";
-import SideMenuLayout from "../SideMenuLayout.js";
+import SideMenuLayout from "../../Components/SideMenuLayout.js";
 
 import urlJoin from "url-join";
 import { GET_request } from "../../Utils/network";
@@ -64,7 +64,7 @@ function Transactions() {
   return (
     <SideMenuLayout
       page="Transactions"
-      sideMenuTitle="Transactions"
+      sideMenuTitle="Filters"
       sideMenuContent={
         <div>
           {accountList.map((item) => (

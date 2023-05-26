@@ -50,6 +50,14 @@ const AddRecordBtn = styled(Button)(({ theme }) => ({
   },
 }));
 
+const LogoTypography = styled(Typography)(({ theme }) => ({
+  display: "inline",
+  textAlign: "center",
+  fontSize: "1.8rem",
+  marginLeft: "0.7rem",
+  color: theme.palette.primary.main,
+}));
+
 const PAGE_TO_TAB = {
   Home: 0,
   Accounts: 1,
@@ -67,21 +75,10 @@ function NavBar({ page }) {
       <Box className="flex-centered nav-bar-content">
         <Box style={{ display: "flex", alignItems: "center", height: "100%" }}>
           <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
-          <Typography
-            style={{
-              display: "inline",
-              textAlign: "center",
-              fontFamily: "Kalam",
-              fontSize: "1.8rem",
-              marginLeft: "0.7rem",
-              color: "#248d12",
-            }}
-          >
-            Monee
-          </Typography>
+          <LogoTypography variant='logo'>Monee</LogoTypography>
         </Box>
         <Box className="flex-centered nav-bar-menu">
-          <Box style={{display: 'flex', justifyContent: 'center'}}>
+          <Box style={{ display: "flex", justifyContent: "center" }}>
             <Tabs
               value={tab}
               onChange={handleChange}
@@ -93,7 +90,7 @@ function NavBar({ page }) {
             </Tabs>
           </Box>
         </Box>
-        <Box className="flex-centered" style={{marginLeft: 'auto'}}>
+        <Box className="flex-centered" style={{ marginLeft: "auto" }}>
           {/*<AddRecordBtn>+Record</AddRecordBtn>*/}
           <UserProfile />
         </Box>

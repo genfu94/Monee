@@ -1,5 +1,5 @@
 import React from "react";
-import SideMenuLayout from "./SideMenuLayout.js";
+import SideMenuLayout from "../Components/SideMenuLayout.js";
 
 class Home extends React.Component {
   render() {
