@@ -1,46 +1,17 @@
 import "../style.css";
 
-import React, { useState, useEffect } from "react";
-import SideMenuLayout from "../../Components/SideMenuLayout.js";
+import React, { useState } from "react";
+import {SideMenuLayout, DateRangeSelector} from "../../Components";
 
-import urlJoin from "url-join";
-import { GET_request } from "../../Utils/network";
 import { DATE_RANGE_PRESETS } from "../../Utils/date";
 import TransactionList from "./TransactionList.js";
-import DateRangeSelector from "../../Components/DateRangeSelector/DateRangeSelector.js";
-import { Checkbox, FormControlLabel, Typography } from "@mui/material";
-import { AiFillEye } from "react-icons/ai";
 
-function Transactions({transactions = [], onTransactionEdit = () => {}}) {
-  //const [transactions, setTransactions] = useState([]);
-  const accountList = [];
+
+function Transactions({accounts = [], onTransactionEdit = () => {}}) {
   const [value, setValue] = useState(DATE_RANGE_PRESETS[0].value);
   const [selectedPreset, setSelectedPreset] = useState(
     DATE_RANGE_PRESETS[0].presetId
   );
-
-  /*const accounts = [
-    {
-      name: "N26 - Conto Corrente Principale",
-      id: "8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4",
-    },
-  ];
-
-  const fetchTransactions = (dateStart, dateEnd) => {
-    const endpoint = urlJoin(
-      process.env.REACT_APP_BACKEND_ENDPOINT,
-      "fetch_transactions"
-    );
-    const params = {
-      account_id: "8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4",
-      date_from: dateStart.format("DD-MM-YYYY"),
-      date_to: dateEnd.format("DD-MM-YYYY"),
-    };
-
-    GET_request(endpoint, params).then((data) => {
-      setTransactions(data);
-    });
-  };*/
 
   /*const onTransactionEdit = (editedTransaction) => {
     let newTransactions = [...transactions];
@@ -53,29 +24,14 @@ function Transactions({transactions = [], onTransactionEdit = () => {}}) {
     }
 
     setTransactions(newTransactions);
-  };
-
-  useEffect(() => {
-    fetchTransactions(value[0], value[1]);
-  }, [value]);
-
-  const accountList = [{name:'All Accounts', id:null}, ...accounts];*/
+  };*/
 
   return (
     <SideMenuLayout
       page="Transactions"
       sideMenuTitle="Filters"
       sideMenuContent={
-        <div>
-          {accountList.map((item) => (
-            <FormControlLabel
-              label={<Typography variant="small">{item.name}</Typography>}
-              control={
-                <Checkbox icon={<AiFillEye />} checkedIcon={<AiFillEye />} />
-              }
-            />
-          ))}
-        </div>
+        <></>
       }
       content={
         <div
@@ -96,8 +52,9 @@ function Transactions({transactions = [], onTransactionEdit = () => {}}) {
             }}
           />
           <TransactionList
-            transactions={transactions}
+            accounts={accounts}
             onTransactionEdit={onTransactionEdit}
+            accountFilter={[]}
           />
         </div>
       }

@@ -19,6 +19,7 @@ class App extends React.Component {
 
     this.state = {
       loading: true,
+      accounts: []
     };
     this.initKeycloak();
 
@@ -39,7 +40,7 @@ class App extends React.Component {
           );
           GET_request(endpoint, { username: value["username"] }).then(
             (data) => {
-              console.log(data);
+              this.setState({accounts: data});
               this.handleLoadingComplete();
             }
           );
@@ -98,9 +99,9 @@ class App extends React.Component {
             <Route
               exact
               path="/transactions"
-              element={<Transactions />}
+              element={<Transactions accounts={this.state.accounts}/>}
             ></Route>
-            <Route exact path="/accounts" element={<Accounts />}></Route>
+            <Route exact path="/accounts" element={<Accounts accounts={this.state.accounts} />}></Route>
           </Routes>
         </ThemeProvider>
       );
