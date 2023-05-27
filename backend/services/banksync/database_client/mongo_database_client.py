@@ -84,7 +84,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         #accounts = list(self.account_collection.find({'user': username}, {
         #                "transactions": {"$slice": [start_item_idx, n_items]}, 'bank_link_id': 0}))
         accounts = list(self.account_collection.find({'user': username}, {
-                        "transactions": 0, 'bank_link_id': 0}))
+                        'bank_link_id': 0}))
 
         return accounts
 

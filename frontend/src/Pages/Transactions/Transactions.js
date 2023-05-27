@@ -11,15 +11,15 @@ import DateRangeSelector from "../../Components/DateRangeSelector/DateRangeSelec
 import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { AiFillEye } from "react-icons/ai";
 
-function Transactions() {
-  const [transactions, setTransactions] = useState([]);
-
+function Transactions({transactions = [], onTransactionEdit = () => {}}) {
+  //const [transactions, setTransactions] = useState([]);
+  const accountList = [];
   const [value, setValue] = useState(DATE_RANGE_PRESETS[0].value);
   const [selectedPreset, setSelectedPreset] = useState(
     DATE_RANGE_PRESETS[0].presetId
   );
 
-  const accounts = [
+  /*const accounts = [
     {
       name: "N26 - Conto Corrente Principale",
       id: "8b4b8896-bef7-4ce0-b69c-03bba8bf7fc4",
@@ -40,9 +40,9 @@ function Transactions() {
     GET_request(endpoint, params).then((data) => {
       setTransactions(data);
     });
-  };
+  };*/
 
-  const onTransactionEdit = (editedTransaction) => {
+  /*const onTransactionEdit = (editedTransaction) => {
     let newTransactions = [...transactions];
     for (let i = 0; i < newTransactions.length; i++) {
       if (
@@ -59,7 +59,7 @@ function Transactions() {
     fetchTransactions(value[0], value[1]);
   }, [value]);
 
-  const accountList = [{name:'All Accounts', id:null}, ...accounts];
+  const accountList = [{name:'All Accounts', id:null}, ...accounts];*/
 
   return (
     <SideMenuLayout
@@ -92,7 +92,7 @@ function Transactions() {
             onChange={(preset, value) => {
               setValue(value);
               setSelectedPreset(preset);
-              fetchTransactions(value[0], value[1]);
+              //fetchTransactions(value[0], value[1]);
             }}
           />
           <TransactionList

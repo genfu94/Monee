@@ -16,11 +16,13 @@ async def bank_connect(username:str, institution: InstitutionInfo):
     return get_bank_sync_client().bank_link_client.link_bank(username, institution)
 
 
-@router.get("/update_bank_links")
-async def update_bank_links(username:str):
+@router.get("/synchronize_account")
+async def synchronize_account(username:str):
     if get_bank_sync_client().nordigen_client:
         get_bank_sync_client().update_bank_links_statuses(username)
         get_bank_sync_client().synchronize_user_accounts(username)
+    
+    return get_bank_sync_client().bank_account_client.fetch_linked_accounts(username)
 
 
 @router.get("/fetch_linked_accounts")
@@ -29,7 +31,7 @@ async def fetch_linked_accounts(username: str):
 
 
 @router.get("/fetch_transactions")
-async def fetch_linked_accounts(account_id: str, date_from: str, date_to: str):
+async def fetch_transactions(account_id: str, date_from: str, date_to: str):
     date_from = datetime.strptime(date_from, "%d-%m-%Y")
     date_to = datetime.strptime(date_to, "%d-%m-%Y")
     return get_bank_sync_client().account_db_client.fetch_transactions(account_id, date_from, date_to)

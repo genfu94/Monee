@@ -25,19 +25,19 @@ function renderAccountItem(item) {
   );
 }
 
-function Accounts() {
-  const [accounts, setAccounts] = useState([]);
+function Accounts({accounts = []}) {
+  //const [accounts, setAccounts] = useState([]);
   const [dialog, setDialog] = useState(false);
   const showDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const endpoint = urlJoin(process.env.REACT_APP_BACKEND_ENDPOINT, "fetch_linked_accounts");
     const params = {
       username: "user",
     };
     GET_request(endpoint, params).then((data) => setAccounts(data));
-  }, []);
+  }, []);*/
 
   return (
     <>

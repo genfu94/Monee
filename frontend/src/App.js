@@ -35,10 +35,11 @@ class App extends React.Component {
           localStorage.setItem("userInfo", JSON.stringify(value));
           const endpoint = urlJoin(
             process.env.REACT_APP_BACKEND_ENDPOINT,
-            "update_bank_links"
+            "synchronize_account"
           );
           GET_request(endpoint, { username: value["username"] }).then(
             (data) => {
+              console.log(data);
               this.handleLoadingComplete();
             }
           );
