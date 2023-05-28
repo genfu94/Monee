@@ -1,15 +1,15 @@
-import { useFormik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { FormControlLabel, Typography, Checkbox } from "@mui/material";
 import { AiFillEye } from "react-icons/ai";
 
-const CheckboxGroup = ({ options, value, onChange }) => {
+const CheckboxGroup = ({
+  options,
+  value,
+  onChange
+}) => {
   const handleChange = (checked, itemValue) => {
-    if (!checked) {
-      onChange(value.filter((v) => v !== itemValue));
-    } else {
-      onChange([...value, itemValue]);
-    }
+    if (!checked) onChange(value.filter((v) => v !== itemValue));
+    else onChange([...value, itemValue]);
   };
 
   return (
