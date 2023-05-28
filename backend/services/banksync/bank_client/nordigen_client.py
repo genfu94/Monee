@@ -30,7 +30,7 @@ class NordigenBankAccountClient(BankAccountClientInterface):
         account_api = self.nordigen_client.account_api(id=account_id)
         account_details_json = account_api.get_details()['account']
 
-        if account_details_json['status'] == 'deleted':
+        if 'status' in account_details_json and account_details_json['status'] == 'deleted':
             return None
 
         return AccountData(
@@ -72,6 +72,12 @@ class NordigenBankAccountClient(BankAccountClientInterface):
 
     def _psd2_to_transaction(self, account_id: str, psd2_transaction: dict) -> Dict:
         # Returns a dict representation of a bank_sync.types.Transaction object
+        origin = ''
+        if 'creditorName' in psd2_transaction:
+            origin = psd2_transaction['creditorName']
+        if 'debtorName' in psd2_transaction:
+            origin = psd2_transaction['debtorName']
+            
         return {
             "account_id": account_id,
             "category": "Unknown",
@@ -79,7 +85,7 @@ class NordigenBankAccountClient(BankAccountClientInterface):
             "transaction_id": psd2_transaction['transactionId'],
             "booking_date": psd2_transaction['bookingDate'] + " 00:00:00",
             "transaction_amount": dict(psd2_transaction['transactionAmount']),
-            "origin": psd2_transaction['creditorName'] if 'creditorName' in psd2_transaction else psd2_transaction['debtorName'],
+            "origin": origin,
             "text": psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
         }
 

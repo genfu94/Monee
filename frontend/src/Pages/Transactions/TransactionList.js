@@ -14,7 +14,7 @@ function groupTransactionsByDate(accounts, accountFilter) {
   let transactionsGroupedByDate = {};
 
   for (const account of accounts) {
-    if(!accountFilter.includes(account.id)) continue;
+    if(!accountFilter.includes(account._id)) continue;
 
     for (const transaction of account.transactions) {
       const dates = Object.keys(transactionsGroupedByDate);

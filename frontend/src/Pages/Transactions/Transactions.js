@@ -17,7 +17,7 @@ function Transactions({ accounts = [], onTransactionEdit = () => {} }) {
   );
   const accountCheckboxes = accounts.map((a) => ({
     label: a.institution_name + " - " + a.name,
-    value: a.id,
+    value: a._id,
   }));
   const [filter, setFilter] = useState(accountCheckboxes.map((a) => a.value));
   /*const onTransactionEdit = (editedTransaction) => {
