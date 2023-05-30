@@ -4,3 +4,6 @@ uvicorn
 pymongo
 dataclasses-json
 python-dateutil
+joblib
+scikit-learn
+pandas

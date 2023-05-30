@@ -18,8 +18,9 @@ from ..database_client.database_client_interface import AccountDatabaseClient
 
 
 class NordigenBankAccountClient(BankAccountClientInterface):
-    def __init__(self, nordigen_client, account_db_client: AccountDatabaseClient):
+    def __init__(self, nordigen_client, account_db_client: AccountDatabaseClient, transaction_classifier):
         self.nordigen_client = nordigen_client
+        self.transaction_classifier = transaction_classifier
         super().__init__(account_db_client)
 
     def _fetch_bank_account_details(self, bank_linking_details: BankLinkingDetailsBase, account_id: str) -> AccountData:
@@ -77,16 +78,16 @@ class NordigenBankAccountClient(BankAccountClientInterface):
             origin = psd2_transaction['creditorName']
         if 'debtorName' in psd2_transaction:
             origin = psd2_transaction['debtorName']
-            
+        text = psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
         return {
             "account_id": account_id,
-            "category": "Unknown",
+            "category": self.transaction_classifier.predict(text),
             "type": 'income' if float(psd2_transaction['transactionAmount']['amount']) > 0 else 'expense',
             "transaction_id": psd2_transaction['transactionId'],
             "booking_date": psd2_transaction['bookingDate'] + " 00:00:00",
             "transaction_amount": dict(psd2_transaction['transactionAmount']),
             "origin": origin,
-            "text": psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
+            "text": text
         }
 
     def fetch_account_updates(self, account_data: AccountData) -> AccountData:
@@ -165,9 +166,10 @@ class NordigenBankLinkClient(BankLinkClientInterface):
 
 
 class NordigenBankSyncClient(BankSyncClientInterface):
-    def __init__(self, nordigen_auth_credentials: APICredentials, account_db_client: AccountDatabaseClient):
+    def __init__(self, nordigen_auth_credentials: APICredentials, account_db_client: AccountDatabaseClient, transaction_classifier):
         self.nordigen_auth_credentials = nordigen_auth_credentials
         self.nordigen_client = None
+        self.transaction_classifier = transaction_classifier
         super().__init__(account_db_client, None, None)
 
     def initialize(self):
@@ -186,7 +188,7 @@ class NordigenBankSyncClient(BankSyncClientInterface):
             self.bank_link_client = NordigenBankLinkClient(
                 self.nordigen_client, self.account_db_client)
             self.bank_account_client = NordigenBankAccountClient(
-                self.nordigen_client, self.account_db_client)
+                self.nordigen_client, self.account_db_client, self.transaction_classifier)
         except Exception as e:
             print(e)
             self.nordigen_client = None

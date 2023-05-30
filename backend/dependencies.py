@@ -3,6 +3,7 @@ from services.banksync.bank_client import NordigenBankSyncClient
 from services.banksync.database_client import MongoAccountDatabaseClient
 from services.banksync.bank_client.bank_client_interface import BankSyncClientInterface
 import configparser
+from joblib import load
 
 
 bank_sync_client:BankSyncClientInterface = None
@@ -18,9 +19,12 @@ def initialize_bank_sync_client():
     config = configparser.ConfigParser()
     config.read('config.ini')
 
+    transaction_classifier = load('./transaction_classifier.joblib')
+
     bank_sync_client = NordigenBankSyncClient(
         APICredentials(config['NORDIGEN']['NordigenSecretID'], config['NORDIGEN']['NordigenSecretKey']),
-        account_db_client
+        account_db_client,
+        transaction_classifier
     )
 
     bank_sync_client.initialize()
