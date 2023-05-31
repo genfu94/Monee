@@ -59,8 +59,8 @@ export const formValuesToTransactionObject = (formValues, initialValues) => {
     account_id: formValues.account_id,
     transaction_id: formValues.transaction_id,
     category_edited:
-      initialValues.category != null
-        ? formValues.category === initialValues.category
+      initialValues.category !== null
+        ? formValues.category !== initialValues.category
         : false,
   };
 };
