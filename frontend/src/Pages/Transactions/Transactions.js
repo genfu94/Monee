@@ -67,6 +67,7 @@ function Transactions({ accounts = [], onTransactionEdit = () => {} }) {
             accounts={accounts}
             onTransactionEdit={onTransactionEdit}
             accountFilter={filter}
+            dateRange={dateRange}
           />
         </div>
       }
