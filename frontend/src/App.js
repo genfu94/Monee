@@ -95,7 +95,7 @@ class App extends React.Component {
       return (
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route exact path="/" element={<Dashboard />}></Route>
+            <Route exact path="/" element={<Dashboard accounts={this.state.accounts}/>}></Route>
             <Route
               exact
               path="/transactions"
