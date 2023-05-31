@@ -8,6 +8,8 @@ export const getBaseStyles = () => (
     Menu: {
       position: "absolute",
       width: "100%",
+      maxHeight: "200px",
+      overflow: 'scroll',
       zIndex: "1050",
       border: "1px solid",
       borderRadius: "0.4rem",

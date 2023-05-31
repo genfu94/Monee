@@ -14,19 +14,20 @@ function groupTransactionsByDate(accounts, accountFilter, dateRange) {
   let transactionsGroupedByDate = {};
 
   for (const account of accounts) {
-    if(!accountFilter.includes(account._id)) continue;
+    if (!accountFilter.includes(account._id)) continue;
 
     for (const transaction of account.transactions) {
       const dates = Object.keys(transactionsGroupedByDate);
-      const booking_date = dayjs(transaction.booking_date)
+      const booking_date = dayjs(transaction.booking_date);
 
-      if(!(booking_date > dateRange[0] && booking_date < dateRange[1])) continue;
-  
+      if (!(booking_date > dateRange[0] && booking_date < dateRange[1]))
+        continue;
+
       const format_booking_date = booking_date.format("MMM DD, YYYY");
       if (!dates.includes(booking_date)) {
         transactionsGroupedByDate[format_booking_date] = [];
       }
-  
+
       transactionsGroupedByDate[format_booking_date].push(transaction);
     }
   }
@@ -34,19 +35,28 @@ function groupTransactionsByDate(accounts, accountFilter, dateRange) {
   return transactionsGroupedByDate;
 }
 
-function TransactionList({ accounts, accountFilter = [], dateRange, onTransactionEdit }) {
+function TransactionList({
+  accounts,
+  accountFilter = [],
+  dateRange,
+  onTransactionEdit,
+}) {
   const [transactionSelected, setTransactionSelected] = useState(null);
-  const transactionsGroupedByDate = groupTransactionsByDate(accounts, accountFilter, dateRange);
+  const transactionsGroupedByDate = groupTransactionsByDate(
+    accounts,
+    accountFilter,
+    dateRange
+  );
   return (
     <>
-      <List style={{alignSelf: "stretch"}} disablePadding>
+      <List style={{ alignSelf: "stretch" }} disablePadding>
         {Object.keys(transactionsGroupedByDate).map((sectionId) => (
           <li key={sectionId}>
             <ul>
               <ListSubheader style={listSubheaderStyle}>
                 {sectionId}
               </ListSubheader>
-              
+
               {transactionsGroupedByDate[sectionId].map((item) => {
                 return (
                   <ListItem key={item.transaction_id}>
@@ -59,7 +69,7 @@ function TransactionList({ accounts, accountFilter = [], dateRange, onTransactio
               })}
             </ul>
           </li>
-            ))}
+        ))}
       </List>
 
       <Modal
@@ -69,7 +79,10 @@ function TransactionList({ accounts, accountFilter = [], dateRange, onTransactio
       >
         <Box sx={modalStyle}>
           <TransactionForm
-            onChange={onTransactionEdit}
+            onChange={(t) => {
+              setTransactionSelected(null);
+              onTransactionEdit(t);
+            }}
             transaction={transactionSelected}
           />
         </Box>

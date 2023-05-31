@@ -7,10 +7,12 @@ import {
   CheckboxGroup,
 } from "../../Components";
 
+import { updateTransaction } from "./api";
+
 import { DATE_RANGE_PRESETS } from "../../Utils/date";
 import TransactionList from "./TransactionList.js";
 
-function Transactions({ accounts = [], onTransactionEdit = () => {} }) {
+function Transactions({ accounts = [] }) {
   const [dateRange, setDateRange] = useState(DATE_RANGE_PRESETS[0].value);
   const [selectedPreset, setSelectedPreset] = useState(
     DATE_RANGE_PRESETS[0].presetId
@@ -20,18 +22,17 @@ function Transactions({ accounts = [], onTransactionEdit = () => {} }) {
     value: a._id,
   }));
   const [filter, setFilter] = useState(accountCheckboxes.map((a) => a.value));
-  /*const onTransactionEdit = (editedTransaction) => {
-    let newTransactions = [...transactions];
-    for (let i = 0; i < newTransactions.length; i++) {
-      if (
-        newTransactions[i].transaction_id === editedTransaction.transaction_id
-      ) {
-        newTransactions[i] = editedTransaction;
-      }
-    }
 
-    setTransactions(newTransactions);
-  };*/
+  const onTransactionEdit = (editedTransaction) => {
+    const acc = accounts.find((a) => a._id === editedTransaction.account_id);
+    acc.transactions = acc.transactions.map((t) =>
+      t.transaction_id === editedTransaction.transaction_id
+        ? editedTransaction
+        : t
+    );
+
+    updateTransaction(editedTransaction);
+  };
 
   return (
     <SideMenuLayout

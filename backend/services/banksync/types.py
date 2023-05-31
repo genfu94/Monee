@@ -63,6 +63,7 @@ class Transaction:
     text: str
     category: str
     type: str
+    category_edited: bool
 
 @dataclass_json
 @dataclass

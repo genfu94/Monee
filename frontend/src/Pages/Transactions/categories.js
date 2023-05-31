@@ -1,39 +1,60 @@
 import { IoIosCafe, IoMdRestaurant } from "react-icons/io";
 import { IoFastFood } from "react-icons/io5";
 import { MdLocalGroceryStore, MdSubscriptions } from "react-icons/md";
-import { FaShoppingBag, FaTshirt, FaQuestion, FaFileInvoiceDollar, FaParking, FaBus } from "react-icons/fa";
-import { RiMedicineBottleFill, RiComputerFill, RiRefund2Fill } from "react-icons/ri";
+import {
+  FaShoppingBag,
+  FaTshirt,
+  FaQuestion,
+  FaFileInvoiceDollar,
+  FaParking,
+  FaBus,
+} from "react-icons/fa";
+import {
+  RiMedicineBottleFill,
+  RiComputerFill,
+  RiRefund2Fill,
+} from "react-icons/ri";
 import { HiEmojiHappy, HiReceiptTax } from "react-icons/hi";
-import {AiFillCar, AiFillHome, AiFillGift, AiFillInsurance} from "react-icons/ai";
-import {GiHealthNormal, GiIsland, GiBookCover, GiReceiveMoney} from "react-icons/gi";
-import {BsFuelPumpFill} from "react-icons/bs";
-import {BsHouseLockFill} from "react-icons/bs";
-import {TbPigMoney} from "react-icons/tb";
+import {
+  AiFillCar,
+  AiFillHome,
+  AiFillGift,
+  AiFillInsurance,
+} from "react-icons/ai";
+import {
+  GiHealthNormal,
+  GiIsland,
+  GiBookCover,
+  GiReceiveMoney,
+} from "react-icons/gi";
+import { BsFuelPumpFill } from "react-icons/bs";
+import { BsHouseLockFill } from "react-icons/bs";
+import { TbPigMoney } from "react-icons/tb";
 
 export const CATEGORIES = {
-  UNKNOWN: 'unknown',
-  BAR: 'bar',
-  GROCERIES: 'groceries',
-  RESTAURANT: 'restaurant',
-  HEALTH_CARE: 'health_care',
-  FUEL: 'fuel',
-  BILLS: 'bills',
-  SHOPPING: 'shopping',
-  VEHICLE_MAINTENANCE: 'vehicle_maintenance',
-  PARKING: 'parking',
-  HOME_MAINTENANCE: 'home_maintenance',
-  FEES: 'fees',
-  HOLIDAYS: 'holidays',
-  REFUNDS: 'refunds',
-  ENTERTAINMENT: 'entertainment',
-  GIFTS: 'gifts',
-  PUBLIC_TRANSPORT: 'public_transport',
-  EDUCATION: 'education',
-  RENT_MORTGAGE: 'rent_mortgage',
-  SUBSCRIPTIONS: 'subscriptions',
-  INCOME: 'income',
-  INVESTMENT: 'investment',
-  INSURANCES: 'insurances',
+  UNKNOWN: "unknown",
+  BAR: "bar",
+  GROCERIES: "groceries",
+  RESTAURANT: "restaurant",
+  HEALTH_CARE: "health_care",
+  FUEL: "fuel",
+  BILLS: "bills",
+  SHOPPING: "shopping",
+  VEHICLE_MAINTENANCE: "vehicle_maintenance",
+  PARKING: "parking",
+  HOME_MAINTENANCE: "home_maintenance",
+  FEES: "fees",
+  HOLIDAYS: "holidays",
+  REFUNDS: "refunds",
+  ENTERTAINMENT: "entertainment",
+  GIFTS: "gifts",
+  PUBLIC_TRANSPORT: "public_transport",
+  EDUCATION: "education",
+  RENT_MORTGAGE: "rent_mortgage",
+  SUBSCRIPTIONS: "subscriptions",
+  INCOME: "income",
+  INVESTMENT: "investment",
+  INSURANCES: "insurances",
 };
 
 export const CATEGORIES_ICON_ENUM = {
@@ -54,16 +75,16 @@ export const CATEGORIES_ICON_ENUM = {
     color: "red",
   },
   [CATEGORIES.HEALTH_CARE]: {
-      icon: <GiHealthNormal style={{ color: "white" }}/>,
-      color: 'blue'
+    icon: <GiHealthNormal style={{ color: "white" }} />,
+    color: "blue",
   },
   [CATEGORIES.FUEL]: {
-    icon: <BsFuelPumpFill style={{ color: "white" }}/>,
-    color: 'blue'
+    icon: <BsFuelPumpFill style={{ color: "white" }} />,
+    color: "blue",
   },
   [CATEGORIES.BILLS]: {
-    icon: <FaFileInvoiceDollar style={{ color: "white" }}/>,
-    color: 'blue'
+    icon: <FaFileInvoiceDollar style={{ color: "white" }} />,
+    color: "blue",
   },
   [CATEGORIES.SHOPPING]: {
     icon: <FaShoppingBag style={{ color: "white" }} />,
@@ -131,24 +152,4 @@ export const CATEGORIES_ICON_ENUM = {
   },
 };
 
-export const CATEGORIES_TREE = [
-  {
-    value: CATEGORIES.UNKNOWN,
-  },
-  {
-    value: CATEGORIES.FOOD_AND_DRINKS,
-    children: [
-      {
-        value: CATEGORIES.BAR_AND_CAFE,
-      },
-    ],
-  },
-  {
-    value: CATEGORIES.SHOPPING,
-    children: [
-      {
-        value: CATEGORIES.GROCERIES,
-      },
-    ],
-  },
-];
+export const CATEGORIES_TREE = Object.keys(CATEGORIES).map(c => ({value: CATEGORIES[c]}));

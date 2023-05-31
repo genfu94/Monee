@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import { Box, TextField, Typography, Button, Divider } from "@mui/material";
 
 import "./TransactionForm.style.css";
-import { update_transaction } from "./api";
 import {
   AmountTextField,
   defaultFormValues,
@@ -19,13 +18,13 @@ import {
 } from "../../Pages/Transactions/categories.js";
 
 function TransactionForm({ transaction, onChange }) {
+  // TODO: Pass this as props!!!
   const data = CATEGORIES_TREE;
 
   const formik = useFormik({
     initialValues: defaultFormValues(transaction),
     onSubmit: (values) => {
-      const newTransaction = formValuesToTransactionObject(values);
-      update_transaction(newTransaction, transaction);
+      const newTransaction = formValuesToTransactionObject(values, formik.initialValues);
       onChange(newTransaction);
     },
   });

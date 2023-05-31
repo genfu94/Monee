@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import {styled} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
 
 export const buttonToggleStyle = {
@@ -29,7 +29,7 @@ export const AmountTextField = styled(TextField)({
     color: "#c6d065",
     fontWeight: "700",
     fontFamily: "Montserrat",
-  }
+  },
 });
 
 export const defaultFormValues = (transaction) => {
@@ -43,20 +43,24 @@ export const defaultFormValues = (transaction) => {
     reason: transaction.text,
     category: transaction.category,
   };
-}
+};
 
-export const formValuesToTransactionObject = (formValues) => {
+export const formValuesToTransactionObject = (formValues, initialValues) => {
   return {
-    "booking_date": formValues.datetime.format('YYYY-MM-DD HH:mm:ss'),
-    "transaction_amount": {
-      "amount": formValues.amount,
-      "currency": "EUR"
+    booking_date: formValues.datetime.format("YYYY-MM-DD HH:mm:ss"),
+    transaction_amount: {
+      amount: formValues.amount,
+      currency: "EUR",
     },
-    "origin": formValues.origin,
-    "category": formValues.category,
-    "type": formValues.type,
-    "text": formValues.reason,
-    "account_id": formValues.account_id,
-    "transaction_id": formValues.transaction_id
+    origin: formValues.origin,
+    category: formValues.category,
+    type: formValues.type,
+    text: formValues.reason,
+    account_id: formValues.account_id,
+    transaction_id: formValues.transaction_id,
+    category_edited:
+      initialValues.category != null
+        ? formValues.category === initialValues.category
+        : false,
   };
-}
+};
