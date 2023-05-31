@@ -59,7 +59,7 @@ const LogoTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const PAGE_TO_TAB = {
-  Home: 0,
+  Dashboard: 0,
   Accounts: 1,
   Transactions: 2,
 };
@@ -84,7 +84,7 @@ function NavBar({ page }) {
               onChange={handleChange}
               aria-label="nav tabs example"
             >
-              <LinkTab label="Home" href="/" />
+              <LinkTab label="Dashboard" href="/" />
               <LinkTab label="Accounts" href="/accounts" />
               <LinkTab label="Transactions" href="/transactions" />
             </Tabs>

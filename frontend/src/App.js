@@ -4,7 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
 import { theme } from "./theme";
-import Home from "./Pages/Home.js";
+import Dashboard from "./Pages/Dashboard/Dashboard.js";
 import Transactions from "./Pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
 import Accounts from "./Pages/Accounts/Accounts.js";
@@ -95,7 +95,7 @@ class App extends React.Component {
       return (
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route exact path="/" element={<Home />}></Route>
+            <Route exact path="/" element={<Dashboard />}></Route>
             <Route
               exact
               path="/transactions"
