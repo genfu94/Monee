@@ -57,7 +57,7 @@ class AccountDatabaseClient(ABC):
         pass
 
     @abstractmethod
-    def update_transaction(self, username: str, transaction: Transaction):
+    def update_transaction(self, username: str, transaction: Transaction, category_edited: bool):
         pass
 
     @abstractmethod

@@ -19,15 +19,13 @@ def initialize_bank_sync_client():
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    transaction_classifier = load('./transaction_classifier.joblib')
-
     bank_sync_client = NordigenBankSyncClient(
         APICredentials(config['NORDIGEN']['NordigenSecretID'], config['NORDIGEN']['NordigenSecretKey']),
-        account_db_client,
-        transaction_classifier
+        account_db_client
     )
 
     bank_sync_client.initialize()
+    print("ASD")
 
 def get_bank_sync_client():
     return bank_sync_client

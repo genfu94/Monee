@@ -38,5 +38,5 @@ async def fetch_transactions(account_id: str, date_from: str, date_to: str):
 
 
 @router.post("/update_transaction")
-async def update_transaction(account_id: str, transaction: Transaction):
-    return get_bank_sync_client().account_db_client.update_transaction(account_id, transaction)
+async def update_transaction(account_id: str, category_edited: bool, transaction: Transaction):
+    return get_bank_sync_client().account_db_client.update_transaction(account_id, transaction, category_edited)

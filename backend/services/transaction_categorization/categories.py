@@ -21,7 +21,7 @@ class TransactionCategory(Enum):
     EDUCATION = 'education'
     RENT_MORTGAGE = 'rent_mortgage'
     SUBSCRIPTIONS = 'subscriptions'
-    INCOME = 'income'
+    WAGES = 'wages'
     INVESTMENT = 'investment'
     INSURANCES = 'insurances'
 
@@ -83,7 +83,7 @@ def convert_wallet_categories(category: str) -> TransactionCategory:
         return TransactionCategory.HOME_MAINTENANCE
     
     if category in ['Wage, invoices', 'Income']:
-        return TransactionCategory.INCOME
+        return TransactionCategory.WAGES
     
     if category in ['Life & Entertainment', 'Hobbies', 'Culture, sport events', 'Life events', 'Active sport, fitness']:
         return TransactionCategory.ENTERTAINMENT

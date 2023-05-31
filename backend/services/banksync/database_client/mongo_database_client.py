@@ -135,7 +135,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self.account_collection.update_one(
             {"_id": account_data["id"]}, update_query, upsert=True)
 
-    def update_transaction(self, account_id: str, transaction: Transaction):
+    def update_transaction(self, account_id: str, transaction: Transaction, category_edited: bool):
         find_query = {"_id": account_id,
                       "transactions.transaction_id": transaction.transaction_id}
         update_query = {
@@ -145,7 +145,8 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
                     "transactions.$.origin": transaction.origin,
                     "transactions.$.text": transaction.text,
                     "transactions.$.category": transaction.category,
-                    "transactions.$.type": transaction.type
+                    "transactions.$.type": transaction.type,
+                    "transactions.$.category_edited": category_edited
                 }
             }
         

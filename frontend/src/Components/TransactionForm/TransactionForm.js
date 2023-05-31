@@ -25,7 +25,7 @@ function TransactionForm({ transaction, onChange }) {
     initialValues: defaultFormValues(transaction),
     onSubmit: (values) => {
       const newTransaction = formValuesToTransactionObject(values);
-      update_transaction(newTransaction);
+      update_transaction(newTransaction, transaction);
       onChange(newTransaction);
     },
   });
