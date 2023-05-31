@@ -47,7 +47,7 @@ function TransactionForm({ transaction, onChange }) {
       </Box>
       &nbsp;{" "}
       <Typography style={{ float: "right", fontSize: "13px" }}>
-        {value}
+        {CATEGORIES_ICON_ENUM[value].text}
       </Typography>
     </Box>
   );

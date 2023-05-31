@@ -41,12 +41,25 @@
 
 .target-currency-transaction-amount {
   color: #fe3b2c;
+  padding: 0.5rem 0 0.5rem 0;
+  width: 5rem;
+  border-radius: 0.5em;
+  background: #ffdcda;
   margin-left: auto;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .transaction-income {
   color: #1d8718;
+  padding: 0.5rem 0 0.5rem 0;
+  width: 5rem;
+  border-radius: 0.5em;
+  background: #d4fbd2;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .original-currency-transaction-amount {

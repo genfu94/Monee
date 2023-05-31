@@ -12,6 +12,7 @@ export const modalStyle = {
 
 export const listSubheaderStyle = {
   backgroundColor: "#eff0f2",
-  fontSize: "0.8rem",
-  fontWeight: "900",
+  fontSize: "0.7rem",
+  fontWeight: "700",
+  fontFamily: 'Montserrat'
 }
