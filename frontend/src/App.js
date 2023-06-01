@@ -4,7 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
 import {Dashboard, Transactions, Accounts} from "./pages";
-import budget_logo from "./budget.png";
+import budget_logo from "./assets/imgs/logo.png";
 import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
 import { GET_request } from "./utils/network.js";

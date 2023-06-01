@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Navbar.style.css";
-import budget_logo from "../../budget.png";
+import budget_logo from "../../assets/imgs/logo.png";
 import UserProfile from "./UserProfile.js";
 import { Typography, Box, Button } from "@mui/material";
 import styled from "@emotion/styled";
