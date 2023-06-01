@@ -5,11 +5,11 @@ import {
   SideMenuLayout,
   DateRangeSelector,
   CheckboxGroup,
-} from "../../Components";
+} from "../../components";
 
 import { updateTransaction } from "./api";
 
-import { DATE_RANGE_PRESETS } from "../../Utils/date";
+import { DATE_RANGE_PRESETS } from "../../utils/date";
 import TransactionList from "./TransactionList.js";
 
 function Transactions({ accounts = [] }) {

@@ -4,13 +4,13 @@ import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
 import { theme } from "./theme";
-import Dashboard from "./Pages/Dashboard/Dashboard.js";
-import Transactions from "./Pages/Transactions/Transactions.js";
+import Dashboard from "./pages/Dashboard/Dashboard.js";
+import Transactions from "./pages/Transactions/Transactions.js";
 import budget_logo from "./budget.png";
-import Accounts from "./Pages/Accounts/Accounts.js";
+import Accounts from "./pages/Accounts/Accounts.js";
 import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
-import { GET_request } from "./Utils/network.js";
+import { GET_request } from "./utils/network.js";
 import { ThemeProvider } from "@emotion/react";
 
 class App extends React.Component {

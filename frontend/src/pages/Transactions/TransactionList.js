@@ -8,7 +8,7 @@ import { Divider } from "@mui/material";
 
 import dayjs from "dayjs";
 import TransactionItem from "./TransactionItem.js";
-import TransactionForm from "../../Components/TransactionForm/TransactionForm.js";
+import TransactionForm from "../../components/TransactionForm/TransactionForm.js";
 import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
 
 function groupTransactionsByDate(accounts, accountFilter, dateRange) {

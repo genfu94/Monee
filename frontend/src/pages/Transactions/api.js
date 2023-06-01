@@ -1,4 +1,4 @@
-import { POST_request } from "../../Utils/network";
+import { POST_request } from "../../utils/network";
 import urlJoin from "url-join";
 
 export function updateTransaction(transaction) {

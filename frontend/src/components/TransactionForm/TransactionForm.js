@@ -15,7 +15,7 @@ import NestedSelector from "../NestedSelector/NestedSelector.js";
 import {
   CATEGORIES_TREE,
   CATEGORIES_ICON_ENUM,
-} from "../../Pages/Transactions/categories.js";
+} from "../../pages/Transactions/categories.js";
 
 function TransactionForm({ transaction, onChange }) {
   // TODO: Pass this as props!!!

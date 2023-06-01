@@ -1,5 +1,5 @@
 import urlJoin from "url-join";
-import { POST_request, GET_request } from "../../../Utils/network";
+import { POST_request, GET_request } from "../../../utils/network";
 
 export function bankConnect(institution_info, username) {
   let institution = {

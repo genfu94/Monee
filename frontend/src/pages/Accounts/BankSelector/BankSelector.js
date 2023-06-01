@@ -7,7 +7,7 @@ import "./BankSelector.style.css";
 import { COUNTRY_CODES, selectStyle } from "./constants.js";
 import useBankSelector from "./hook.js";
 import { bankConnect } from "./utility.js";
-import LabeledInput from "../../../Components/LabeledInput/LabeledInput";
+import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 
 function BankSelector() {
   const [
