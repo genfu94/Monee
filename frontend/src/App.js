@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
 import { Dashboard, Transactions, Accounts } from "./pages";
+import { LoadingScreen } from "./components";
 import budget_logo from "./assets/imgs/logo.png";
 import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
@@ -26,35 +26,6 @@ function initKeycloak() {
         reject(reason);
       });
   });
-}
-
-function renderLoadingPage() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
-        <div style={{ fontFamily: "Montserrat" }}>Budget App</div>
-      </div>
-      <ClipLoader size="2rem" />
-    </div>
-  );
 }
 
 function App() {
@@ -84,10 +55,16 @@ function App() {
     });
   }, []);
 
-  if (loading) {
-    return renderLoadingPage();
-  } else {
-    return (
+  return (
+    <LoadingScreen
+      loading={loading}
+      content={
+        <>
+          <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
+          <div style={{ fontFamily: "Montserrat" }}>Budget App</div>
+        </>
+      }
+    >
       <ThemeProvider theme={theme}>
         <Routes>
           <Route
@@ -107,8 +84,8 @@ function App() {
           ></Route>
         </Routes>
       </ThemeProvider>
-    );
-  }
+    </LoadingScreen>
+  );
 }
 
 export default App;

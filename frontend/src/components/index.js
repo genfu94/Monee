@@ -6,6 +6,7 @@ import NestedSelector from './NestedSelector/NestedSelector';
 import TransactionForm from './TransactionForm/TransactionForm';
 import SideMenuLayout from './SideMenuLayout';
 import CheckboxGroup from './CheckboxGroup/CheckboxGroup';
+import LoadingScreen from './LoadingScreen/LoadingScreen';
 
 export {
   DateRangePicker,
@@ -15,5 +16,6 @@ export {
   NestedSelector,
   TransactionForm,
   CheckboxGroup,
-  SideMenuLayout
+  SideMenuLayout,
+  LoadingScreen
 }
