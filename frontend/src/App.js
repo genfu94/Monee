@@ -1,15 +1,13 @@
-import { Route, Routes } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import WebFont from "webfontloader";
 
-import { Dashboard, Transactions, Accounts } from "./pages";
 import { LoadingScreen } from "./components";
+import { synchronizeAndFetchAccounts } from "./apis/AccountApi";
 import budget_logo from "./assets/imgs/logo.png";
 import { keycloak } from "./keycloak.js";
-import urlJoin from "url-join";
-import { GET_request } from "./utils/network.js";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
+import Router from "./Router";
 
 function initKeycloak() {
   return new Promise((resolve, reject) => {
@@ -42,16 +40,10 @@ function App() {
 
     initKeycloak().then((keycloakProfile) => {
       localStorage.setItem("userInfo", JSON.stringify(keycloakProfile));
-      const endpoint = urlJoin(
-        process.env.REACT_APP_BACKEND_ENDPOINT,
-        "synchronize_account"
-      );
-      GET_request(endpoint, { username: keycloakProfile["username"] }).then(
-        (data) => {
-          setAccounts(data);
-          handleLoadingComplete();
-        }
-      );
+      synchronizeAndFetchAccounts(keycloakProfile.username).then((data) => {
+        setAccounts(data);
+        handleLoadingComplete();
+      });
     });
   }, []);
 
@@ -66,23 +58,7 @@ function App() {
       }
     >
       <ThemeProvider theme={theme}>
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={<Dashboard accounts={accounts} />}
-          ></Route>
-          <Route
-            exact
-            path="/transactions"
-            element={<Transactions accounts={accounts} />}
-          ></Route>
-          <Route
-            exact
-            path="/accounts"
-            element={<Accounts accounts={accounts} />}
-          ></Route>
-        </Routes>
+        <Router accounts={accounts} />
       </ThemeProvider>
     </LoadingScreen>
   );
