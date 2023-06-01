@@ -3,14 +3,12 @@ import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import WebFont from "webfontloader";
 
-import { theme } from "./theme";
-import Dashboard from "./pages/Dashboard/Dashboard.js";
-import Transactions from "./pages/Transactions/Transactions.js";
+import {Dashboard, Transactions, Accounts} from "./pages";
 import budget_logo from "./budget.png";
-import Accounts from "./pages/Accounts/Accounts.js";
 import { keycloak } from "./keycloak.js";
 import urlJoin from "url-join";
 import { GET_request } from "./utils/network.js";
+import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 
 class App extends React.Component {
