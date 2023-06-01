@@ -64,7 +64,7 @@ const PAGE_TO_TAB = {
   Transactions: 2,
 };
 
-function NavBar({ page }) {
+function NavBar({ page, onLogout }) {
   const [tab, setTab] = useState(PAGE_TO_TAB[page]);
   const handleChange = (event, newValue) => {
     setTab(newValue);
@@ -92,7 +92,7 @@ function NavBar({ page }) {
         </Box>
         <Box className="flex-centered" style={{ marginLeft: "auto" }}>
           {/*<AddRecordBtn>+Record</AddRecordBtn>*/}
-          <UserProfile />
+          <UserProfile onLogout={onLogout} />
         </Box>
       </Box>
     </NavBarContainer>

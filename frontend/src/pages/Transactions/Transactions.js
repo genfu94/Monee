@@ -2,11 +2,11 @@ import "../style.css";
 
 import React, { useState } from "react";
 import {
-  SideMenuLayout,
   DateRangeSelector,
   CheckboxGroup,
 } from "../../components";
 
+import SideMenuLayout from "../SideMenuLayout";
 import { updateTransaction } from "./api";
 
 import { DATE_RANGE_PRESETS } from "../../utils/date";

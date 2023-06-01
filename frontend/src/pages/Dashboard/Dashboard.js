@@ -1,5 +1,5 @@
 import React from "react";
-import SideMenuLayout from "../../components/SideMenuLayout.js";
+import SideMenuLayout from "../SideMenuLayout.js";
 import "chartjs-adapter-moment";
 import {
   Chart as ChartJS,

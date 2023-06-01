@@ -3,9 +3,8 @@ import { deepOrange } from "@mui/material/colors";
 import {Menu, MenuItem, Button, Avatar, Typography, Box } from "@mui/material";
 import "./UserProfile.style.css";
 import { IoMdArrowDropdown } from "react-icons/io";
-import {keycloak} from "../../keycloak.js"
 
-function UserProfile() {
+function UserProfile({onLogout}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClose = () => {
     setAnchorEl(null);
@@ -49,7 +48,7 @@ function UserProfile() {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={() => keycloak.logout()}>Logout</MenuItem>
+        <MenuItem onClick={onLogout}>Logout</MenuItem>
       </Menu>
     </>
   );

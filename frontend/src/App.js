@@ -2,29 +2,11 @@ import React, { useState, useEffect } from "react";
 import WebFont from "webfontloader";
 
 import { LoadingScreen } from "./components";
-import { synchronizeAndFetchAccounts } from "./apis/AccountApi";
+import { synchronizeAndFetchAccounts, keycloakLogin } from "./apis";
 import budget_logo from "./assets/imgs/logo.png";
-import { keycloak } from "./keycloak.js";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import Router from "./Router";
-
-function initKeycloak() {
-  return new Promise((resolve, reject) => {
-    keycloak
-      .init({
-        onLoad: "login-required",
-      })
-      .then((authenticated) => {
-        keycloak.loadUserProfile().then((value) => {
-          resolve(value);
-        });
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
-  });
-}
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,7 +20,7 @@ function App() {
       },
     });
 
-    initKeycloak().then((keycloakProfile) => {
+    keycloakLogin().then((keycloakProfile) => {
       localStorage.setItem("userInfo", JSON.stringify(keycloakProfile));
       synchronizeAndFetchAccounts(keycloakProfile.username).then((data) => {
         setAccounts(data);
