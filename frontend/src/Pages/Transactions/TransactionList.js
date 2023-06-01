@@ -48,7 +48,7 @@ function TransactionList({
   );
   return (
     <>
-      <List style={{ alignSelf: "stretch" }} disablePadding>
+      <List style={{ alignSelf: "stretch", background: "white" }} disablePadding>
         {Object.keys(transactionsGroupedByDate).map((sectionId) => (
           <li key={sectionId}>
             <ul>
@@ -58,7 +58,7 @@ function TransactionList({
 
               {transactionsGroupedByDate[sectionId].map((item) => {
                 return (
-                  <ListItem key={item.transaction_id}>
+                  <ListItem key={item.transaction_id} disablePadding>
                     <TransactionItem
                       transaction={item}
                       onItemClick={() => setTransactionSelected(item)}

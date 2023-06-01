@@ -25,7 +25,6 @@ def initialize_bank_sync_client():
     )
 
     bank_sync_client.initialize()
-    print("ASD")
 
 def get_bank_sync_client():
     return bank_sync_client

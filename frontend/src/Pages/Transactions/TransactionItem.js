@@ -1,9 +1,8 @@
 import React from "react";
 import { BsCircleFill } from "react-icons/bs";
 import { CATEGORIES_ICON_ENUM } from "./categories";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, ListItemButton } from "@mui/material";
 
-import "../../Styles/globals.style.css";
 import "./TransactionItem.style.css";
 import styled from "@emotion/styled";
 
@@ -19,7 +18,7 @@ const CategoryIcon = styled(Box)(({ theme }) => ({
 
 export default function TransactionItem({ transaction, onItemClick }) {
   return (
-    <div className="selectable-item transaction" onClick={onItemClick}>
+    <ListItemButton onClick={onItemClick}>
       <div className="info-container">
         <input type="checkbox" />
 
@@ -34,7 +33,7 @@ export default function TransactionItem({ transaction, onItemClick }) {
             </CategoryIcon>
             &nbsp;{" "}
             <Box>
-              <Typography variant="h3">{transaction.origin}</Typography>
+              <Typography variant="h5">{transaction.origin}</Typography>
               <Typography variant="h6">
                 {CATEGORIES_ICON_ENUM[transaction.category].text}
               </Typography>
@@ -42,23 +41,23 @@ export default function TransactionItem({ transaction, onItemClick }) {
           </div>
         </div>
 
-        <div className="transaction-info-description">{transaction.account}</div>
+        <div className="transaction-info-description">
+          {transaction.account}
+        </div>
 
-        <div className="flex-centered-vertical transaction-amount-section">
-          <div
-            className={`${
-              transaction.transaction_amount.amount > 0
-                ? "transaction-income"
-                : "target-currency-transaction-amount"
-            }`}
-          >
-            {new Intl.NumberFormat("it-IT", {
-              style: "currency",
-              currency: transaction.transaction_amount.currency,
-            }).format(transaction.transaction_amount.amount)}
-          </div>
+        <div
+          className={`${
+            transaction.transaction_amount.amount > 0
+              ? "transaction-income"
+              : "target-currency-transaction-amount"
+          }`}
+        >
+          {new Intl.NumberFormat("it-IT", {
+            style: "currency",
+            currency: transaction.transaction_amount.currency,
+          }).format(transaction.transaction_amount.amount)}
         </div>
       </div>
-    </div>
+    </ListItemButton>
   );
 }

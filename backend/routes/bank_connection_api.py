@@ -22,7 +22,7 @@ async def synchronize_account(username:str):
         get_bank_sync_client().update_bank_links_statuses(username)
         get_bank_sync_client().synchronize_user_accounts(username)
     
-    return get_bank_sync_client().bank_account_client.fetch_linked_accounts(username)
+    return get_bank_sync_client().account_db_client.fetch_linked_accounts(username)
 
 
 @router.get("/fetch_linked_accounts")

@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "add-dependencies": "^1.1.0",
+    "chartjs-adapter-moment": "^1.0.1",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",

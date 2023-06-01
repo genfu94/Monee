@@ -26,7 +26,6 @@ function renderAccountItem(item) {
 }
 
 function Accounts({accounts = []}) {
-  //const [accounts, setAccounts] = useState([]);
   const [dialog, setDialog] = useState(false);
   const showDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);

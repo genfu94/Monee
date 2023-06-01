@@ -15,13 +15,14 @@ export const theme = createTheme({
       fontWeight: 600
     },
     h3: {
-      fontSize: '0.8rem',
+      fontSize: '1.2rem',
       color: "#555",
       fontWeight: 600
     },
     h5: {
-      fontSize: '1.2rem',
-      color: '#555',
+      fontSize: '0.8rem',
+      color: '#666',
+      fontWeight: 600
     },
     h6: {
       fontSize: '0.7rem',
