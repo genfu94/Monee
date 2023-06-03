@@ -14,7 +14,6 @@ from ..types import (APICredentials,
                      Transaction,
                      AccountStatus,
                      InstitutionInfo)
-from ..database_client.database_client_interface import AccountDatabaseClient
 
 
 class NordigenBankAccountClient(BankAccountClientInterface):
@@ -102,8 +101,6 @@ class NordigenBankLinkClient(BankLinkClientInterface):
             requisition_id=init.requisition_id,
             institution=dict(institution)
         )
-
-        self.account_db_client.add_bank(username, bank_linking_details)
 
         return bank_linking_details
 

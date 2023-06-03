@@ -1,2 +1,2 @@
 from .mongo_database_client import MongoAccountDatabaseClient
-from .database_client_interface import AccountDatabaseClient
+from .crud import AccountDatabaseClient

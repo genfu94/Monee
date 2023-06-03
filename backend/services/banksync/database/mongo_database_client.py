@@ -3,7 +3,7 @@ from typing import List
 from datetime import datetime
 import json
 
-from .database_client_interface import AccountDatabaseClient, BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER
+from .crud import AccountDatabaseClient, BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER
 from ..types import BankLink, Account, AccountStatus, Transaction
 
 

@@ -1,6 +1,6 @@
 from services.banksync.types import APICredentials
 from services.banksync.bank_client import NordigenBankSyncClient
-from services.banksync.database_client import AccountDatabaseClient, MongoAccountDatabaseClient
+from services.banksync.database import AccountDatabaseClient, MongoAccountDatabaseClient
 from services.banksync.bank_client.bank_client_interface import BankSyncClientInterface
 import configparser
 
