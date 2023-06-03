@@ -9,3 +9,15 @@ export function synchronizeAndFetchAccounts(username) {
 
   return GET_request(endpoint, { username: username })
 }
+
+export function getBalanceTrend(username) {
+  // TODO
+}
+
+export function getCashFlowTrend(username) {
+  // TODO
+}
+
+export function getExpenseReport(username, dateRange) {
+  // TODO
+}

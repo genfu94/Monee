@@ -168,16 +168,13 @@ class NordigenBankLinkClient(BankLinkClientInterface):
 
 
 class NordigenBankSyncClient(BankSyncClientInterface):
-    def __init__(self, nordigen_auth_credentials: APICredentials, account_db_client: AccountDatabaseClient):
+    def __init__(self, nordigen_auth_credentials: APICredentials):
         self.nordigen_auth_credentials = nordigen_auth_credentials
         self.nordigen_client = None
-        super().__init__(account_db_client, None, None)
 
     def initialize(self):
         if self.nordigen_client != None:
             return
-
-        self.account_db_client.initialize()
 
         try:
             self.nordigen_client = NordigenClient(
@@ -187,9 +184,9 @@ class NordigenBankSyncClient(BankSyncClientInterface):
 
             self.nordigen_client.generate_token()
             self.bank_link_client = NordigenBankLinkClient(
-                self.nordigen_client, self.account_db_client)
+                self.nordigen_client)
             self.bank_account_client = NordigenBankAccountClient(
-                self.nordigen_client, self.account_db_client)
+                self.nordigen_client)
         except Exception as e:
             print(e)
             self.nordigen_client = None

@@ -7,7 +7,7 @@ MOST_COMMON_WORDS_RULES = {
     ('medicina', 'dott.', 'dottore', 'medicine', 'ospedale', 'visita'): TransactionCategory.HEALTH_CARE,
     ('bolletta', 'luce', 'gas', 'bollette', 'energia'): TransactionCategory.BILLS,
     ('shop', 'shopping'): TransactionCategory.SHOPPING,
-    ('riparazione', 'meccanico'): TransactionCategory.VEHICLE_MAINTENANCE,
+    ('riparazione', 'meccanico', 'officina'): TransactionCategory.VEHICLE_MAINTENANCE,
     ('oneri', 'imposte', 'onere', 'imposta'): TransactionCategory.FEES,
     ('viaggio', 'hotel'): TransactionCategory.HOLIDAYS,
     ('regalo', 'regali', 'regalato'): TransactionCategory.GIFTS,
