@@ -67,7 +67,7 @@ class Transaction:
 
 @dataclass_json
 @dataclass
-class AccountData:
+class Account:
     id: str
     name: str
     last_update: str = None

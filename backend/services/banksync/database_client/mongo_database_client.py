@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 
 from .database_client_interface import AccountDatabaseClient, BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER
-from ..types import BankLinkingDetails, AccountData, AccountStatus, Transaction
+from ..types import BankLinkingDetails, Account, AccountStatus, Transaction
 
 
 class MongoAccountDatabaseClient(AccountDatabaseClient):
@@ -40,12 +40,13 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         }
         self.bank_link_collection.update_one(filter_query, update_query)
 
-    def find_account(self, account_id: str):
-        account = self.account_collection.find_one({
-            "_id": account_id
-        }, {"transactions": 0})
+    def find_account(self, account_id: str) -> Account:
+        account = self.account_collection.find_one({"_id": account_id})
 
-        return AccountData(
+        if not account:
+            return None
+
+        return Account(
             id=account['_id'],
             name=account['name'],
             last_update=account['last_update'],
@@ -61,7 +62,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
     def _find_bank_linking_details_id(self, bank_linking_details: BankLinkingDetails):
         return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())
 
-    def add_account(self, account_data: AccountData):
+    def add_account(self, account_data: Account):
         account = self.account_collection.find_one({"_id": account_data.id})
         if account is None:
             bank_link = self._find_bank_linking_details_id(
@@ -111,7 +112,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
 
         return account[0]['transactions']
 
-    def update_account(self, account_data: AccountData):
+    def update_account(self, account_data: Account):
         account_data = json.loads(account_data.to_json())
         update_query = [
             {

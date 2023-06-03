@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountStatus, AccountData, Transaction
+from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountStatus, Account, Transaction
 from typing import List, Dict
 from datetime import datetime
 
@@ -41,11 +41,11 @@ class AccountDatabaseClient(ABC):
         pass
 
     @abstractmethod
-    def add_account(self, account_data: AccountData):
+    def add_account(self, account_data: Account):
         pass
 
     @abstractmethod
-    def find_account(self, account_id: str) -> AccountData:
+    def find_account(self, account_id: str) -> Account:
         pass
 
     @abstractmethod
@@ -53,7 +53,7 @@ class AccountDatabaseClient(ABC):
         pass
 
     @abstractmethod
-    def update_account(self, account_data: AccountData):
+    def update_account(self, account_data: Account):
         pass
 
     @abstractmethod

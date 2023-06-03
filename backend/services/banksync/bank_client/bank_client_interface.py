@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
+from datetime import datetime
 
-from ..types import InstitutionInfo, BankLinkingDetailsBase, AccountData
+from ..types import InstitutionInfo, BankLinkingDetailsBase, Account, Transaction
 
 
 class BankLinkClientInterface(ABC):
@@ -17,14 +18,18 @@ class BankLinkClientInterface(ABC):
     def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
         pass
 
+    @abstractmethod
+    def fetch_account_ids_from_bank_link(self,  bank_linking_details: BankLinkingDetailsBase) -> List[str]:
+        pass
+
 
 class BankAccountClientInterface(ABC):
     @abstractmethod
-    def fetch_all_bank_accounts(self,  bank_linking_details: BankLinkingDetailsBase) -> List[AccountData]:
+    def fetch_transactions(self, account: Account, date_start: datetime, date_end: datetime) -> List[Transaction]:
         pass
 
     @abstractmethod
-    def fetch_account_updates(self, account_data: AccountData) -> AccountData:
+    def fetch_account(self, account_id: str) -> Account:
         pass
 
 
