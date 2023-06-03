@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from ..types import BankLinkingDetails, NordigenBankLinkingDetails, InstitutionInfo, AccountStatus, Account, Transaction
+from ..types import BankLink, NordigenBankLink, InstitutionInfo, AccountStatus, Account, Transaction
 from typing import List, Dict
 from datetime import datetime
 
 
-def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLinkingDetails:
-    return NordigenBankLinkingDetails(
+def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLink:
+    return NordigenBankLink(
         client="Nordigen",
         link=bank_link_details_json['link'],
         requisition_id=bank_link_details_json['requisition_id'],
@@ -25,15 +25,15 @@ class AccountDatabaseClient(ABC):
         pass
 
     @abstractmethod
-    def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
+    def add_bank(self, username: str, bank_linking_details: BankLink):
         pass
 
     @abstractmethod
-    def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
+    def fetch_user_bank_links(self, username: str) -> List[BankLink]:
         pass
 
     @abstractmethod
-    def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
+    def update_bank_link_status(self, bank_linking_details: BankLink):
         pass
 
     @abstractmethod

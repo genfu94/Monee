@@ -8,8 +8,8 @@ from .bank_client_interface import (BankSyncClientInterface,
                                     BankLinkClientInterface,
                                     BankAccountClientInterface)
 from ..types import (APICredentials,
-                     NordigenBankLinkingDetails,
-                     BankLinkingDetailsBase,
+                     NordigenBankLink,
+                     BankLinkBase,
                      Account,
                      Transaction,
                      AccountStatus,
@@ -89,14 +89,14 @@ class NordigenBankLinkClient(BankLinkClientInterface):
 
         return institution_list
 
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
+    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkBase:
         init = self.nordigen_client.initialize_session(
             institution_id=institution.id,
             redirect_uri="http://localhost:3000",
             reference_id=str(uuid4())
         )
 
-        bank_linking_details = NordigenBankLinkingDetails(
+        bank_linking_details = NordigenBankLink(
             client="Nordigen",
             link=init.link,
             requisition_id=init.requisition_id,
@@ -107,12 +107,12 @@ class NordigenBankLinkClient(BankLinkClientInterface):
 
         return bank_linking_details
 
-    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
+    def fetch_link_bank_status(self, bank_linking_details: BankLinkBase) -> BankLinkBase:
         nordigen_bank_link_details_json = self.nordigen_client.requisition.get_requisition_by_id(
             requisition_id=bank_linking_details.requisition_id
         )
 
-        return NordigenBankLinkingDetails(
+        return NordigenBankLink(
             client="Nordigen",
             link=nordigen_bank_link_details_json['link'],
             requisition_id=bank_linking_details.requisition_id,
@@ -121,7 +121,7 @@ class NordigenBankLinkClient(BankLinkClientInterface):
         )
 
 
-    def fetch_account_ids_from_bank_link(self, bank_linking_details: BankLinkingDetailsBase) -> List[str]:
+    def fetch_account_ids_from_bank_link(self, bank_linking_details: BankLinkBase) -> List[str]:
         account_id_list = self.nordigen_client.requisition.get_requisition_by_id(
             requisition_id=bank_linking_details.requisition_id
         )

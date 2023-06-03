@@ -24,7 +24,7 @@ class InstitutionInfo(BaseModel):
 
 @dataclass_json
 @dataclass
-class BankLinkingDetailsBase(ABC):
+class BankLinkBase(ABC):
     client: str
 
     @abstractmethod
@@ -33,7 +33,7 @@ class BankLinkingDetailsBase(ABC):
 
 @dataclass_json
 @dataclass
-class NordigenBankLinkingDetails(BankLinkingDetailsBase):
+class NordigenBankLink(BankLinkBase):
     requisition_id: str
     institution: InstitutionInfo
     link: str
@@ -45,7 +45,7 @@ class NordigenBankLinkingDetails(BankLinkingDetailsBase):
         }
 
 
-BankLinkingDetails = Union[NordigenBankLinkingDetails, BankLinkingDetailsBase]
+BankLink = Union[NordigenBankLink, BankLinkBase]
 
 @dataclass_json
 @dataclass
@@ -71,6 +71,6 @@ class Account:
     id: str
     name: str
     last_update: str = None
-    bank_linking_details: BankLinkingDetails = None
+    bank_linking_details: BankLink = None
     balances: List[Balance] = field(default_factory=lambda : [])
     transactions: List[Transaction] = field(default_factory=lambda : [])

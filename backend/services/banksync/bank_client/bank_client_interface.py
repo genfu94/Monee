@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from datetime import datetime
 
-from ..types import InstitutionInfo, BankLinkingDetailsBase, Account, Transaction
+from ..types import InstitutionInfo, BankLinkBase, Account, Transaction
 
 
 class BankLinkClientInterface(ABC):
@@ -11,15 +11,15 @@ class BankLinkClientInterface(ABC):
         pass
 
     @abstractmethod
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkingDetailsBase:
+    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkBase:
         pass
 
     @abstractmethod
-    def fetch_link_bank_status(self, bank_linking_details: BankLinkingDetailsBase) -> BankLinkingDetailsBase:
+    def fetch_link_bank_status(self, bank_linking_details: BankLinkBase) -> BankLinkBase:
         pass
 
     @abstractmethod
-    def fetch_account_ids_from_bank_link(self,  bank_linking_details: BankLinkingDetailsBase) -> List[str]:
+    def fetch_account_ids_from_bank_link(self,  bank_linking_details: BankLinkBase) -> List[str]:
         pass
 
 

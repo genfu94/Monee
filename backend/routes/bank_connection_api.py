@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from services.banksync.types import InstitutionInfo, Transaction, Account, BankLinkingDetails
+from services.banksync.types import InstitutionInfo, Transaction, Account, BankLink
 from dependencies import get_bank_sync_client, get_account_db_client
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -10,7 +10,7 @@ def get_last_sync_time(last_update):
         return datetime.now().replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
 
 
-def fetch_account_updates(account_id: str, link: BankLinkingDetails) -> Account:
+def fetch_account_updates(account_id: str, link: BankLink) -> Account:
     account = get_account_db_client().find_account(account_id)
 
     if not account:

@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 
 from .database_client_interface import AccountDatabaseClient, BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER
-from ..types import BankLinkingDetails, Account, AccountStatus, Transaction
+from ..types import BankLink, Account, AccountStatus, Transaction
 
 
 class MongoAccountDatabaseClient(AccountDatabaseClient):
@@ -21,17 +21,17 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         self.bank_link_collection = self.db_client['bank_links']
         self.account_collection = self.db_client['accounts']
 
-    def add_bank(self, username: str, bank_linking_details: BankLinkingDetails):
+    def add_bank(self, username: str, bank_linking_details: BankLink):
         bank_linking_details_json = bank_linking_details.to_dict()
         bank_linking_details_json['user'] = username
         self.bank_link_collection.insert_one(bank_linking_details_json)
 
-    def fetch_user_bank_links(self, username: str) -> List[BankLinkingDetails]:
+    def fetch_user_bank_links(self, username: str) -> List[BankLink]:
         user_bank_link_details_list = self.bank_link_collection.find({
                                                                      'user': username})
         return [BANK_SYNC_CLIENT_TO_LINK_DETAIL_PARSER[bank_link_detail['client']](bank_link_detail) for bank_link_detail in user_bank_link_details_list]
 
-    def update_bank_link_status(self, bank_linking_details: BankLinkingDetails):
+    def update_bank_link_status(self, bank_linking_details: BankLink):
         filter_query = bank_linking_details.get_identifiers()
         update_query = {
             '$set': {
@@ -59,7 +59,7 @@ class MongoAccountDatabaseClient(AccountDatabaseClient):
         }
         self.bank_link_collection.delete_many(remove_query)
 
-    def _find_bank_linking_details_id(self, bank_linking_details: BankLinkingDetails):
+    def _find_bank_linking_details_id(self, bank_linking_details: BankLink):
         return self.bank_link_collection.find_one(bank_linking_details.get_identifiers())
 
     def add_account(self, account_data: Account):
