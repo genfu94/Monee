@@ -3,6 +3,7 @@ from typing import Union, List
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
+from pydantic import BaseModel
 
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
@@ -63,11 +64,10 @@ class Transaction:
     type: str
     category_edited: bool
 
-@dataclass_json
-@dataclass
-class Account:
+
+class Account(BaseModel):
     id: str
     name: str
     last_update: str = None
     bank_link: BankLink = None
-    balances: List[Balance] = field(default_factory=lambda : [])
+    balances: List[Balance] = []

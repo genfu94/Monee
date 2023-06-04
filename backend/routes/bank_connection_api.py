@@ -3,6 +3,7 @@ from services.banksync.types import InstitutionInfo, Transaction, Account, BankL
 from dependencies import get_bank_sync_client, get_account_crud, get_bank_link_crud, get_transaction_crud
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import json
 
 router = APIRouter()
 
@@ -76,9 +77,11 @@ async def synchronize_account(username: str):
         update_bank_links_statuses(username)
         synchronize_user_accounts(username)
 
+    out = []
     accounts = get_account_crud().find_by_user(username)
     for i in range(len(accounts)):
-        accounts[i]['transactions'] = get_transaction_crud().find_by_account(accounts[i]['id'])
+        out.append(json.loads(accounts[i].json()))
+        
+        out[i]['transactions'] = get_transaction_crud().find_by_account(accounts[i].id)
     
-    print(accounts)
-    return accounts
+    return out

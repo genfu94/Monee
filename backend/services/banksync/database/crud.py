@@ -116,7 +116,7 @@ class MongoAccountCRUD(AccountCRUD):
         self.account_collection = self.mongo_client['accounts']
 
     def add(self, username: str, bank_link: BankLink, account: Account) -> None:
-        account_json = asdict(account)
+        account_json = json.loads(account.json())
         account_json['user'] = username
         account_json['institution_name'] = bank_link.institution.name
         account_json['bank_link'] = asdict(bank_link)
@@ -137,10 +137,11 @@ class MongoAccountCRUD(AccountCRUD):
             balances=account['balances']) if account is not None else None
 
     def find_by_user(self, username: str) -> List[Account]:
-        return list(self.account_collection.find({'user': username}, {"_id": 0, "transactions": 0}))
+        raw_accounts = self.account_collection.find({'user': username}, {"_id": 0, "transactions": 0})
+        return [Account.parse_obj(acc) for acc in raw_accounts]
 
     def update(self, account: Account) -> None:
-        account_json = json.loads(account.to_json())
+        account_json = json.loads(account.json())
         update_query = [
             {
                 "$set": {
