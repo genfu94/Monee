@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from services.banksync.types import InstitutionInfo, Transaction, Account, BankLink
-from dependencies import get_bank_sync_client, get_account_db_client
+from dependencies import get_bank_sync_client, get_account_crud, get_bank_link_crud, get_transaction_crud
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -11,44 +11,51 @@ def get_last_sync_time(last_update):
 
 
 def fetch_account_updates(account_id: str, link: BankLink) -> Account:
-    account = get_account_db_client().find_account(account_id)
+    account = get_account_crud().find_by_id(account_id)
 
     if not account:
         account = get_bank_sync_client().bank_account_client.fetch_account(account_id)
         if not account:
-            return None
+            return None, None
         
-        account.bank_linking_details = link
+        account.bank_link = link
 
     last_update = datetime.strptime(
         account.last_update, "%Y-%m-%d, %H:%M:%S") if account.last_update else datetime.now() - relativedelta(years=1)
     
     last_sync_time = get_last_sync_time(last_update)
-
+    new_transactions = []
     if last_update < last_sync_time:
-        old_transactions_ids = [t['transaction_id'] for t in account.transactions]
-        new_transactions = get_bank_sync_client().bank_account_client.fetch_transactions(account, last_update.strftime('%Y-%m-%d'))
-        account.transactions = list(filter(lambda x: x['transaction_id'] not in old_transactions_ids, new_transactions))
+        old_transactions_ids = get_transaction_crud().find_by_account(account_id)
+        new_transactions = get_bank_sync_client().bank_account_client.fetch_transactions(account_id, last_update.strftime('%Y-%m-%d'))
+        new_transactions = list(filter(lambda x: x['transaction_id'] not in old_transactions_ids, new_transactions))
         account.last_update = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-    return account
+    return account, new_transactions
 
 
 def synchronize_user_accounts(username: str):
-    user_bank_links = get_account_db_client().fetch_user_bank_links(username)
+    user_bank_links = get_bank_link_crud().find_by_user(username)
     for link in user_bank_links:
         for account_id in get_bank_sync_client().bank_link_client.fetch_account_ids_from_bank_link(link):
-            account = fetch_account_updates(account_id, link)
-            if account:
-                get_account_db_client().add_account(account)
+            account, transactions = fetch_account_updates(account_id, link)
+            if not account:
+                continue
+            
+            if not get_account_crud().find_by_id(account_id):
+                get_account_crud().add(username, link, account)
+            else:
+                get_account_crud().update(account)
+            
+            get_transaction_crud().add(account_id, transactions)
 
 
 def update_bank_links_statuses(username: str):
-    for bank_link_status in get_account_db_client().fetch_user_bank_links(username):
+    for bank_link_status in get_bank_link_crud().find_by_user(username):
         bank_linking_details = get_bank_sync_client().bank_link_client.fetch_link_bank_status(bank_link_status)
-        get_account_db_client().update_bank_link_status(bank_linking_details)
+        get_bank_link_crud().update(bank_linking_details)
 
-    get_account_db_client().remove_unauthorized_bank_links(username)
+    get_bank_link_crud().delete_unauthorized_links(username)
 
 
 @router.get("/get_available_institutions")
@@ -58,7 +65,9 @@ async def get_available_institutions(country_code: str):
 
 @router.post("/bank_connect")
 async def bank_connect(username: str, institution: InstitutionInfo):
-    return get_bank_sync_client().bank_link_client.link_bank(username, institution)
+    bank_link = get_bank_sync_client().bank_link_client.link_bank(username, institution)
+    get_bank_link_crud().add(username, bank_link)
+    return bank_link
 
 
 @router.get("/synchronize_account")
@@ -67,4 +76,9 @@ async def synchronize_account(username: str):
         update_bank_links_statuses(username)
         synchronize_user_accounts(username)
 
-    return get_account_db_client().fetch_linked_accounts(username)
+    accounts = get_account_crud().find_by_user(username)
+    for i in range(len(accounts)):
+        accounts[i]['transactions'] = get_transaction_crud().find_by_account(accounts[i]['id'])
+    
+    print(accounts)
+    return accounts

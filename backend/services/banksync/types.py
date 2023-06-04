@@ -3,7 +3,6 @@ from typing import Union, List
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
-from pydantic import BaseModel
 
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
@@ -16,8 +15,8 @@ class APICredentials:
     secret_id: str
     secret_key: str
 
-
-class InstitutionInfo(BaseModel):
+@dataclass
+class InstitutionInfo:
     name: str
     id: str
 
@@ -43,7 +42,6 @@ class NordigenBankLink(BankLinkBase):
         return {
             'requisition_id': self.requisition_id
         }
-
 
 BankLink = Union[NordigenBankLink, BankLinkBase]
 
@@ -71,6 +69,5 @@ class Account:
     id: str
     name: str
     last_update: str = None
-    bank_linking_details: BankLink = None
+    bank_link: BankLink = None
     balances: List[Balance] = field(default_factory=lambda : [])
-    transactions: List[Transaction] = field(default_factory=lambda : [])

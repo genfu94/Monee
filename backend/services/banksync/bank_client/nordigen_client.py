@@ -20,12 +20,12 @@ class NordigenBankAccountClient(BankAccountClientInterface):
     def __init__(self, nordigen_client):
         self.nordigen_client = nordigen_client
 
-    def fetch_transactions(self, account: Account, date_start: datetime = None, date_end: datetime = None) -> List[Transaction]:
-        account_api = self.nordigen_client.account_api(id=account.id)
+    def fetch_transactions(self, account_id: str, date_start: datetime = None, date_end: datetime = None) -> List[Transaction]:
+        account_api = self.nordigen_client.account_api(id=account_id)
         transactions_raw = account_api.get_transactions(
             date_from=date_start, date_to=date_end)['transactions']
         transactions_list = transactions_raw['booked'] + transactions_raw['pending']
-        transactions = [self._psd2_to_transaction(account.id, t) for t in transactions_list]
+        transactions = [self._psd2_to_transaction(account_id, t) for t in transactions_list]
 
         return transactions
     
@@ -60,7 +60,8 @@ class NordigenBankAccountClient(BankAccountClientInterface):
             "booking_date": psd2_transaction['bookingDate'] + " 00:00:00",
             "transaction_amount": dict(psd2_transaction['transactionAmount']),
             "origin": origin,
-            "text": text
+            "text": text,
+            "category": "unknown"
         }
 
 

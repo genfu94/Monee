@@ -25,7 +25,7 @@ class BankLinkClientInterface(ABC):
 
 class BankAccountClientInterface(ABC):
     @abstractmethod
-    def fetch_transactions(self, account: Account, date_start: datetime, date_end: datetime) -> List[Transaction]:
+    def fetch_transactions(self, account_id: str, date_start: datetime, date_end: datetime) -> List[Transaction]:
         pass
 
     @abstractmethod
