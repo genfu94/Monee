@@ -125,16 +125,7 @@ class MongoAccountCRUD(AccountCRUD):
     
     def find_by_id(self, account_id: str) -> Account:
         account = self.account_collection.find_one({"id": account_id}, {"_id": 0, "transactions": 0})
-
-        if not account:
-            return None
-
-        # TODO: Can I use from json?
-        return Account(
-            id=account['id'],
-            name=account['name'],
-            last_update=account['last_update'],
-            balances=account['balances']) if account is not None else None
+        return Account.parse_obj(account) if account else None
 
     def find_by_user(self, username: str) -> List[Account]:
         raw_accounts = self.account_collection.find({'user': username}, {"_id": 0, "transactions": 0})
@@ -142,14 +133,12 @@ class MongoAccountCRUD(AccountCRUD):
 
     def update(self, account: Account) -> None:
         account_json = json.loads(account.json())
-        update_query = [
-            {
-                "$set": {
-                    "balances": account_json["balances"],
-                    "last_update": account_json["last_update"]
-                }
+        update_query = [{
+            "$set": {
+                "balances": account_json["balances"],
+                "last_update": account_json["last_update"]
             }
-        ]
+        }]
 
         self.account_collection.update_one({"id": account_json["id"]}, update_query, upsert=True)
 
@@ -176,7 +165,7 @@ class MongoTransactionCRUD(TransactionCRUD):
     
     def update(self, account_id: str, transaction: Transaction) -> None:
         find_query = {"_id": account_id,
-                      "transactions.transaction_id": transaction.transaction_id}
+                      "transactions.id": transaction.id}
         update_query = {
                 "$set": {
                     "transactions.$.booking_date": transaction.booking_date,
@@ -192,25 +181,5 @@ class MongoTransactionCRUD(TransactionCRUD):
         self.account_collection.update_one(find_query, update_query, upsert=True)
     
     def find_by_account(self, account_id: str) -> List[Transaction]:
-        # date_to = date_to if date_to != None else datetime.today()
-        # account = list(self.account_collection.find({"_id": account_id}, {
-        #     "transactions": {
-        #         "$filter": {
-        #             "input": "$transactions",
-        #             "as": "transaction",
-        #             "cond": {
-        #                 "$and": [
-        #                     {"$gte": ["$$transaction.booking_date", date_from.strftime('%Y-%m-%d %H:%M:%S')]},
-        #                     {"$lte": ["$$transaction.booking_date", date_to.strftime('%Y-%m-%d %H:%M:%S')]},
-        #                 ]
-        #             }
-        #         }
-        #     }
-        # }))
-
         account = self.account_collection.find_one({"id": account_id})
-
-        if not account:
-            return []
-
-        return account['transactions']
+        return account['transactions'] if account else []

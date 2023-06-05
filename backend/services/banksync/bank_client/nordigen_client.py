@@ -56,7 +56,7 @@ class NordigenBankAccountClient(BankAccountClientInterface):
         return {
             "account_id": account_id,
             "type": 'income' if float(psd2_transaction['transactionAmount']['amount']) > 0 else 'expense',
-            "transaction_id": psd2_transaction['transactionId'],
+            "id": psd2_transaction['transactionId'],
             "booking_date": psd2_transaction['bookingDate'] + " 00:00:00",
             "transaction_amount": dict(psd2_transaction['transactionAmount']),
             "origin": origin,
@@ -89,7 +89,7 @@ class NordigenBankLinkClient(BankLinkClientInterface):
 
         return institution_list
 
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkBase:
+    def link_bank(self, institution: InstitutionInfo) -> BankLinkBase:
         init = self.nordigen_client.initialize_session(
             institution_id=institution.id,
             redirect_uri="http://localhost:3000",
@@ -100,7 +100,7 @@ class NordigenBankLinkClient(BankLinkClientInterface):
             client="Nordigen",
             link=init.link,
             requisition_id=init.requisition_id,
-            institution=dict(institution)
+            institution=institution
         )
 
         return bank_linking_details

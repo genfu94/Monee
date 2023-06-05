@@ -29,7 +29,7 @@ def fetch_account_updates(account_id: str, link: BankLink) -> Account:
     if last_update < last_sync_time:
         old_transactions_ids = get_transaction_crud().find_by_account(account_id)
         new_transactions = get_bank_sync_client().bank_account_client.fetch_transactions(account_id, last_update.strftime('%Y-%m-%d'))
-        new_transactions = list(filter(lambda x: x['transaction_id'] not in old_transactions_ids, new_transactions))
+        new_transactions = list(filter(lambda x: x['id'] not in old_transactions_ids, new_transactions))
         account.last_update = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
     return account, new_transactions
@@ -66,7 +66,7 @@ async def get_available_institutions(country_code: str):
 
 @router.post("/bank_connect")
 async def bank_connect(username: str, institution: InstitutionInfo):
-    bank_link = get_bank_sync_client().bank_link_client.link_bank(username, institution)
+    bank_link = get_bank_sync_client().bank_link_client.link_bank(institution)
     get_bank_link_crud().add(username, bank_link)
     return bank_link
 

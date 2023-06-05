@@ -11,7 +11,7 @@ class BankLinkClientInterface(ABC):
         pass
 
     @abstractmethod
-    def link_bank(self, username: str, institution: InstitutionInfo) -> BankLinkBase:
+    def link_bank(self, institution: InstitutionInfo) -> BankLinkBase:
         pass
 
     @abstractmethod

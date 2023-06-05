@@ -53,9 +53,8 @@ class Balance:
     amount: float
 
 
-@dataclass
-class Transaction:
-    transaction_id: str
+class Transaction(BaseModel):
+    id: str
     booking_date: str
     transaction_amount: Balance
     origin: str
