@@ -13,11 +13,11 @@ function renderAccountItem(item) {
     <div className="account-item selectable-item" key={item._id}>
       <AiFillBank className="account-icon"/>
       <div className="account-name">
-        {item.institution_name} - {item.name}
+        {item.account.institution_name} - {item.account.name}
       </div>
       <div className="account-type">Bank Account</div>
       <div className="account-balance">
-        {item.balances[0].currency} {item.balances[0].amount}
+        {item.account.balances[0].currency} {item.account.balances[0].amount}
       </div>
     </div>
   );
@@ -27,14 +27,6 @@ function Accounts({accounts = []}) {
   const [dialog, setDialog] = useState(false);
   const showDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
-
-  /*useEffect(() => {
-    const endpoint = urlJoin(process.env.REACT_APP_BACKEND_ENDPOINT, "fetch_linked_accounts");
-    const params = {
-      username: "user",
-    };
-    GET_request(endpoint, params).then((data) => setAccounts(data));
-  }, []);*/
 
   return (
     <>

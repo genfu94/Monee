@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 
-from services.banksync.types import Account, BankLink, Transaction
-from ..types import BankLink, NordigenBankLink, InstitutionInfo, AccountStatus, Account, Transaction
+from services.bank_connect.types import Account, BankLink, Transaction
+from .bank_connect.types import BankLink, NordigenBankLink, InstitutionInfo, AccountStatus, Account, Transaction
 from typing import List, Dict
 import json
 from dataclasses import asdict 
-from dacite import from_dict
 
 
 def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLink:
