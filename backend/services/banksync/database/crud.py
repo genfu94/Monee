@@ -46,7 +46,7 @@ class BankLinkCRUD(ABC):
 
 class AccountCRUD(ABC):
     @abstractmethod
-    def add(self, username: str, bank_link: BankLink, account: Account) -> None:
+    def add(self, username: str, bank_link: BankLink, account: Account, upsert=False) -> None:
         pass
 
     @abstractmethod
@@ -115,7 +115,11 @@ class MongoAccountCRUD(AccountCRUD):
         self.mongo_client = mongo_client
         self.account_collection = self.mongo_client['accounts']
 
-    def add(self, username: str, bank_link: BankLink, account: Account) -> None:
+    def add(self, username: str, bank_link: BankLink, account: Account, upsert=False) -> None:
+        if upsert and self.find_by_id(account.id):
+            self.update(account)
+            return
+        
         account_json = json.loads(account.json())
         account_json['user'] = username
         account_json['institution_name'] = bank_link.institution.name

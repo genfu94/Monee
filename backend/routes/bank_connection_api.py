@@ -1,8 +1,10 @@
 from fastapi import APIRouter
-from services.banksync.types import InstitutionInfo, Transaction, Account, BankLink
+from services.banksync.types import InstitutionInfo, Account, BankLink
+from models.models import AccountTransactions
 from dependencies import get_bank_sync_client, get_account_crud, get_bank_link_crud, get_transaction_crud
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from typing import List
 import json
 
 router = APIRouter()
@@ -16,9 +18,6 @@ def fetch_account_updates(account_id: str, link: BankLink) -> Account:
 
     if not account:
         account = get_bank_sync_client().bank_account_client.fetch_account(account_id)
-        if not account:
-            return None, None
-        
         account.bank_link = link
 
     last_update = datetime.strptime(
@@ -40,14 +39,7 @@ def synchronize_user_accounts(username: str):
     for link in user_bank_links:
         for account_id in get_bank_sync_client().bank_link_client.fetch_account_ids_from_bank_link(link):
             account, transactions = fetch_account_updates(account_id, link)
-            if not account:
-                continue
-            
-            if not get_account_crud().find_by_id(account_id):
-                get_account_crud().add(username, link, account)
-            else:
-                get_account_crud().update(account)
-            
+            get_account_crud().add(username, link, account, upsert=True)
             get_transaction_crud().add(account_id, transactions)
 
 
@@ -72,16 +64,9 @@ async def bank_connect(username: str, institution: InstitutionInfo):
 
 
 @router.get("/synchronize_account")
-async def synchronize_account(username: str):
+async def synchronize_account(username: str) -> List[AccountTransactions]:
     if get_bank_sync_client().nordigen_client:
         update_bank_links_statuses(username)
         synchronize_user_accounts(username)
 
-    out = []
-    accounts = get_account_crud().find_by_user(username)
-    for i in range(len(accounts)):
-        out.append(json.loads(accounts[i].json()))
-        
-        out[i]['transactions'] = get_transaction_crud().find_by_account(accounts[i].id)
-    
-    return out
+    return [{'account': json.loads(acc.json()), 'transactions': get_transaction_crud().find_by_account(acc.id)} for acc in get_account_crud().find_by_user(username)]

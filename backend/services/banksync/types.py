@@ -59,9 +59,9 @@ class Transaction(BaseModel):
     transaction_amount: Balance
     origin: str
     text: str
-    category: str
     type: str
-    category_edited: bool
+    category: str = None
+    category_edited: bool = None
 
 
 class Account(BaseModel):

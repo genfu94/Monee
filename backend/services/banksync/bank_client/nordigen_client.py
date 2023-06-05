@@ -16,6 +16,16 @@ from ..types import (APICredentials,
                      InstitutionInfo)
 
 
+def _is_account_valid(nordigen_client, account_id: str) -> Dict:
+    account_api = nordigen_client.account_api(id=account_id)
+    account_json = account_api.get_details()['account']
+
+    if 'status' in account_json and account_json['status'] == 'deleted':
+        return None
+
+    return account_json
+
+
 class NordigenBankAccountClient(BankAccountClientInterface):
     def __init__(self, nordigen_client):
         self.nordigen_client = nordigen_client
@@ -31,16 +41,16 @@ class NordigenBankAccountClient(BankAccountClientInterface):
     
     def fetch_account(self, account_id: str) -> Account:
         account_api = self.nordigen_client.account_api(id=account_id)
-        account_details_json = account_api.get_details()['account']
+        account_json = _is_account_valid(self.nordigen_client, account_id)
 
-        if 'status' in account_details_json and account_details_json['status'] == 'deleted':
+        if not account_json:
             return None
-
+            
         balances_dict = account_api.get_balances()['balances'][0]['balanceAmount']
 
         return Account(
             id=account_id,
-            name=account_details_json['name'],
+            name=account_json['name'],
             balances=[balances_dict]
         )
 
@@ -124,7 +134,7 @@ class NordigenBankLinkClient(BankLinkClientInterface):
             requisition_id=bank_linking_details.requisition_id
         )
 
-        return account_id_list['accounts']
+        return filter(lambda a: _is_account_valid(self.nordigen_client, a), account_id_list['accounts'])
 
 
 class NordigenBankSyncClient(BankSyncClientInterface):
