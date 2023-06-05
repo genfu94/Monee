@@ -3,7 +3,8 @@ from typing import Union, List
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
+from datetime import datetime
 
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
@@ -55,7 +56,7 @@ class Balance:
 
 class Transaction(BaseModel):
     id: str
-    booking_date: str
+    booking_date: datetime
     transaction_amount: Balance
     origin: str
     text: str
@@ -63,10 +64,31 @@ class Transaction(BaseModel):
     category: str = None
     category_edited: bool = None
 
+    @validator('booking_date')
+    def convert_datetime(cls, v):
+        try:
+            return datetime.strptime(v, "%Y-%m-%d, %H:%M:%S")
+        except Exception as e:
+            return v
+
+    class Config:
+        json_encoders = {
+            datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S")
+        }
+
 
 class Account(BaseModel):
     id: str
     name: str
-    last_update: str = None
+    last_update: datetime = None
     bank_link: BankLink = None
     balances: List[Balance] = []
+
+    @validator('last_update', pre=True)
+    def convert_datetime(cls, v):
+        return datetime.strptime(v, "%Y-%m-%d, %H:%M:%S")
+
+    class Config:
+        json_encoders = {
+            datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S")
+        }

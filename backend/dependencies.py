@@ -2,18 +2,20 @@ from services.bank_connect.types import APICredentials
 from services.bank_connect.implementation.nordigen import NordigenBankSyncClient
 from services.database_crud import AccountCRUD, BankLinkCRUD, TransactionCRUD, MongoAccountCRUD, MongoBankLinkCRUD, MongoTransactionCRUD
 from services.bank_connect.bank_connect import BankConnector
+from services.bank_sync import BankSync
 import configparser
 from pymongo import MongoClient
 
 
-bank_sync_client:BankConnector = None
+bank_connector:BankConnector = None
 account_crud: AccountCRUD = None
 bank_link_crud: BankLinkCRUD = None
 transaction_crud: TransactionCRUD = None
+bank_sync: BankSync = None
 
 
 def initialize_bank_sync_client():
-    global bank_sync_client, account_crud, bank_link_crud, transaction_crud
+    global bank_sync, bank_connector, account_crud, bank_link_crud, transaction_crud
 
     generic_config = configparser.ConfigParser()
     generic_config.read('generic_config.ini')
@@ -26,12 +28,17 @@ def initialize_bank_sync_client():
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    bank_sync_client = NordigenBankSyncClient(
+    bank_connector = NordigenBankSyncClient(
         APICredentials(config['NORDIGEN']['NordigenSecretID'], config['NORDIGEN']['NordigenSecretKey']),
     )
 
-def get_bank_sync_client():
-    return bank_sync_client
+    bank_sync = BankSync(bank_connector, account_crud, transaction_crud, bank_link_crud)
+
+def get_bank_sync():
+    return bank_sync
+
+def get_bank_connector():
+    return bank_connector
 
 
 def get_account_crud():

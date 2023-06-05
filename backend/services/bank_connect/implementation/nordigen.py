@@ -30,6 +30,8 @@ class NordigenBankAccountClient(BankAccountAPI):
 
     def fetch_transactions(self, account_id: str, date_start: datetime = None, date_end: datetime = None) -> List[Transaction]:
         account_api = self.nordigen_client.account_api(id=account_id)
+        date_start = date_start.strftime('%Y-%m-%d') if date_start else None
+        date_end = date_end.strftime('%Y-%m-%d') if date_end else None
         transactions_raw = account_api.get_transactions(
             date_from=date_start, date_to=date_end)['transactions']
         transactions_list = transactions_raw['booked'] + \

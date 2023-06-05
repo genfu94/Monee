@@ -5,6 +5,7 @@ from .bank_connect.types import BankLink, NordigenBankLink, InstitutionInfo, Acc
 from typing import List, Dict
 import json
 from dataclasses import asdict 
+from datetime import datetime
 
 
 def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLink:
@@ -139,7 +140,7 @@ class MongoAccountCRUD(AccountCRUD):
         update_query = [{
             "$set": {
                 "balances": account_json["balances"],
-                "last_update": account_json["last_update"]
+                "last_update": datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
             }
         }]
 
