@@ -16,6 +16,7 @@ import { Doughnut, Line } from "react-chartjs-2";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
+import dayjs from "dayjs";
 
 const BalanceSummaryContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -44,6 +45,26 @@ function groupExpensesByCategory(accounts) {
   }
 
   return expenseByCategory;
+}
+
+function networthTrend(accounts) {
+  let networth = {};
+
+  for(const account of accounts) {
+    for(const transaction of account.transactions) {
+      if (!Object.keys(networth).includes(transaction.booking_date)) {
+        networth[transaction.booking_date] = transaction.account_balance;
+      }
+    }
+  }
+
+  const data = Object.keys(networth).map(date => ({
+    x: dayjs(date, "YYYY-MM-DD, hh:mm:ss").toDate(),
+    y: networth[date]
+  }));
+
+  console.log(data);
+  return data;
 }
 
 function renderDashboard(accounts) {
@@ -131,17 +152,8 @@ function Dashboard({ accounts }) {
   const data = {
     datasets: [
       {
-        label: "# of Votes",
-        data: [
-          {
-            x: 1632664467243,
-            y: 5,
-          },
-          {
-            x: 1611664467243,
-            y: 10,
-          },
-        ],
+        label: "€",
+        data: networthTrend(accounts),
         borderColor: "pink",
       },
     ],

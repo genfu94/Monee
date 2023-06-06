@@ -62,7 +62,7 @@ class Transaction(BaseModel):
     origin: str
     text: str
     type: str
-    previous_account_balance: float = None
+    account_balance: float = None
     category: str = None
     category_edited: bool = None
 
