@@ -17,23 +17,20 @@ class APICredentials:
     secret_id: str
     secret_key: str
 
-@dataclass
-class InstitutionInfo:
+
+class InstitutionInfo(BaseModel):
     name: str
     id: str
 
 
-@dataclass_json
-@dataclass
-class BankLinkBase(ABC):
+class BankLinkBase(BaseModel):
     client: str
 
     @abstractmethod
     def get_identifiers(self):
         pass
 
-@dataclass_json
-@dataclass
+
 class NordigenBankLink(BankLinkBase):
     requisition_id: str
     institution: InstitutionInfo
@@ -44,12 +41,16 @@ class NordigenBankLink(BankLinkBase):
         return {
             'requisition_id': self.requisition_id
         }
+    
+    class Config:
+        json_encoders = {
+            InstitutionInfo: lambda i: i.dict()
+        }
 
 BankLink = Union[NordigenBankLink, BankLinkBase]
 
-@dataclass_json
-@dataclass
-class Balance:
+
+class Balance(BaseModel):
     currency: str
     amount: float
 
@@ -73,7 +74,8 @@ class Transaction(BaseModel):
 
     class Config:
         json_encoders = {
-            datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S")
+            datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S"),
+            Balance: lambda b: b.dict()
         }
 
 
@@ -84,11 +86,16 @@ class Account(BaseModel):
     bank_link: BankLink = None
     balances: List[Balance] = []
 
-    @validator('last_update', pre=True)
+    @validator('last_update')
     def convert_datetime(cls, v):
-        return datetime.strptime(v, "%Y-%m-%d, %H:%M:%S")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d, %H:%M:%S")
+        except Exception as e:
+            return v
 
     class Config:
         json_encoders = {
-            datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S")
+            datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S"),
+            Balance: lambda b: b.dict(),
+            BankLink: lambda b: b.dict()
         }

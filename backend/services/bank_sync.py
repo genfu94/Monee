@@ -1,6 +1,7 @@
 from .bank_connect.bank_connect import BankConnector
 from .database_crud import AccountCRUD, TransactionCRUD, BankLinkCRUD
-from .bank_connect.types import BankLink, Account
+from .bank_connect.types import BankLink, Account, Transaction
+from typing import Tuple, List
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -19,7 +20,7 @@ class BankSync:
     def get_last_sync_time(self, last_update):
         return datetime.now().replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
 
-    def fetch_account_updates(self, account_id: str, link: BankLink) -> Account:
+    def fetch_account_updates(self, account_id: str, link: BankLink) -> Tuple[Account, List[Transaction]]:
         account = self.account_crud.find_by_id(account_id)
 
         if not account:
@@ -33,7 +34,7 @@ class BankSync:
         if last_update < last_sync_time:
             old_transactions_ids = self.transaction_crud.find_by_account(account_id)
             new_transactions = self.bank_connector.bank_account_api.fetch_transactions(account_id, last_update)
-            new_transactions = list(filter(lambda x: x['id'] not in old_transactions_ids, new_transactions))
+            new_transactions = list(filter(lambda x: x.id not in old_transactions_ids, new_transactions))
             account.last_update = datetime.now()
 
         return account, new_transactions

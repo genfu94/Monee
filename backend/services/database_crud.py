@@ -82,7 +82,7 @@ class MongoBankLinkCRUD(BankLinkCRUD):
         self.bank_link_collection = self.mongo_client['bank_links']
     
     def add(self, username: str, bank_link: BankLink) -> None:
-        bank_link_json = bank_link.to_dict()
+        bank_link_json = bank_link.dict()
         bank_link_json['user'] = username
         self.bank_link_collection.insert_one(bank_link_json)
     
@@ -120,12 +120,11 @@ class MongoAccountCRUD(AccountCRUD):
             self.update(account)
             return
         
-        account_json = json.loads(account.json())
-        account_json['user'] = username
-        account_json['institution_name'] = bank_link.institution.name
-        account_json['bank_link'] = asdict(bank_link)
-        account_json['transactions'] = []
-        self.account_collection.insert_one(account_json)
+        account.bank_link = bank_link
+        account = account.dict()
+        account['user'] = username
+        account['transactions'] = []
+        self.account_collection.insert_one(account)
     
     def find_by_id(self, account_id: str) -> Account:
         account = self.account_collection.find_one({"id": account_id}, {"_id": 0, "transactions": 0})
@@ -136,11 +135,11 @@ class MongoAccountCRUD(AccountCRUD):
         return [Account.parse_obj(acc) for acc in raw_accounts]
 
     def update(self, account: Account) -> None:
-        account_json = json.loads(account.json())
+        account_json = account.dict()
         update_query = [{
             "$set": {
                 "balances": account_json["balances"],
-                "last_update": datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
+                "last_update": datetime.now()
             }
         }]
 
@@ -158,7 +157,7 @@ class MongoTransactionCRUD(TransactionCRUD):
                 "$set": {
                     "transactions": {
                         "$concatArrays": [
-                            transactions,
+                            [t.dict() for t in transactions],
                             "$transactions"
                         ]
                     }
@@ -186,4 +185,4 @@ class MongoTransactionCRUD(TransactionCRUD):
     
     def find_by_account(self, account_id: str) -> List[Transaction]:
         account = self.account_collection.find_one({"id": account_id})
-        return account['transactions'] if account else []
+        return [Transaction.parse_obj(t) for t in account['transactions']] if account else []

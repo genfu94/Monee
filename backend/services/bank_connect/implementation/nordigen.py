@@ -57,7 +57,6 @@ class NordigenBankAccountClient(BankAccountAPI):
             balances=[balances_dict]
         )
 
-    # TODO: Refactoring!! Maybe use pydantic to do this automatically?
     def _psd2_to_transaction(self, account_id: str, psd2_transaction: Dict) -> Transaction:
         origin = ''
         if 'creditorName' in psd2_transaction:
@@ -66,7 +65,7 @@ class NordigenBankAccountClient(BankAccountAPI):
             origin = psd2_transaction['debtorName']
         text = psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
 
-        return {
+        return Transaction.parse_obj({
             "account_id": account_id,
             "type": 'income' if float(psd2_transaction['transactionAmount']['amount']) > 0 else 'expense',
             "id": psd2_transaction['transactionId'],
@@ -75,7 +74,7 @@ class NordigenBankAccountClient(BankAccountAPI):
             "origin": origin,
             "text": text,
             "category": "unknown"
-        }
+        })
 
 
 class NordigenBankLinkClient(BankLinkAPI):
