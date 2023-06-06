@@ -3,7 +3,6 @@ from services.bank_connect.types import InstitutionInfo
 from models.models import AccountTransactions
 from dependencies import get_bank_sync
 from typing import List
-import json
 
 router = APIRouter()
 
@@ -28,11 +27,8 @@ async def synchronize_account(username: str) -> List[AccountTransactions]:
 
     account_transactions = []
     for account in get_bank_sync().account_crud.find_by_user(username):
-        account_transactions.append(
-            {
-                'account': account,
-                'transactions': get_bank_sync().transaction_crud.find_by_account(account.id)
-             }
-        )
+        account_dict = account.dict()
+        account_dict['transactions'] = get_bank_sync().transaction_crud.find_by_account(account.id)
+        account_transactions.append(account_dict)
 
     return account_transactions

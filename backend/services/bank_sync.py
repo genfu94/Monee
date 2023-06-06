@@ -25,7 +25,7 @@ class BankSync:
 
         if not account:
             account = self.bank_connector.bank_account_api.fetch_account(account_id)
-            account.bank_link = link
+            account.institution_name = link.institution.name
 
         last_update = account.last_update if account.last_update else datetime.now() - relativedelta(years=1)
         

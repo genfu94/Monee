@@ -4,7 +4,6 @@ import ListItem from "@mui/material/ListItem";
 import ListSubheader from "@mui/material/ListSubheader";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { Divider } from "@mui/material";
 
 import dayjs from "dayjs";
 import TransactionItem from "./TransactionItem.js";
@@ -14,11 +13,11 @@ import { modalStyle, listSubheaderStyle } from "./TransactionList.style.js";
 function groupTransactionsByDate(accounts, accountFilter, dateRange) {
   let transactionsGroupedByDate = {};
   for (const account of accounts) {
-    if (!accountFilter.includes(account._id)) continue;
+    if (!accountFilter.includes(account.id)) continue;
 
     for (const transaction of account.transactions) {
       const dates = Object.keys(transactionsGroupedByDate);
-      const booking_date = dayjs(transaction.booking_date);
+      const booking_date = dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss");
 
       if (!(booking_date >= dateRange[0] && booking_date <= dateRange[1]))
         continue;

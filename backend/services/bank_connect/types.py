@@ -82,8 +82,8 @@ class Transaction(BaseModel):
 class Account(BaseModel):
     id: str
     name: str
+    institution_name: str = None
     last_update: datetime = None
-    bank_link: BankLink = None
     balances: List[Balance] = []
 
     @validator('last_update')
@@ -96,6 +96,5 @@ class Account(BaseModel):
     class Config:
         json_encoders = {
             datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S"),
-            Balance: lambda b: b.dict(),
-            BankLink: lambda b: b.dict()
+            Balance: lambda b: b.dict()
         }
