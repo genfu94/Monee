@@ -57,11 +57,11 @@ class Balance(BaseModel):
 
 class Transaction(BaseModel):
     id: str
-    booking_date: datetime
-    transaction_amount: Balance
     origin: str
     text: str
-    type: str
+    transaction_amount: Balance = None
+    type: str = None
+    booking_date: datetime = None
     account_balance: float = None
     category: str = None
     category_edited: bool = None

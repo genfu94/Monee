@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  Filler,
 } from "chart.js";
 import { Doughnut, Line } from "react-chartjs-2";
 import { Box, Card, CardContent, Typography } from "@mui/material";
@@ -28,7 +29,16 @@ const BalanceSummaryCard = styled(Card)(({ theme }) => ({
   borderRadius: "1rem",
 }));
 
-ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, LineElement, TimeScale, PointElement);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  LinearScale,
+  LineElement,
+  TimeScale,
+  PointElement,
+  Filler
+);
 
 function groupExpensesByCategory(accounts) {
   let expenseByCategory = {};
@@ -50,17 +60,17 @@ function groupExpensesByCategory(accounts) {
 function networthTrend(accounts) {
   let networth = {};
 
-  for(const account of accounts) {
-    for(const transaction of account.transactions) {
+  for (const account of accounts) {
+    for (const transaction of account.transactions) {
       if (!Object.keys(networth).includes(transaction.booking_date)) {
         networth[transaction.booking_date] = transaction.account_balance;
       }
     }
   }
 
-  const data = Object.keys(networth).map(date => ({
+  const data = Object.keys(networth).map((date) => ({
     x: dayjs(date, "YYYY-MM-DD, hh:mm:ss").toDate(),
-    y: networth[date]
+    y: networth[date],
   }));
 
   console.log(data);
@@ -154,14 +164,35 @@ function Dashboard({ accounts }) {
       {
         label: "€",
         data: networthTrend(accounts),
-        borderColor: "pink",
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.3)",
+        fill: true,
+        pointRadius: 0,
+        hoverPointRadius: 1,
       },
     ],
   };
 
   const options = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
     scales: {
+      y: {
+        grid: {
+          display: true,
+        },
+      },
       x: {
+        grid: {
+          display: false,
+        },
         type: "time",
         time: {
           unit: "month",
