@@ -17,7 +17,10 @@ import { Doughnut, Line } from "react-chartjs-2";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
+import {TbMoneybag} from "react-icons/tb";
+import {GiMoneyStack} from "react-icons/gi";
 import dayjs from "dayjs";
+import { getMonthStart } from "../../utils/date.js";
 
 const BalanceSummaryContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -57,32 +60,76 @@ function groupExpensesByCategory(accounts) {
   return expenseByCategory;
 }
 
+
+function diffOneDay(d1, d2) {
+  return dayjs(d1, "YYYY-MM-DD").add(1, "day").format("YYYY-MM-DD") === d2;
+}
+
+
+function fillDates(networth) {
+  let out = {};
+  let dates = Object.keys(networth);
+  dates.sort((a,b)=>dayjs(a, "YYYY-MM-DD").unix()-dayjs(b, 'YYYY-MM-DD').unix());
+  let currDate = dates[0];
+  let currTotal = networth[currDate];
+  while(dayjs(currDate, 'YYYY-MM-DD') < dayjs(dates[dates.length-1], 'YYYY-MM-DD')) {
+    if(dates.includes(currDate)) {
+      out[currDate] = networth[currDate];
+      currTotal = networth[currDate];
+    } else {
+      out[currDate] = currTotal;
+    }
+    currDate = dayjs(currDate).add(1, "day").format("YYYY-MM-DD");
+  }
+  return out;
+}
+
 function networthTrend(accounts) {
   let networth = {};
 
   for (const account of accounts) {
     for (const transaction of account.transactions) {
-      if (!Object.keys(networth).includes(transaction.booking_date)) {
-        networth[transaction.booking_date] = transaction.account_balance;
+      const date = dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss").format("YYYY-MM-DD");
+      if (!Object.keys(networth).includes(date)) {
+        networth[date] = transaction.account_balance;
       }
     }
   }
+  return fillDates(networth)
+}
+
+function networthTrendPlot(accounts) {
+  const networth = networthTrend(accounts);
 
   const data = Object.keys(networth).map((date) => ({
-    x: dayjs(date, "YYYY-MM-DD, hh:mm:ss").toDate(),
+    x: date,
     y: networth[date],
   }));
 
-  console.log(data);
   return data;
+}
+
+function totalNetworth(accounts) {
+  let total = 0;
+  for(const account of accounts) {
+    total += account.balances[0].amount;
+  }
+  return total;
+}
+
+function networthChange(accounts) {
+  const currentTotal = totalNetworth(accounts);
+  const networth = networthTrend(accounts);
+  const monthStart = getMonthStart().format("YYYY-MM-DD");
+  return Math.trunc((currentTotal-networth[monthStart])/networth[monthStart] * 100);
 }
 
 function renderDashboard(accounts) {
   const balanceCards = [
     {
       title: "Total Networth",
-      amount: 24400,
-      increasePreviousPeriod: 2.5,
+      amount: totalNetworth(accounts),
+      increasePreviousPeriod: networthChange(accounts),
       icon: <FiTrendingUp />,
       background: "green",
     },
@@ -106,9 +153,9 @@ function renderDashboard(accounts) {
                   style={{
                     marginLeft: "auto",
                     display: "flex",
-                    fontSize: "0.8rem",
+                    fontSize: "0.9rem",
                     color: "white",
-                    padding: "0.6em",
+                    padding: "0.3em",
                     borderRadius: "10%",
                     background: b.background,
                   }}
@@ -163,7 +210,7 @@ function Dashboard({ accounts }) {
     datasets: [
       {
         label: "€",
-        data: networthTrend(accounts),
+        data: networthTrendPlot(accounts),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.3)",
         fill: true,

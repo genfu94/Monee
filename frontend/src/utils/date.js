@@ -8,7 +8,7 @@ export const getPreviousMonday = () => {
 
 export const getMonthStart = () => {
   let monthStart = dayjs();
-  monthStart.set('day', 1);
+  monthStart = monthStart.set('date', 1);
   return monthStart;
 }
 
