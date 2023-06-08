@@ -9,7 +9,7 @@ export const getPreviousMonday = () => {
 export const getMonthStart = () => {
   let monthStart = dayjs();
   monthStart = monthStart.set('date', 1);
-  return monthStart;
+  return new Date(monthStart.toDate().setHours(0, 0, 0, 0));
 }
 
 export const getYearStart = () => {

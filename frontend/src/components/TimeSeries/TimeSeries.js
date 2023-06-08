@@ -45,23 +45,23 @@ class Resampler {
     const endBucket = this._assignToBucket(series.loc(-1).index, freq);
 
     while (bucket <= endBucket) {
-      this.buckets.set(dayjs(bucket).format("YYYY-MM-DD, HH:mm:ss"), NaN);
+      this.buckets.set(dayjs(bucket).format("YYYY-MM-DD, HH:mm:ss"), null);
       bucket = dayjs(bucket).add(freqQty, mapDayJSUnit[freqTimeUnit]).toDate();
     }
 
     for (const [idx, value] of series.iterate()) {
       const bucketizedDate = dayjs(this._assignToBucket(idx, freq)).format("YYYY-MM-DD, HH:mm:ss");
 
-      if (isNaN(this.buckets.get(bucketizedDate))) this.buckets.set(bucketizedDate, []);
+      if (!this.buckets.get(bucketizedDate)) this.buckets.set(bucketizedDate, []);
 
       this.buckets.get(bucketizedDate).push(value);
     }
   }
 
-  max() {
+  min() {
     for(const [idx, values] of this.buckets) {
-      if(!isNaN(values)) {
-        this.buckets.set(idx, Math.max(...values));
+      if(values) {
+        this.buckets.set(idx, Math.min(...values));
       }
     }
 
@@ -81,6 +81,23 @@ class TimeSeries {
     this.series.sort((a, b) => a.index.getTime() > b.index.getTime());
   }
 
+  filter(dateStart, dateEnd) {
+    this.series = this.series.filter(e => e.index >= dateStart && (!dateEnd || e.index <= dateEnd));
+    return this;
+  }
+
+  cumulate() {
+    for(const [i, el] of this.series.entries()) {
+      this.series[i].data += (i === 0 ? 0 : this.series[i-1].data);
+    }
+
+    return this;
+  }
+
+  at(idx) {
+    return this.series.find(e => e.index.getTime() === idx.getTime());
+  }
+
   loc(idx) {
     return this.series.slice(idx)[0];
   }
@@ -94,7 +111,7 @@ class TimeSeries {
   fillNa() {
     let lastValue = NaN;
     for(const [i, el] of this.series.entries()) {
-      if (isNaN(el.data)) this.series[i].data = lastValue;
+      if (!el.data) this.series[i].data = lastValue;
       else lastValue = el.data;
     }
 

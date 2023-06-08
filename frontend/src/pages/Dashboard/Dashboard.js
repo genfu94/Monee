@@ -17,8 +17,6 @@ import { Doughnut, Line } from "react-chartjs-2";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
-import {TbMoneybag} from "react-icons/tb";
-import {GiMoneyStack} from "react-icons/gi";
 import dayjs from "dayjs";
 import { getMonthStart } from "../../utils/date.js";
 import TimeSeries from "../../components/TimeSeries/TimeSeries.js";
@@ -75,34 +73,40 @@ function getNetworthSeries(accounts) {
   return new TimeSeries(dates, networth);
 }
 
-// function totalNetworth(accounts) {
-//   let total = 0;
-//   for(const account of accounts) {
-//     total += account.balances[0].amount;
-//   }
-//   return total;
-// }
+function getExpensesSeries(accounts) {
+  let dates = [];
+  let expenses = [];
 
-// function networthChange(accounts) {
-//   const currentTotal = totalNetworth(accounts);
-//   const networth = networthTrend(accounts);
-//   const monthStart = getMonthStart().format("YYYY-MM-DD");
-//   return Math.trunc((currentTotal-networth[monthStart])/networth[monthStart] * 100);
-// }
+  for (const account of accounts) {
+    for (const transaction of account.transactions) {
+      dates.push(dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss").toDate());
+      expenses.push(transaction.transaction_amount.amount);
+    }
+  }
 
-function renderDashboard(accounts) {
+  return new TimeSeries(dates, expenses);
+}
+
+function networthChange(networthSeries) {
+  const currentTotal = networthSeries.loc(-1).data;
+  const monthStart = getMonthStart();
+  const totalStartPeriod = networthSeries.at(monthStart).data;
+  return Math.trunc((currentTotal-totalStartPeriod)/totalStartPeriod * 100);
+}
+
+function renderDashboard(networthSeries, expenseSeries) {
   const balanceCards = [
     {
       title: "Total Networth",
-      amount: 0, //totalNetworth(accounts),
-      increasePreviousPeriod: 2.5,//networthChange(accounts),
+      amount: networthSeries.loc(-1).data, //totalNetworth(accounts),
+      increasePreviousPeriod: networthChange(networthSeries),
       icon: <FiTrendingUp />,
       background: "green",
     },
     {
       title: "Current Period Expenses",
-      amount: 670,
-      increasePreviousPeriod: -10.5,
+      amount: expenseSeries.loc(-1).data,
+      increasePreviousPeriod: "-10.5",
       icon: <FiTrendingDown />,
       background: "red",
     },
@@ -148,7 +152,7 @@ function renderDashboard(accounts) {
                     marginLeft: "0.5rem",
                   }}
                 >
-                  +{b.increasePreviousPeriod}%
+                  {b.increasePreviousPeriod}%
                 </Typography>
               </Box>
             </CardContent>
@@ -172,8 +176,11 @@ function Dashboard({ accounts }) {
     ],
   };*/
 
+  const monthStart = getMonthStart();
   let networthSeries = getNetworthSeries(accounts);
-  networthSeries = networthSeries.resample('1D').max().fillNa();
+  let expensesSeries = getExpensesSeries(accounts);
+  expensesSeries = expensesSeries.filter(monthStart).cumulate();
+  networthSeries = networthSeries.resample('1D').min().fillNa();
 
   const data = {
     datasets: [
@@ -232,7 +239,7 @@ function Dashboard({ accounts }) {
       page="Dashboard"
       content={
         <>
-          {renderDashboard(accounts)}
+          {renderDashboard(networthSeries, expensesSeries)}
           <Line data={data} options={options} />
         </>
       }
