@@ -10,7 +10,13 @@ async function _REST_call(
 ) {
   const requestOptions = {
     method: method,
-    headers: { "Content-Type": "application/json", ...headers },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("userInfo")).token
+      }`,
+      ...headers,
+    },
     body: body === null ? null : JSON.stringify(body),
   };
 
@@ -25,7 +31,7 @@ function _build_params_string(params) {
   return "?" + paramString.join("&");
 }
 
-export async function GET_request(endpoint, params=[], headers = null) {
+export async function GET_request(endpoint, params = [], headers = null) {
   return _REST_call(endpoint, "GET", params, null, headers);
 }
 
