@@ -32,7 +32,8 @@ class BankSync:
         last_sync_time = self.get_last_sync_time(last_update)
         new_transactions = []
         if last_update < last_sync_time:
-            old_transactions_ids = self.transaction_crud.find_by_account(account_id)
+            old_transactions = self.transaction_crud.find_by_account(account_id)
+            old_transactions_ids = [t.id for t in old_transactions]
             new_transactions = self.bank_connector.bank_account_api.fetch_transactions(account_id, last_update)
             new_transactions = list(filter(lambda x: x.id not in old_transactions_ids, new_transactions))
             account.last_update = datetime.now()
