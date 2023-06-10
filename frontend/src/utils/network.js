@@ -1,10 +1,16 @@
 const objectMap = (obj, fn) =>
   Object.entries(obj).map(([k, v], i) => fn(k, v, i));
 
-async function _REST_call(endpoint, method, params = [], body = null) {
+async function _REST_call(
+  endpoint,
+  method,
+  params = [],
+  body = null,
+  headers = null
+) {
   const requestOptions = {
     method: method,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...headers },
     body: body === null ? null : JSON.stringify(body),
   };
 
@@ -19,10 +25,10 @@ function _build_params_string(params) {
   return "?" + paramString.join("&");
 }
 
-export async function GET_request(endpoint, params) {
-  return _REST_call(endpoint, "GET", params);
+export async function GET_request(endpoint, params=[], headers = null) {
+  return _REST_call(endpoint, "GET", params, null, headers);
 }
 
-export async function POST_request(endpoint, params, body) {
-  return _REST_call(endpoint, "POST", params, body);
+export async function POST_request(endpoint, params, body, headers = null) {
+  return _REST_call(endpoint, "POST", params, body, headers);
 }

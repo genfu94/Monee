@@ -10,6 +10,15 @@ export function synchronizeAndFetchAccounts(username) {
   return GET_request(endpoint, { username: username })
 }
 
+export function testAuthentication() {
+  const endpoint = urlJoin(
+    process.env.REACT_APP_BACKEND_ENDPOINT,
+    "test_token"
+  );
+  
+  return GET_request(endpoint, [], {"Authorization": `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`})
+}
+
 export function getBalanceTrend(username) {
   // TODO
 }

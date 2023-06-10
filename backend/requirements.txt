@@ -8,4 +8,6 @@ joblib
 scikit-learn
 pandas
 dacite
-sentence-transformers
+#sentence-transformers
+cryptography
+pyjwt

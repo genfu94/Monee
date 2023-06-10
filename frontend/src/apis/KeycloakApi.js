@@ -14,7 +14,7 @@ export function keycloakLogin() {
       })
       .then((authenticated) => {
         keycloak.loadUserProfile().then((value) => {
-          resolve(value);
+          resolve({...value, token: keycloak.token});
         });
       })
       .catch((reason) => {

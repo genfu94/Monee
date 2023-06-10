@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import WebFont from "webfontloader";
 
 import { LoadingScreen } from "./components";
-import { synchronizeAndFetchAccounts, keycloakLogin } from "./apis";
+import { synchronizeAndFetchAccounts, keycloakLogin, testAuthentication } from "./apis";
 import budget_logo from "./assets/imgs/logo.png";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
@@ -23,6 +23,7 @@ function App() {
     keycloakLogin().then((keycloakProfile) => {
       localStorage.setItem("userInfo", JSON.stringify(keycloakProfile));
       synchronizeAndFetchAccounts(keycloakProfile.username).then((data) => {
+        testAuthentication();
         setAccounts(data);
         handleLoadingComplete();
       });

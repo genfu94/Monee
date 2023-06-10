@@ -13,7 +13,7 @@ function UserProfile({onLogout}) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   return (
     <>

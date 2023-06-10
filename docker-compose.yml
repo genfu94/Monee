@@ -16,8 +16,7 @@ services:
       - ./:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - mongo
+    restart: on-failure
   
   mongo:
     image: mongo
@@ -37,8 +36,12 @@ services:
       - "8080:8080"
     command:
       - start-dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
+      interval: 5s
+      timeout: 2s
+      retries: 15
 
   keycloak_configure:
     build: './keycloak'
-    depends_on:
-      - keycloak
+    restart: on-failure
