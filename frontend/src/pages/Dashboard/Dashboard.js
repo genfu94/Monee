@@ -5,7 +5,11 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
 import { getMonthStart } from "../../utils/date.js";
-import { getNetworthSeries, getExpensesSeries, networthChange } from "../../utils/statistics.js";
+import {
+  getNetworthSeries,
+  getExpensesSeries,
+  networthChange,
+} from "../../utils/statistics.js";
 import TimeChart from "../../components/Plot/TimeChart.js";
 
 const BalanceSummaryContainer = styled(Box)(({ theme }) => ({
@@ -90,22 +94,52 @@ function renderDashboard(networthSeries, expenseSeries) {
 function Dashboard({ accounts }) {
   const monthStart = getMonthStart();
   let networthSeries = getNetworthSeries(accounts);
-  let expensesSeries = getExpensesSeries(accounts);
-  expensesSeries = expensesSeries.filter(monthStart).cumulate();
-  networthSeries = networthSeries.resample('1D').min().fillNa();
-  const timeChart = new TimeChart();
-  timeChart.add(networthSeries.toPlotData(), 'rgba(0, 0, 255, 1.0)', 'rgba(0, 0, 255, 0.2)', '€');
-  return (
-    <SideMenuLayout
-      page="Dashboard"
-      content={
-        <>
-          {renderDashboard(networthSeries, expensesSeries)}
-          {timeChart.plot()}
-        </>
-      }
-    />
-  );
+  if (networthSeries.series.length === 0) {
+    return (
+      <SideMenuLayout
+        page="Dashboard"
+        content={
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <Typography style={{color: "#444"}}>
+              You are not tracking any account yet, add a new one from the
+              Account tab.
+            </Typography>
+          </div>
+        }
+      />
+    );
+  } else {
+    let expensesSeries = getExpensesSeries(accounts);
+    expensesSeries = expensesSeries.filter(monthStart).cumulate();
+    networthSeries = networthSeries.resample("1D").min().fillNa();
+    const timeChart = new TimeChart();
+    timeChart.add(
+      networthSeries.toPlotData(),
+      "rgba(0, 0, 255, 1.0)",
+      "rgba(0, 0, 255, 0.2)",
+      "€"
+    );
+    return (
+      <SideMenuLayout
+        page="Dashboard"
+        content={
+          <>
+            {renderDashboard(networthSeries, expensesSeries)}
+            {timeChart.plot()}
+          </>
+        }
+      />
+    );
+  }
 }
 
 export default Dashboard;

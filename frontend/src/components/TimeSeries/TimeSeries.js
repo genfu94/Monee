@@ -41,6 +41,11 @@ class Resampler {
       D: "days",
       H: "hours",
     };
+
+    if (series.series.length === 0) {
+      return;
+    }
+
     let bucket = this._assignToBucket(series.loc(0).index, freq);
     const endBucket = this._assignToBucket(series.loc(-1).index, freq);
 
