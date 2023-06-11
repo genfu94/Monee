@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from dependencies import initialize_bank_sync_client, fetch_authentication_public_key
+from time import sleep
 
 import routes.bank_connection_api
 
@@ -23,6 +24,8 @@ app.include_router(routes.bank_connection_api.router)
 
 @app.on_event("startup")
 def startup_event():
+    # TODO: use a more robust way to handle waiting for keycloak initialization
+    sleep(30)
     fetch_authentication_public_key()
     initialize_bank_sync_client()
 

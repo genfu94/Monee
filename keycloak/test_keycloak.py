@@ -12,7 +12,8 @@ if __name__ == "__main__":
                                     verify=True)
     keycloak_admin.create_realm({
             "realm": "budget_app",
-            "enabled": True
+            "enabled": True,
+            "registrationAllowed": True
         }, skip_exists=True)
     keycloak_admin.realm_name = "budget_app"
 
