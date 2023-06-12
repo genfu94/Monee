@@ -68,7 +68,7 @@ class NordigenBankAccountClient(BankAccountAPI):
         if 'debtorName' in psd2_transaction:
             origin = psd2_transaction['debtorName']
         text = psd2_transaction['remittanceInformationUnstructured'] if 'remittanceInformationUnstructured' in psd2_transaction else ''
-
+        text = None if text == "-" else text
         return Transaction.parse_obj({
             "account_id": account_id,
             "type": 'income' if float(psd2_transaction['transactionAmount']['amount']) > 0 else 'expense',

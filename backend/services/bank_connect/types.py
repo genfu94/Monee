@@ -58,7 +58,7 @@ class Balance(BaseModel):
 class Transaction(BaseModel):
     id: str
     origin: str
-    text: str
+    text: str = None
     transaction_amount: Balance = None
     type: str = None
     booking_date: datetime = None
