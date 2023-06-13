@@ -16,6 +16,7 @@
     "chartjs-adapter-moment": "^1.0.1",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
     "keycloak-js": "^20.0.3",
     "plotly.js": "^2.23.2",
