@@ -4,7 +4,7 @@ import time
 
 if __name__ == "__main__":
     # TODO: use more robust approach to wait for keycloak initialization
-    time.sleep(20)
+    time.sleep(30)
     keycloak_admin = KeycloakAdmin(server_url="http://budget_app_keycloak:8080",
                                     username='admin',
                                     password='admin',

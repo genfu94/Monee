@@ -1,7 +1,9 @@
 version: "3.8"
 services:
   budget-app-frontend:
-    build: './frontend'
+    build: 
+      context: './frontend'
+      dockerfile: Dockerfile.development
     container_name: budget_app_frontend
     volumes:
       - ./frontend/src:/app/frontend/src
