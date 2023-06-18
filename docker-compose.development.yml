@@ -47,3 +47,5 @@ services:
   keycloak_configure:
     build: './keycloak'
     restart: on-failure
+    environment:
+      - frontend=http://localhost:3000

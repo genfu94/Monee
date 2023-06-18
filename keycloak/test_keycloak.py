@@ -1,6 +1,7 @@
 from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakGetError
 import time
+import os
 
 if __name__ == "__main__":
     # TODO: use more robust approach to wait for keycloak initialization
@@ -20,10 +21,10 @@ if __name__ == "__main__":
     keycloak_admin.create_client({
             "name": "budget_app",
             "clientId": "budget_app",
-            "rootUrl": "http://localhost:3000",
-            "redirectUris": ["http://localhost:3000/*"],
-            "webOrigins": ["http://localhost:3000"],
-            "adminUrl": "http://localhost:3000",
+            "rootUrl": os.environ['frontend'],
+            "redirectUris": [f"{os.environ['frontend']}/*"],
+            "webOrigins": [os.environ['frontend']],
+            "adminUrl": os.environ['frontend'],
             "standardFlowEnabled": True,
             "enabled": True,
             "publicClient": True
