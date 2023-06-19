@@ -8,9 +8,9 @@ services:
     volumes:
       - ./frontend/src:/app/frontend/src
       - ./frontend/public:/app/frontend/public
+      - /etc/letsencrypt:/etc/letsencrypt
     ports:
-      - "3000:3000"
-      - "80:80"
+      - "443:443"
 
   budget-app-backend:
     build: './backend'
