@@ -1,8 +1,7 @@
 from enum import Enum
 from typing import Union, List
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
-from dataclasses_json import dataclass_json
+from dataclasses import dataclass
 from pydantic import BaseModel, validator
 from datetime import datetime
 

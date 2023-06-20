@@ -2,12 +2,7 @@ nordigen
 fastapi
 uvicorn
 pymongo
-dataclasses-json
 python-dateutil
 joblib
-scikit-learn
-pandas
-dacite
-#sentence-transformers
 cryptography
 pyjwt

@@ -22,7 +22,7 @@ function App() {
 
     keycloakLogin().then((keycloakProfile) => {
       localStorage.setItem("userInfo", JSON.stringify(keycloakProfile));
-      synchronizeAndFetchAccounts(keycloakProfile.username).then((data) => {
+      synchronizeAndFetchAccounts().then((data) => {
         setAccounts(data);
         handleLoadingComplete();
       });
