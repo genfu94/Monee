@@ -1,28 +1,30 @@
 version: "3.8"
 services:
-  budget-app-frontend:
+  frontend:
     build: 
       context: './frontend'
       dockerfile: Dockerfile.development
-    container_name: budget_app_frontend
+    container_name: frontend
     volumes:
       - ./frontend/src:/app/frontend/src
       - ./frontend/public:/app/frontend/public
     ports:
       - "3000:3000"
 
-  budget-app-backend:
+  backend:
     build: './backend'
-    container_name: budget_app_backend
+    container_name: backend
     volumes:
       - ./:/app
     ports:
       - "8000:8000"
+    env_file:
+      - backend/secrets.env.development
     restart: on-failure
   
   mongo:
     image: mongo
-    container_name: budget_app_mongo
+    container_name: mongo
     volumes:
       - ./db:/data/db
     ports:
@@ -30,7 +32,7 @@ services:
   
   keycloak:
     image: quay.io/keycloak/keycloak:20.0.3
-    container_name: budget_app_keycloak
+    container_name: keycloak
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
@@ -46,6 +48,7 @@ services:
 
   keycloak_configure:
     build: './keycloak'
+    container_name: keycloak_configure
     restart: on-failure
     environment:
       - frontend=http://localhost:3000
