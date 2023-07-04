@@ -33,5 +33,5 @@ jobs:
           IMAGE_NAME: monee-backend
           TAG: latest
         run: |
-          docker compose build
+          docker compose -f docker-compose.production.yml build
           docker compose push
