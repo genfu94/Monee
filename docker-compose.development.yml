@@ -40,15 +40,11 @@ services:
       - "8080:8080"
     command:
       - start-dev
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
-      interval: 5s
-      timeout: 2s
-      retries: 15
-
-  keycloak_configure:
-    build: './keycloak'
-    container_name: keycloak_configure
-    restart: on-failure
+  
+  configure_keycloak: 
+    build:
+      context: keycloak
+      dockerfile: configure_keycloak.Dockerfile
+    container_name: configure_keycloak
     environment:
-      - frontend=http://localhost:3000
+      - FRONTEND_URL=http://localhost:3000

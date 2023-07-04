@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   frontend:
+    image: 071386689683.dkr.ecr.eu-north-1.amazonaws.com/monee-frontend
     build: 
       context: './frontend'
       dockerfile: Dockerfile.production
@@ -11,28 +12,46 @@ services:
       - "443:443"
 
   backend:
+    image: 071386689683.dkr.ecr.eu-north-1.amazonaws.com/monee-backend
     build: './backend'
     container_name: backend
     env_file:
       - backend/secrets.env.production
+    environment:
+      - MONGO_DB_CONNECTION_STRING=mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_URL}/?retryWrites=true&w=majority
     ports:
       - "8000:8000"
     restart: on-failure
   
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.3
+    image: 071386689683.dkr.ecr.eu-north-1.amazonaws.com/monee-keycloak
+    build:
+      context: './keycloak'
+      dockerfile: Dockerfile.production
     container_name: keycloak
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/letsencrypt/live/monee.tech/cert.pem:/etc/x509/https/tls.crt
+      - /etc/letsencrypt/live/monee.tech/privkey.pem:/etc/x509/https/tls.key
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=${KEYCLOAK_DB_NAME}
+      - KC_DB_URL=jdbc:postgresql://${POSTGRES_DB_URL}:${POSTGRES_DB_PORT}
+      - KC_HOSTNAME=${HOSTNAME}
+      - KC_DB_USERNAME=${POSTGRES_DB_USERNAME}
+      - KC_DB_PASSWORD=${POSTGRES_DB_PASSWORD}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_PASSWORD}
     ports:
-      - "8080:8080"
+      - "8443:8443"
     command:
-      - start-dev
+      - start --optimized
 
   keycloak_configure:
-    build: './keycloak'
+    image: 071386689683.dkr.ecr.eu-north-1.amazonaws.com/keycloak-configure
+    build:
+      context: './keycloak'
+      dockerfile: configure_keycloak.Dockerfile
     container_name: keycloak_configure
     restart: on-failure
     environment:
-      - frontend=http://localhost
+      - FRONTEND_URL=http://localhost

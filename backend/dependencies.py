@@ -42,7 +42,7 @@ def fetch_authentication_public_key():
     global authentication_public_key
     while True:
         try:
-            cert_json = requests.get('http://keycloak:8080/realms/budget_app/protocol/openid-connect/certs').json()
+            cert_json = requests.get('http://keycloak:8080/realms/monee/protocol/openid-connect/certs').json()
             break
         except Exception as e:
             sleep(5)

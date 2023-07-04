@@ -4,27 +4,32 @@ import time
 import os
 
 if __name__ == "__main__":
+    FRONTEND_URL = os.environ['FRONTEND_URL']
+    KEYCLOAK_SERVER_URL = os.environ['KEYCLOAK_SERVER_URL']
+    KEYCLOAK_ADMIN = os.environ['KEYCLOAK_ADMIN']
+    KEYCLOAK_PASSWORD = os.environ['KEYCLOAK_PASSWORD']
+    REALM = 'monee'
     # TODO: use more robust approach to wait for keycloak initialization
     time.sleep(40)
-    keycloak_admin = KeycloakAdmin(server_url="http://keycloak:8080",
-                                    username='admin',
-                                    password='admin',
+    keycloak_admin = KeycloakAdmin(server_url=KEYCLOAK_SERVER_URL,
+                                    username=KEYCLOAK_ADMIN,
+                                    password=KEYCLOAK_PASSWORD,
                                     realm_name="master",
                                     verify=True)
     keycloak_admin.create_realm({
-            "realm": "budget_app",
+            "realm": REALM,
             "enabled": True,
             "registrationAllowed": True
         }, skip_exists=True)
-    keycloak_admin.realm_name = "budget_app"
+    keycloak_admin.realm_name = REALM
 
     keycloak_admin.create_client({
-            "name": "budget_app",
-            "clientId": "budget_app",
-            "rootUrl": os.environ['frontend'],
-            "redirectUris": [f"{os.environ['frontend']}/*"],
-            "webOrigins": [os.environ['frontend']],
-            "adminUrl": os.environ['frontend'],
+            "name": REALM,
+            "clientId": REALM,
+            "rootUrl": FRONTEND_URL,
+            "redirectUris": [f"{FRONTEND_URL}/*"],
+            "webOrigins": [FRONTEND_URL],
+            "adminUrl": FRONTEND_URL,
             "standardFlowEnabled": True,
             "enabled": True,
             "publicClient": True
