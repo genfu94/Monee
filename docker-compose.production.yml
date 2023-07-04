@@ -15,10 +15,10 @@ services:
     image: 071386689683.dkr.ecr.eu-north-1.amazonaws.com/monee-backend
     build: './backend'
     container_name: backend
-    env_file:
-      - backend/secrets.env.production
     environment:
       - MONGO_DB_CONNECTION_STRING=mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_URL}/?retryWrites=true&w=majority
+      - NORDIGEN_SECRET_ID=${NORDIGEN_SECRET_ID}
+      - NORDIGEN_SECRET_KEY=${NORDIGEN_SECRET_KEY}
     ports:
       - "8000:8000"
     restart: on-failure
