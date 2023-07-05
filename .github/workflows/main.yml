@@ -29,13 +29,16 @@ jobs:
           KEYCLOAK_DB_NAME: ${{ secrets.KEYCLOAK_DB_NAME }}
           POSTGRES_DB_URL: ${{ secrets.POSTGRES_DB_URL }}
           POSTGRES_DB_PORT: ${{ secrets.POSTGRES_DB_PORT }}
-          KC_HOSTNAME: ${{ secrets.HOSTNAME }}
-          KC_DB_USERNAME: ${{ secrets.POSTGRES_DB_USERNAME }}
-          KC_DB_PASSWORD: ${{ secrets.POSTGRES_DB_PASSWORD }}
+          HOSTNAME: ${{ secrets.HOSTNAME }}
+          POSTGRES_DB_USERNAME: ${{ secrets.POSTGRES_DB_USERNAME }}
+          POSTGRES_DB_PASSWORD: ${{ secrets.POSTGRES_DB_PASSWORD }}
           KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
-          KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_PASSWORD }}
+          KEYCLOAK_PASSWORD: ${{ secrets.KEYCLOAK_PASSWORD }}
           NORDIGEN_SECRET_ID: ${{ secrets.NORDIGEN_SECRET_ID }}
           NORDIGEN_SECRET_KEY: ${{ secrets.NORDIGEN_SECRET_KEY }}
+          MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
+          MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD }}
+          MONGO_DB_URL: ${{ secrets.MONGO_DB_URL }}
           IMAGE_NAME: monee-backend
           TAG: latest
         run: |
