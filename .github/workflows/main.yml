@@ -36,6 +36,8 @@ jobs:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }} 
         run: |
           echo "$EC2_SSH_KEY" > private_key && chmod 600 private_key
+          env > .env
+          scp -i private_key .env user@ec2-instance:/home/ubuntu/budget-app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
             cd /home/ubuntu/budget-app &&
             git checkout main &&
@@ -43,5 +45,5 @@ jobs:
             git reset --hard origin/main &&
             git pull origin main &&
             docker compose -f docker-compose.production.yml down &&
-            docker compose -f docker-compose.production.yml up -d --build --force-recreate
+            docker compose -f docker-compose.production.yml up -d --env-file .env --build --force-recreate
           '
