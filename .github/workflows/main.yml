@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > private_key && chmod 600 private_key
           env > .env
-          scp -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget-app
+          scp -o StrictHostKeyChecking=no -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget-app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
             cd /home/ubuntu/budget-app &&
             git checkout main &&
