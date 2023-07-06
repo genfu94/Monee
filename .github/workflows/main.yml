@@ -35,20 +35,20 @@ jobs:
           EC2_HOSTNAME: ${{ secrets.EC2_HOSTNAME }}
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }} 
         run: |
-          echo "$EC2_SSH_KEY" > private_key && chmod 600 private_key
-          echo "$KEYCLOAK_DB_NAME" >> .env
-          echo "$POSTGRES_DB_URL" >> .env
-          echo "$POSTGRES_DB_PORT" >> .env
-          echo "$HOSTNAME" >> .env
-          echo "$POSTGRES_DB_USERNAME" >> .env
-          echo "$POSTGRES_DB_PASSWORD" >> .env
-          echo "$KEYCLOAK_ADMIN" >> .env
-          echo "$KEYCLOAK_PASSWORD" >> .env
-          echo "$NORDIGEN_SECRET_ID" >> .env
-          echo "$NORDIGEN_SECRET_KEY" >> .env
-          echo "$MONGO_DB_USER" >> .env
-          echo "$MONGO_DB_PASSWORD" >> .env
-          echo "$MONGO_DB_URL" >> .env
+          echo "EC2_SSH_KEY=$EC2_SSH_KEY" > private_key && chmod 600 private_key
+          echo "KEYCLOAK_DB_NAME=$KEYCLOAK_DB_NAME" >> .env
+          echo "POSTGRES_DB_URL=$POSTGRES_DB_URL" >> .env
+          echo "POSTGRES_DB_PORT=$POSTGRES_DB_PORT" >> .env
+          echo "HOSTNAME=$HOSTNAME" >> .env
+          echo "POSTGRES_DB_USERNAME=$POSTGRES_DB_USERNAME" >> .env
+          echo "POSTGRES_DB_PASSWORD=$POSTGRES_DB_PASSWORD" >> .env
+          echo "KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN" >> .env
+          echo "KEYCLOAK_PASSWORD=$KEYCLOAK_PASSWORD" >> .env
+          echo "NORDIGEN_SECRET_ID=$NORDIGEN_SECRET_ID" >> .env
+          echo "NORDIGEN_SECRET_KEY=$NORDIGEN_SECRET_KEY" >> .env
+          echo "MONGO_DB_USER=$MONGO_DB_USER" >> .env
+          echo "MONGO_DB_PASSWORD=$MONGO_DB_PASSWORD" >> .env
+          echo "MONGO_DB_URL=$MONGO_DB_URL" >> .env
           scp -o StrictHostKeyChecking=no -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget-app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
             cd /home/ubuntu/budget-app &&
