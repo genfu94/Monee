@@ -56,6 +56,6 @@ jobs:
             git fetch --all &&
             git reset --hard origin/main &&
             git pull origin main &&
-            docker compose -f docker-compose.production.yml down &&
-            docker compose -f docker-compose.production.yml up -d --env-file .env --build --force-recreate
+            sudo docker compose -f docker-compose.production.yml down &&
+            sudo docker compose -f docker-compose.production.yml up -d --env-file .env --build --force-recreate
           '
