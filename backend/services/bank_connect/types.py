@@ -57,13 +57,13 @@ class Balance(BaseModel):
 class Transaction(BaseModel):
     id: str
     origin: str
-    text: str = None
+    text: Union[str, None] = None
     transaction_amount: Balance = None
     type: str = None
     booking_date: datetime = None
     account_balance: float = None
     category: str = None
-    category_edited: bool = None
+    category_edited: Union[bool, None]  = None
 
     @validator('booking_date')
     def convert_datetime(cls, v):

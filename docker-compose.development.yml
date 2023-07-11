@@ -18,10 +18,10 @@ services:
       - ./:/app
     ports:
       - "8000:8000"
+    environment:
+      - MONGO_DB_CONNECTION_STRING=mongodb://mongo:27017
     env_file:
       - backend/secrets.env.development
-    env:
-      - MONGO_DB_CONNECTION_STRING=http://mongo:27017
     restart: on-failure
   
   mongo:
