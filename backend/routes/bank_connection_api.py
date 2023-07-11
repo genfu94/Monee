@@ -1,15 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
 from services.bank_connect.types import InstitutionInfo
-from models.models import AccountTransactions
-from dependencies import get_bank_sync, get_authentication_public_key
+from models.models import AccountTransactions, Token
+from dependencies import get_bank_sync, oauth2_scheme, authenticate_user
 from typing import List
 import jwt
 
 router = APIRouter()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 async def validate_token_and_get_active_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
@@ -17,16 +15,31 @@ async def validate_token_and_get_active_user(token: Annotated[str, Depends(oauth
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    pub_key = get_authentication_public_key()
-    try:
-        payload = jwt.decode(token, pub_key, algorithms=['RS256'], audience="account")
-    except jwt.exceptions.InvalidTokenError as e:
-        raise credentials_exception
+    # pub_key = get_authentication_public_key()
+    # try:
+    #     payload = jwt.decode(token, pub_key, algorithms=['RS256'], audience="account")
+    # except jwt.exceptions.InvalidTokenError as e:
+    #     raise credentials_exception
     
-    if 'preferred_username' not in payload:
-        raise credentials_exception
+    # if 'preferred_username' not in payload:
+    #     raise credentials_exception
 
-    return payload['preferred_username']
+    # return payload['preferred_username']
+    return 'user'
+
+
+@router.post("/token", response_model=Token)
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+):
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return {"access_token": "token", "token_type": "bearer"}
 
     
 @router.get("/get_available_institutions")

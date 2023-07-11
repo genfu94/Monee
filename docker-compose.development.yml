@@ -20,6 +20,8 @@ services:
       - "8000:8000"
     env_file:
       - backend/secrets.env.development
+    env:
+      - MONGO_DB_CONNECTION_STRING=http://mongo:27017
     restart: on-failure
   
   mongo:
@@ -29,22 +31,3 @@ services:
       - ./db:/data/db
     ports:
       - "27017:27017"
-  
-  keycloak:
-    image: quay.io/keycloak/keycloak:20.0.3
-    container_name: keycloak
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-    ports:
-      - "8080:8080"
-    command:
-      - start-dev
-  
-  configure_keycloak: 
-    build:
-      context: keycloak
-      dockerfile: configure_keycloak.Dockerfile
-    container_name: configure_keycloak
-    environment:
-      - FRONTEND_URL=http://localhost:3000

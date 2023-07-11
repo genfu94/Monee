@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from dependencies import initialize_bank_sync_client, fetch_authentication_public_key
+from dependencies import initialize_bank_sync_client
 from time import sleep
 from config import fetch_config
 
@@ -29,7 +29,6 @@ def startup_event():
     
     # TODO: use a more robust way to handle waiting for keycloak initialization
     sleep(50)
-    fetch_authentication_public_key()
     initialize_bank_sync_client()
 
 

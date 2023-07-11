@@ -6,3 +6,6 @@ python-dateutil
 joblib
 cryptography
 pyjwt
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
