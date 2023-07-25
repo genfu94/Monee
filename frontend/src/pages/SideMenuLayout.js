@@ -2,7 +2,6 @@ import React from "react";
 import NavBar from "../components/NavBar/Navbar.js";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
-import { keycloakLogout } from "../apis/KeycloakApi.js";
 
 const MainContainer = styled(Box)(({ theme }) => ({
   width: "100%",
@@ -28,7 +27,7 @@ class SideMenuLayout extends React.Component {
   render() {
     return (
       <>
-        <NavBar page={this.props.page} onLogout={keycloakLogout} />
+        <NavBar page={this.props.page} />
         <MainContainer>
           {this.props.sideMenuTitle && (
             <SideMenuContainer>

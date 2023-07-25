@@ -1,2 +1,2 @@
 export * from './AccountApi';
-export * from './KeycloakApi';
+export * from './AuthenticationApi';

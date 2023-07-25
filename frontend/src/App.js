@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import WebFont from "webfontloader";
 
 import { LoadingScreen } from "./components";
-import { synchronizeAndFetchAccounts, keycloakLogin } from "./apis";
+import { synchronizeAndFetchAccounts, authenticate } from "./apis";
 import budget_logo from "./assets/imgs/logo.png";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
-import Router from "./Router";
+import Routes from "./Router";
 
-function App() {
-  const [loading, setLoading] = useState(true);
+function App({ isAuthenticated }) {
+  const [loading, setLoading] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const handleLoadingComplete = () => setLoading(false);
 
@@ -20,13 +20,19 @@ function App() {
       },
     });
 
-    keycloakLogin().then((keycloakProfile) => {
-      localStorage.setItem("userInfo", JSON.stringify(keycloakProfile));
-      synchronizeAndFetchAccounts().then((data) => {
-        setAccounts(data);
-        handleLoadingComplete();
-      });
-    });
+    console.log("ASSDD")
+
+    synchronizeAndFetchAccounts().then((data) => {
+      console.log("LOLLO", data)
+      setAccounts(data);
+      handleLoadingComplete();
+    })
+    .catch((errorCode) => {
+      console.log("XDDD", errorCode)
+      if(errorCode === 401) {
+        console.log("Unauthorized")
+      }
+    })
   }, []);
 
   return (
@@ -40,7 +46,7 @@ function App() {
       }
     >
       <ThemeProvider theme={theme}>
-        <Router accounts={accounts} />
+        <Routes isAuthenticated={isAuthenticated} accounts={accounts} />
       </ThemeProvider>
     </LoadingScreen>
   );

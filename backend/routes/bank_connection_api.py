@@ -55,6 +55,11 @@ async def login_for_access_token(
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
+
+@router.get("/check_authentication")
+async def synchronize_account(username: Annotated[str, Depends(validate_token_and_get_active_user)]) -> dict:
+    return {"status": "ok"}
+
     
 @router.get("/get_available_institutions")
 async def get_available_institutions(country_code: str):
@@ -70,6 +75,7 @@ async def bank_connect(institution: InstitutionInfo, username: Annotated[str, De
 
 @router.get("/synchronize_account")
 async def synchronize_account(username: Annotated[str, Depends(validate_token_and_get_active_user)]) -> List[AccountTransactions]:
+    print("USERNAME", username)
     if get_bank_sync().bank_connector.nordigen_client:
         get_bank_sync().update_bank_links(username)
         get_bank_sync().synchronize_user_accounts(username)
