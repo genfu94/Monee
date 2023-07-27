@@ -6,10 +6,10 @@ import { synchronizeAndFetchAccounts, authenticate } from "./apis";
 import budget_logo from "./assets/imgs/logo.png";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
-import Routes from "./Router";
+import Router from "./Router";
 
 function App({ isAuthenticated }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const handleLoadingComplete = () => setLoading(false);
 
@@ -20,19 +20,16 @@ function App({ isAuthenticated }) {
       },
     });
 
-    console.log("ASSDD")
-
-    synchronizeAndFetchAccounts().then((data) => {
-      console.log("LOLLO", data)
-      setAccounts(data);
-      handleLoadingComplete();
-    })
-    .catch((errorCode) => {
-      console.log("XDDD", errorCode)
-      if(errorCode === 401) {
-        console.log("Unauthorized")
-      }
-    })
+    synchronizeAndFetchAccounts()
+      .then((data) => {
+        setAccounts(data);
+        handleLoadingComplete();
+      })
+      .catch((errorCode) => {
+        if (errorCode === 401) {
+          console.log("Unauthorized");
+        }
+      });
   }, []);
 
   return (
@@ -46,7 +43,7 @@ function App({ isAuthenticated }) {
       }
     >
       <ThemeProvider theme={theme}>
-        <Routes isAuthenticated={isAuthenticated} accounts={accounts} />
+        <Router accounts={accounts} />
       </ThemeProvider>
     </LoadingScreen>
   );

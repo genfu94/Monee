@@ -1,44 +1,21 @@
 import React from "react";
 
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Dashboard, Transactions, Accounts } from "./pages";
-import LoginPage from "./Login";
 
-const ProtectedRoute = ({ isAuthenticated, children }) => {
-  return isAuthenticated ? (
-    children
-  ) : (
-    <Navigate to="/login" replace={true} />
-  );
-};
-
-function Router({ isAuthenticated, accounts }) {
+function Router({ accounts }) {
   return (
     <Routes>
-      <Route exact path="/login" element={<LoginPage />} />
+      <Route exact path="/" element={<Dashboard accounts={accounts} />} />
       <Route
-        path="/"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Dashboard accounts={accounts} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
+        exact
         path="/transactions"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Transactions accounts={accounts} />
-          </ProtectedRoute>
-        }
+        element={<Transactions accounts={accounts} />}
       />
       <Route
+        exact
         path="/accounts"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Accounts accounts={accounts} />
-          </ProtectedRoute>
-        }
+        element={<Accounts accounts={accounts} />}
       />
     </Routes>
   );
