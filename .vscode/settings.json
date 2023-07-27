@@ -6,10 +6,10 @@
         //"**/__init__.py": true
     },
     "python.formatting.blackArgs": [
-        "--line-length", "80"
+        "--line-length", "120"
     ],
     "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
+        "editor.defaultFormatter": "mikoz.black-py"
     },
     "python.formatting.provider": "none",
 }
