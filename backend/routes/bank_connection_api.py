@@ -21,7 +21,7 @@ async def validate_token_and_get_active_user(token: Annotated[str, Depends(oauth
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except jwt.exceptions.InvalidTokenError as e:
         raise credentials_exception
 
@@ -32,7 +32,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -75,7 +75,6 @@ async def bank_connect(institution: InstitutionInfo, username: Annotated[str, De
 
 @router.get("/synchronize_account")
 async def synchronize_account(username: Annotated[str, Depends(validate_token_and_get_active_user)]) -> List[AccountTransactions]:
-    print("USERNAME", username)
     if get_bank_sync().bank_connector.nordigen_client:
         get_bank_sync().update_bank_links(username)
         get_bank_sync().synchronize_user_accounts(username)

@@ -7,7 +7,8 @@ from pymongo import MongoClient
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
-from config import fetch_config
+from settings import Settings
+settings = Settings()
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -41,15 +42,13 @@ def authenticate_user(username: str, password: str):
 def initialize_bank_sync_client():
     global bank_sync, bank_connector, account_crud, bank_link_crud, transaction_crud, mongo_client
 
-    conf = fetch_config()
-
-    mongo_client = MongoClient(conf['MONGO_DB_CONNECTION_STRING'])['budget_app']
+    mongo_client = MongoClient(settings.MONGO_DB_CONNECTION_STRING)['budget_app']
     account_crud = MongoAccountCRUD(mongo_client)
     bank_link_crud = MongoBankLinkCRUD(mongo_client)
     transaction_crud = MongoTransactionCRUD(mongo_client)
 
     bank_connector = NordigenBankSyncClient(
-        APICredentials(conf['NordigenSecretID'], conf['NordigenSecretKey']),
+        APICredentials(settings.NORDIGEN_SECRET_ID, settings.NORDIGEN_SECRET_KEY),
     )
 
     bank_sync = BankSync(bank_connector, account_crud, transaction_crud, bank_link_crud)
