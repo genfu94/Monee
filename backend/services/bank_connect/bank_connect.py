@@ -19,13 +19,15 @@ class BankLinkAPI(ABC):
         pass
 
     @abstractmethod
-    def fetch_account_ids_from_bank_link(self,  bank_link: BankLink) -> List[str]:
+    def fetch_account_ids_from_bank_link(self, bank_link: BankLink) -> List[str]:
         pass
 
 
 class BankAccountAPI(ABC):
     @abstractmethod
-    def fetch_transactions(self, account_id: str, date_start: datetime, date_end: datetime) -> List[Transaction]:
+    def fetch_transactions(
+        self, account_id: str, date_start: datetime, date_end: datetime
+    ) -> List[Transaction]:
         pass
 
     @abstractmethod
@@ -34,7 +36,6 @@ class BankAccountAPI(ABC):
 
 
 class BankConnector(ABC):
-    def __init__(self, bank_link_api: BankLinkAPI,
-                 bank_account_api: BankAccountAPI):
+    def __init__(self, bank_link_api: BankLinkAPI, bank_account_api: BankAccountAPI):
         self.bank_link_api = bank_link_api
         self.bank_account_api = bank_account_api

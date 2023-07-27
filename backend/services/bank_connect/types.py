@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pydantic import BaseModel, validator
 from datetime import datetime
 
+
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
     LINKED = 1
@@ -37,14 +38,11 @@ class NordigenBankLink(BankLinkBase):
     status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
 
     def get_identifiers(self):
-        return {
-            'requisition_id': self.requisition_id
-        }
-    
+        return {"requisition_id": self.requisition_id}
+
     class Config:
-        json_encoders = {
-            InstitutionInfo: lambda i: i.dict()
-        }
+        json_encoders = {InstitutionInfo: lambda i: i.dict()}
+
 
 BankLink = Union[NordigenBankLink, BankLinkBase]
 
@@ -63,9 +61,9 @@ class Transaction(BaseModel):
     booking_date: datetime = None
     account_balance: float = None
     category: str = None
-    category_edited: Union[bool, None]  = None
+    category_edited: Union[bool, None] = None
 
-    @validator('booking_date')
+    @validator("booking_date")
     def convert_datetime(cls, v):
         try:
             return datetime.strptime(v, "%Y-%m-%d, %H:%M:%S")
@@ -75,7 +73,7 @@ class Transaction(BaseModel):
     class Config:
         json_encoders = {
             datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S"),
-            Balance: lambda b: b.dict()
+            Balance: lambda b: b.dict(),
         }
 
 
@@ -86,7 +84,7 @@ class Account(BaseModel):
     last_update: datetime = None
     balances: List[Balance] = []
 
-    @validator('last_update')
+    @validator("last_update")
     def convert_datetime(cls, v):
         try:
             return datetime.strptime(v, "%Y-%m-%d, %H:%M:%S")
@@ -96,5 +94,5 @@ class Account(BaseModel):
     class Config:
         json_encoders = {
             datetime: lambda dt: dt.strftime("%Y-%m-%d, %H:%M:%S"),
-            Balance: lambda b: b.dict()
+            Balance: lambda b: b.dict(),
         }

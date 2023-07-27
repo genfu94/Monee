@@ -8,9 +8,7 @@ import routes.bank_connection_api
 
 app = FastAPI()
 
-origins = [
-    "*"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,

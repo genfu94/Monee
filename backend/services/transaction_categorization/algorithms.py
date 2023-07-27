@@ -1,25 +1,31 @@
 from .categories import TransactionCategory
 from .categorisation_rules import MOST_COMMON_WORDS_RULES, MOST_COMMON_COMPANY_RULES
-#from sentence_transformers import SentenceTransformer, util
+
+# from sentence_transformers import SentenceTransformer, util
 from ..bank_connect.types import Transaction
 from typing import List
 
-#model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+# model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
 
 def _rule_based_categorization(text, rules):
     for ruleset, category in rules.items():
         for word in ruleset:
             if word in text:
                 return category
-    
+
     return TransactionCategory.UNKNOWN
 
+
 def rule_based_categorization(transaction_text, merchant_name):
-    category = _rule_based_categorization(transaction_text.lower(), MOST_COMMON_WORDS_RULES)
+    category = _rule_based_categorization(
+        transaction_text.lower(), MOST_COMMON_WORDS_RULES
+    )
     if category != TransactionCategory.UNKNOWN:
         return category
-    
+
     return _rule_based_categorization(merchant_name.lower(), MOST_COMMON_COMPANY_RULES)
+
 
 # def _sentence_similarity(s1, s2):
 #     embedding_1= model.encode(s1, convert_to_tensor=True)
@@ -27,13 +33,15 @@ def rule_based_categorization(transaction_text, merchant_name):
 
 #     return util.pytorch_cos_sim(embedding_1, embedding_2)
 
-def history_based_categorization(transaction: Transaction, transaction_history: List[Transaction]) -> TransactionCategory:
+
+def history_based_categorization(
+    transaction: Transaction, transaction_history: List[Transaction]
+) -> TransactionCategory:
     for t_hist in transaction_history:
         if not t_hist.category_edited:
             continue
-        
+
         if t_hist.origin == transaction.origin:
             return TransactionCategory(t_hist.category)
-    
-    return TransactionCategory.UNKNOWN
 
+    return TransactionCategory.UNKNOWN
