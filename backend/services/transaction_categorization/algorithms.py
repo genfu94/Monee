@@ -18,6 +18,7 @@ def _rule_based_categorization(text, rules):
 
 
 def rule_based_categorization(transaction_text, merchant_name):
+    transaction_text = "" if transaction_text == None else transaction_text
     category = _rule_based_categorization(
         transaction_text.lower(), MOST_COMMON_WORDS_RULES
     )
@@ -45,3 +46,14 @@ def history_based_categorization(
             return TransactionCategory(t_hist.category)
 
     return TransactionCategory.UNKNOWN
+
+
+def categorize(
+    transaction: Transaction, transaction_history: List[Transaction]
+) -> TransactionCategory:
+    category = rule_based_categorization(transaction.text, transaction.origin)
+
+    if category == TransactionCategory.UNKNOWN:
+        category = history_based_categorization(transaction, transaction_history)
+
+    return category

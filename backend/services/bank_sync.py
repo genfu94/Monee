@@ -2,6 +2,7 @@ from .bank_connect.bank_connect import BankConnector
 from .database_crud import AccountCRUD, TransactionCRUD, BankLinkCRUD
 from .bank_connect.types import BankLink, Account, Transaction, Balance
 from typing import Tuple, List
+from .transaction_categorization.algorithms import categorize
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -51,6 +52,12 @@ class BankSync:
             new_transactions = list(
                 filter(lambda x: x.id not in old_transactions_ids, new_transactions)
             )
+
+            for i in range(len(new_transactions)):
+                new_transactions[i].category = categorize(
+                    new_transactions[i], old_transactions
+                ).value
+
             account.last_update = datetime.now()
             new_account_info = self.bank_connector.bank_account_api.fetch_account(
                 account_id
