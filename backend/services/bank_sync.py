@@ -1,6 +1,6 @@
 from .bank_connect.bank_connect import BankConnector
 from .database_crud import AccountCRUD, TransactionCRUD, BankLinkCRUD
-from .bank_connect.types import BankLink, Account, Transaction
+from .bank_connect.types import BankLink, Account, Transaction, Balance
 from typing import Tuple, List
 
 from datetime import datetime
@@ -52,6 +52,10 @@ class BankSync:
                 filter(lambda x: x.id not in old_transactions_ids, new_transactions)
             )
             account.last_update = datetime.now()
+            new_account_info = self.bank_connector.bank_account_api.fetch_account(
+                account_id
+            )
+            account.balances = new_account_info.balances
 
         return account, new_transactions
 
