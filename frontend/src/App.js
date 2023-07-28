@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import WebFont from "webfontloader";
 
 import { LoadingScreen } from "./components";
-import { synchronizeAndFetchAccounts, authenticate } from "./apis";
+import { synchronizeAndFetchAccounts } from "./apis";
 import budget_logo from "./assets/imgs/logo.png";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import Router from "./Router";
 
-function App({ isAuthenticated }) {
+function App() {
   const [loading, setLoading] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const handleLoadingComplete = () => setLoading(false);
