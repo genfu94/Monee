@@ -33,12 +33,17 @@ export const AmountTextField = styled(TextField)({
 });
 
 export const defaultFormValues = (transaction) => {
+  console.log(
+    "Transaction date",
+    transaction.booking_date,
+    dayjs(transaction.booking_date)
+  );
   return {
     account_id: transaction.account_id,
     transaction_id: transaction.transaction_id,
     amount: transaction.transaction_amount.amount,
     type: transaction.type,
-    datetime: dayjs(transaction.booking_date),
+    datetime: dayjs(transaction.booking_date, "YYYY-MM-DD HH:mm:ss"),
     origin: transaction.origin,
     reason: transaction.text,
     category: transaction.category,
