@@ -53,21 +53,21 @@ const mockRootNestedSelectorMenu = (
 it("When it is root doesn't show the parentLabel", () => {
   render(mockRootNestedSelectorMenu);
 
-  expect(screen.queryByTestId('nested-menu-navigation')).toBe(null);
+  expect(screen.queryByTestId("nested-menu-navigation")).toBe(null);
 });
 
 it("Correctly list the options", () => {
   render(mockRootNestedSelectorMenu);
 
-  const renderedOptions = screen.getAllByTestId('nested-menu-option');
+  const renderedOptions = screen.getAllByTestId("nested-menu-option");
   expect(renderedOptions.length).toBe(1);
-  expect(renderedOptions[0].textContent).toBe('Value 1');
+  expect(renderedOptions[0].textContent).toBe("Value 1");
 });
 
 it("When it is child it shows the parentLabel", () => {
   render(mockChildNestedSelectorMenu);
 
-  expect(screen.queryByTestId('nested-menu-navigation')).toBeVisible();
+  expect(screen.queryByTestId("nested-menu-navigation")).toBeVisible();
 });
 
 it("Invokes the onBack callback when clicking on the back arrow", () => {
@@ -81,7 +81,7 @@ it("Invokes the onBack callback when clicking on the back arrow", () => {
 it("Invokes the onChange callback when clicking on an option", () => {
   render(mockRootNestedSelectorMenu);
 
-  const renderedOptions = screen.getAllByTestId('nested-menu-option');
+  const renderedOptions = screen.getAllByTestId("nested-menu-option");
   fireEvent.click(renderedOptions[0]);
   expect(mockOnChange).toHaveBeenCalled();
 });

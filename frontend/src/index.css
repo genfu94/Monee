@@ -1,6 +1,7 @@
-html, body {
+html,
+body {
   margin: 0;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   background-color: #eff0f2;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

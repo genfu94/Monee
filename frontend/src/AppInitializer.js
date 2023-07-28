@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { verifyAuthentication, authenticate } from "./apis";
 import LoginPage from "./Login";
 
-
-
 const AppInitializer = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);

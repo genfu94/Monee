@@ -105,11 +105,11 @@ function Dashboard({ accounts }) {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
             }}
           >
-            <Typography style={{color: "#444"}}>
+            <Typography style={{ color: "#444" }}>
               You are not tracking any account yet, add a new one from the
               Account tab.
             </Typography>

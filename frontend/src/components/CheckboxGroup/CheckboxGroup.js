@@ -9,13 +9,13 @@ const CheckboxGroup = ({ options, value, onChange, selectAll = true }) => {
   const handleChange = (checked, itemValue) => {
     if (!checked) onChange(value.filter((v) => v !== itemValue));
     else {
-      if(itemValue === '__selectall__') onChange(options.map(v => v.value));
+      if (itemValue === "__selectall__") onChange(options.map((v) => v.value));
       else onChange([...value, itemValue]);
     }
   };
 
   const isSelected = (v) => {
-    if(v === '__selectall__' && value.length === options.length) return true;
+    if (v === "__selectall__" && value.length === options.length) return true;
     return value.includes(v);
   };
 

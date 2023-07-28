@@ -11,12 +11,10 @@ export function bankConnect(institution_info, username) {
     process.env.REACT_APP_BACKEND_ENDPOINT,
     "bank_connect"
   );
-  POST_request(endpoint, { username: username }, institution).then(
-    (data) => {
-      let bank_connection_link = data.link;
-      window.location.replace(bank_connection_link);
-    }
-  );
+  POST_request(endpoint, { username: username }, institution).then((data) => {
+    let bank_connection_link = data.link;
+    window.location.replace(bank_connection_link);
+  });
 }
 
 export function onCountrySelect(selected_country) {

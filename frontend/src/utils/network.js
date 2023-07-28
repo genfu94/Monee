@@ -7,18 +7,18 @@ async function _REST_call(
   params = [],
   headers = null,
   json = null,
-  form = null,
+  form = null
 ) {
   let requestOptions = {
     method: method,
   };
 
-  if(headers !== null) requestOptions['headers'] = headers;
+  if (headers !== null) requestOptions["headers"] = headers;
 
-  if(json !== null) {
-    requestOptions['body'] = JSON.stringify(json)
+  if (json !== null) {
+    requestOptions["body"] = JSON.stringify(json);
   } else if (form !== null) {
-    requestOptions['body'] = form
+    requestOptions["body"] = form;
   }
 
   const url = endpoint + (params !== [] ? _build_params_string(params) : "");
@@ -37,6 +37,12 @@ export async function GET_request(endpoint, params = [], headers = null) {
   return _REST_call(endpoint, "GET", params, headers, null);
 }
 
-export async function POST_request(endpoint, params, headers = null, body = null, form = null) {
+export async function POST_request(
+  endpoint,
+  params,
+  headers = null,
+  body = null,
+  form = null
+) {
   return _REST_call(endpoint, "POST", params, headers, body, form);
 }

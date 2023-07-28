@@ -29,7 +29,7 @@ class TimeChart extends React.Component {
     super();
 
     this.lines = {
-      datasets: []
+      datasets: [],
     };
 
     this.options = {
@@ -62,7 +62,7 @@ class TimeChart extends React.Component {
     };
   }
 
-  add(data, color, areaColor, label, pointRadius=1, hoverPointRadius=1) {
+  add(data, color, areaColor, label, pointRadius = 1, hoverPointRadius = 1) {
     this.lines.datasets.push({
       label: label,
       data: data,
@@ -70,15 +70,13 @@ class TimeChart extends React.Component {
       backgroundColor: areaColor,
       fill: areaColor ? true : false,
       pointRadius: pointRadius,
-      hoverPointRadius: 1
+      hoverPointRadius: 1,
     });
   }
 
   plot() {
     console.log(this.lines);
-    return (
-      <Line data={this.lines} options={this.options} />
-    );
+    return <Line data={this.lines} options={this.options} />;
   }
 }
 

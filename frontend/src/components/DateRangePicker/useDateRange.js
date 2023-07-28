@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 export const useDateRange = () => {
   const [selectedDate, setSelectedDate] = useState("dateFrom");
@@ -9,7 +9,7 @@ export const useDateRange = () => {
   };
 
   return [selectedDate, updateSelectedDate];
-}
+};
 
 export const useDatePicker = (selectedDate, dateFrom, dateTo) => {
   const pickerDateSelected =
@@ -19,4 +19,4 @@ export const useDatePicker = (selectedDate, dateFrom, dateTo) => {
     selectedDate === "dateFrom" ? dateTo.toDate() : dayjs().toDate();
 
   return [pickerDateSelected, pickerMinDate, pickerMaxDate];
-}
+};

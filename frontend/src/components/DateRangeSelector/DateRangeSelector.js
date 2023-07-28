@@ -5,12 +5,18 @@ import { renderValue } from "./utils";
 import DropDownBase from "../DropDownBase/DropDownBase";
 import DateRangeSelectorMenu from "./DateRangeSelectorMenu";
 
-function DateRangeSelector({ preset, value, onChange, presets, defaultOpen = false }) {
+function DateRangeSelector({
+  preset,
+  value,
+  onChange,
+  presets,
+  defaultOpen = false,
+}) {
   const [open, setOpen] = useState(defaultOpen);
   const handleClose = () => setOpen(false);
 
   const [dateFrom, dateTo] = value;
-  
+
   return (
     <DropDownBase
       styles={dropdownStyle}
@@ -18,11 +24,15 @@ function DateRangeSelector({ preset, value, onChange, presets, defaultOpen = fal
       value={value}
       onOpen={setOpen}
       onClose={handleClose}
-      renderValue={() =>
-        renderValue(preset, presets, dateFrom, dateTo)
-      }
+      renderValue={() => renderValue(preset, presets, dateFrom, dateTo)}
     >
-      <DateRangeSelectorMenu handleClose={handleClose} onChange={onChange} presets={presets} value={value} preset={preset}/>
+      <DateRangeSelectorMenu
+        handleClose={handleClose}
+        onChange={onChange}
+        presets={presets}
+        value={value}
+        preset={preset}
+      />
     </DropDownBase>
   );
 }

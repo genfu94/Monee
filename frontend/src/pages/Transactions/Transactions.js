@@ -1,10 +1,7 @@
 import "../style.css";
 
 import React, { useState } from "react";
-import {
-  DateRangeSelector,
-  CheckboxGroup,
-} from "../../components";
+import { DateRangeSelector, CheckboxGroup } from "../../components";
 
 import SideMenuLayout from "../SideMenuLayout";
 import { updateTransaction } from "./api";

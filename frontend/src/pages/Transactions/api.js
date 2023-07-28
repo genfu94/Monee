@@ -7,10 +7,9 @@ export function updateTransaction(transaction) {
     "update_transaction"
   );
   const params = {
-    account_id: transaction.account_id
+    account_id: transaction.account_id,
   };
-  POST_request(endpoint, params, transaction)
-    .then((data) => {
-      console.log("Transaction updated");
-    });
+  POST_request(endpoint, params, transaction).then((data) => {
+    console.log("Transaction updated");
+  });
 }

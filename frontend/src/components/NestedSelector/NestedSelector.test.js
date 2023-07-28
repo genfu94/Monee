@@ -44,7 +44,7 @@ beforeEach(() => {
 it("Doesn't show the parent header if the selected value is child of root", () => {
   render(mockNestedSelector);
 
-  expect(screen.queryByTestId('nested-menu-navigation')).toBe(null);
+  expect(screen.queryByTestId("nested-menu-navigation")).toBe(null);
 });
 
 it("Renders the selected value correctly", () => {

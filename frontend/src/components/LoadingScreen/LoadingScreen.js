@@ -1,7 +1,6 @@
 import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
-
 function renderLoadingPage(content) {
   return (
     <div
@@ -30,12 +29,12 @@ function renderLoadingPage(content) {
   );
 }
 
-function LoadingScreen({loading, content, children}) {
-  if(loading) {
+function LoadingScreen({ loading, content, children }) {
+  if (loading) {
     return renderLoadingPage(content);
   } else {
     return children;
   }
-};
+}
 
 export default LoadingScreen;

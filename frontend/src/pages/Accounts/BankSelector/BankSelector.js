@@ -22,7 +22,7 @@ function BankSelector() {
     bankConnect(selectedInstitution, userInfo.username);
   const isInstitutionSelected = selectedInstitution ? false : true;
 
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   return (
     <div className="bank-selector-container">

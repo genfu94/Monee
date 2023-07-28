@@ -6,7 +6,7 @@ function LabeledInput(props) {
     fontSize: "0.9rem",
     fontWeight: "600",
     color: "rgb(50, 50, 50)",
-    margin: "0.5rem 0px 0.5rem 0px"
+    margin: "0.5rem 0px 0.5rem 0px",
   };
 
   return (

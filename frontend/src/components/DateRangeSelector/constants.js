@@ -14,9 +14,9 @@ export const dropdownStyle = {
   },
   Menu: {
     width: "19rem",
-    marginTop: '0.6rem',
-    padding: "1.25rem"
-  }
+    marginTop: "0.6rem",
+    padding: "1.25rem",
+  },
 };
 
 export const radioStyle = {
@@ -30,6 +30,6 @@ export const radioStyle = {
 
 export const datePickerStyle = {
   "& .MuiOutlinedInput-input": {
-    fontSize: '0.8rem',
-  }
-}
+    fontSize: "0.8rem",
+  },
+};

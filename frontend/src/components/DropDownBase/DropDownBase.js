@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Button, Box} from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { GoTriangleDown } from "react-icons/go";
 
 import { getBaseStyles } from "./constants";

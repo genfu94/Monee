@@ -55,22 +55,27 @@ class Resampler {
     }
 
     for (const [idx, value] of series.iterate()) {
-      const bucketizedDate = dayjs(this._assignToBucket(idx, freq)).format("YYYY-MM-DD, HH:mm:ss");
+      const bucketizedDate = dayjs(this._assignToBucket(idx, freq)).format(
+        "YYYY-MM-DD, HH:mm:ss"
+      );
 
-      if (!this.buckets.get(bucketizedDate)) this.buckets.set(bucketizedDate, []);
+      if (!this.buckets.get(bucketizedDate))
+        this.buckets.set(bucketizedDate, []);
 
       this.buckets.get(bucketizedDate).push(value);
     }
   }
 
   min() {
-    for(const [idx, values] of this.buckets) {
-      if(values) {
+    for (const [idx, values] of this.buckets) {
+      if (values) {
         this.buckets.set(idx, Math.min(...values));
       }
     }
 
-    const newIndex = Array.from(this.buckets.keys(), (x) => dayjs(x, "YYYY-MM-DD, HH:mm:ss").toDate());
+    const newIndex = Array.from(this.buckets.keys(), (x) =>
+      dayjs(x, "YYYY-MM-DD, HH:mm:ss").toDate()
+    );
     return new TimeSeries(newIndex, Array.from(this.buckets.values()));
   }
 }
@@ -87,20 +92,22 @@ class TimeSeries {
   }
 
   filter(dateStart, dateEnd) {
-    this.series = this.series.filter(e => e.index >= dateStart && (!dateEnd || e.index <= dateEnd));
+    this.series = this.series.filter(
+      (e) => e.index >= dateStart && (!dateEnd || e.index <= dateEnd)
+    );
     return this;
   }
 
   cumulate() {
-    for(const [i, el] of this.series.entries()) {
-      this.series[i].data += (i === 0 ? 0 : this.series[i-1].data);
+    for (const [i, el] of this.series.entries()) {
+      this.series[i].data += i === 0 ? 0 : this.series[i - 1].data;
     }
 
     return this;
   }
 
   at(idx) {
-    return this.series.find(e => e.index.getTime() === idx.getTime());
+    return this.series.find((e) => e.index.getTime() === idx.getTime());
   }
 
   loc(idx) {
@@ -115,7 +122,7 @@ class TimeSeries {
 
   fillNa() {
     let lastValue = NaN;
-    for(const [i, el] of this.series.entries()) {
+    for (const [i, el] of this.series.entries()) {
       if (!el.data) this.series[i].data = lastValue;
       else lastValue = el.data;
     }
@@ -127,7 +134,7 @@ class TimeSeries {
     let plotData = [];
 
     for (const [idx, value] of this.iterate()) {
-      plotData.push({x: idx, y: value});
+      plotData.push({ x: idx, y: value });
     }
 
     return plotData;

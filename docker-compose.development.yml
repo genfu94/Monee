@@ -1,8 +1,8 @@
 version: "3.8"
 services:
   frontend:
-    build: 
-      context: './frontend'
+    build:
+      context: "./frontend"
       dockerfile: Dockerfile.development
     container_name: frontend
     volumes:
@@ -12,7 +12,7 @@ services:
       - "3000:3000"
 
   backend:
-    build: './backend'
+    build: "./backend"
     container_name: backend
     volumes:
       - ./:/app
@@ -23,7 +23,7 @@ services:
     env_file:
       - backend/secrets.env.development
     restart: on-failure
-  
+
   mongo:
     image: mongo
     container_name: mongo

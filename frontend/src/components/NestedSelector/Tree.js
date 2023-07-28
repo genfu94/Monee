@@ -2,22 +2,22 @@ export class Tree {
   constructor(dataTree) {
     this.root = {
       value: "__root__",
-      parent: null
-    }
+      parent: null,
+    };
 
-    this.root.children = this._parseData(dataTree)
+    this.root.children = this._parseData(dataTree);
   }
 
-  _parseData(dataTree, parent=this.root) {
+  _parseData(dataTree, parent = this.root) {
     let nodes = [];
-    for(const node of dataTree) {
+    for (const node of dataTree) {
       const newNode = {
         value: node.value,
         parent: parent,
-        children: []
+        children: [],
       };
 
-      if(node.children !== undefined && node.children.length > 0) {
+      if (node.children !== undefined && node.children.length > 0) {
         newNode.children = this._parseData(node.children, newNode);
       }
 

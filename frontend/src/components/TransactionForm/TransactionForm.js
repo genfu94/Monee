@@ -24,7 +24,10 @@ function TransactionForm({ transaction, onChange }) {
   const formik = useFormik({
     initialValues: defaultFormValues(transaction),
     onSubmit: (values) => {
-      const newTransaction = formValuesToTransactionObject(values, formik.initialValues);
+      const newTransaction = formValuesToTransactionObject(
+        values,
+        formik.initialValues
+      );
       onChange(newTransaction);
     },
   });

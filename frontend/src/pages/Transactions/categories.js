@@ -175,4 +175,6 @@ export const CATEGORIES_ICON_ENUM = {
   },
 };
 
-export const CATEGORIES_TREE = Object.keys(CATEGORIES).map(c => ({value: CATEGORIES[c]}));
+export const CATEGORIES_TREE = Object.keys(CATEGORIES).map((c) => ({
+  value: CATEGORIES[c],
+}));

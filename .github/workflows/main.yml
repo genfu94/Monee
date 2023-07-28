@@ -15,9 +15,9 @@ jobs:
       - name: Build
         run: |
           docker compose -f docker-compose.production.yml build
-      
+
       - name: Deploy
-        env: 
+        env:
           KEYCLOAK_DB_NAME: ${{ secrets.KEYCLOAK_DB_NAME }}
           POSTGRES_DB_URL: ${{ secrets.POSTGRES_DB_URL }}
           POSTGRES_DB_PORT: ${{ secrets.POSTGRES_DB_PORT }}
@@ -33,7 +33,7 @@ jobs:
           MONGO_DB_URL: ${{ secrets.MONGO_DB_URL }}
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOSTNAME: ${{ secrets.EC2_HOSTNAME }}
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }} 
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
           echo "$EC2_SSH_KEY" > private_key && chmod 600 private_key
           echo "KEYCLOAK_DB_NAME=$KEYCLOAK_DB_NAME" >> .env

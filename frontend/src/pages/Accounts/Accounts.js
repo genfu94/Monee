@@ -11,7 +11,7 @@ import BankSelector from "./BankSelector/BankSelector.js";
 function renderAccountItem(item) {
   return (
     <div className="account-item selectable-item" key={item._id}>
-      <AiFillBank className="account-icon"/>
+      <AiFillBank className="account-icon" />
       <div className="account-name">
         {item.institution_name} - {item.name}
       </div>
@@ -23,7 +23,7 @@ function renderAccountItem(item) {
   );
 }
 
-function Accounts({accounts = []}) {
+function Accounts({ accounts = [] }) {
   const [dialog, setDialog] = useState(false);
   const showDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
@@ -38,7 +38,7 @@ function Accounts({accounts = []}) {
             +Add
           </div>
         }
-        content={accounts.map(item => renderAccountItem(item))}
+        content={accounts.map((item) => renderAccountItem(item))}
       />
 
       <Modal disableAutoFocus={true} open={dialog} onClose={closeDialog}>

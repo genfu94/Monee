@@ -5,10 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 export default function DatetimePicker(props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateTimePicker
-        {...props}
-        size="small"
-      />
+      <DateTimePicker {...props} size="small" />
     </LocalizationProvider>
   );
 }

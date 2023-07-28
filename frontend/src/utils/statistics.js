@@ -2,14 +2,15 @@ import dayjs from "dayjs";
 import { getMonthStart } from "./date.js";
 import TimeSeries from "../components/TimeSeries/TimeSeries.js";
 
-
 export function getNetworthSeries(accounts) {
   let dates = [];
   let networth = [];
 
   for (const account of accounts) {
     for (const transaction of account.transactions) {
-      dates.push(dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss").toDate());
+      dates.push(
+        dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss").toDate()
+      );
       networth.push(transaction.account_balance);
     }
   }
@@ -22,7 +23,9 @@ export function getExpensesSeries(accounts) {
 
   for (const account of accounts) {
     for (const transaction of account.transactions) {
-      dates.push(dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss").toDate());
+      dates.push(
+        dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss").toDate()
+      );
       expenses.push(transaction.transaction_amount.amount);
     }
   }
@@ -34,7 +37,9 @@ export function networthChange(networthSeries) {
   const currentTotal = networthSeries.loc(-1).data;
   const monthStart = getMonthStart();
   const totalStartPeriod = networthSeries.at(monthStart).data;
-  return Math.trunc((currentTotal-totalStartPeriod)/totalStartPeriod * 100);
+  return Math.trunc(
+    ((currentTotal - totalStartPeriod) / totalStartPeriod) * 100
+  );
 }
 
 export function groupExpensesByCategory(accounts) {
@@ -61,7 +66,10 @@ export function groupTransactionsByDate(accounts, accountFilter, dateRange) {
 
     for (const transaction of account.transactions) {
       const dates = Object.keys(transactionsGroupedByDate);
-      const booking_date = dayjs(transaction.booking_date, "YYYY-MM-DD, hh:mm:ss");
+      const booking_date = dayjs(
+        transaction.booking_date,
+        "YYYY-MM-DD, hh:mm:ss"
+      );
 
       if (!(booking_date >= dateRange[0] && booking_date <= dateRange[1]))
         continue;
@@ -71,7 +79,10 @@ export function groupTransactionsByDate(accounts, accountFilter, dateRange) {
         transactionsGroupedByDate[format_booking_date] = [];
       }
 
-      transactionsGroupedByDate[format_booking_date].push({...transaction, account: account.institution_name + ' - ' + account.name});
+      transactionsGroupedByDate[format_booking_date].push({
+        ...transaction,
+        account: account.institution_name + " - " + account.name,
+      });
     }
   }
   return transactionsGroupedByDate;

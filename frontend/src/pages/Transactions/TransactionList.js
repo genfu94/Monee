@@ -24,7 +24,10 @@ function TransactionList({
   );
   return (
     <>
-      <List style={{ alignSelf: "stretch", background: "white" }} disablePadding>
+      <List
+        style={{ alignSelf: "stretch", background: "white" }}
+        disablePadding
+      >
         {Object.keys(transactionsGroupedByDate).map((sectionId) => (
           <li key={sectionId}>
             <ul>

@@ -9,16 +9,16 @@ export default function NestedSelector({
   renderValue,
   value,
   onChange,
-  styles={},
-  defaultOpen = false
+  styles = {},
+  defaultOpen = false,
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const handleClose = () => setOpen(false);
 
   styles.Menu = {
     ...styles.Menu,
-    top: 0
-  }
+    top: 0,
+  };
 
   const [node, setNodeByKey, goBack] = useNestedNavigation({
     data,

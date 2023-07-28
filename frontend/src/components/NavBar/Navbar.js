@@ -75,7 +75,7 @@ function NavBar({ page, onLogout }) {
       <Box className="flex-centered nav-bar-content">
         <Box style={{ display: "flex", alignItems: "center", height: "100%" }}>
           <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
-          <LogoTypography variant='logo'>Monee</LogoTypography>
+          <LogoTypography variant="logo">Monee</LogoTypography>
         </Box>
         <Box className="flex-centered nav-bar-menu">
           <Box style={{ display: "flex", justifyContent: "center" }}>

@@ -23,10 +23,14 @@ export default function NestedSelectorMenu({
       >
         {isChild && (
           <Box data-testid="nested-menu-navigation">
-            <IconButton data-testid="go-back-button" size="small" onClick={onBack}>
+            <IconButton
+              data-testid="go-back-button"
+              size="small"
+              onClick={onBack}
+            >
               <IoChevronBackOutline />
             </IconButton>
-            <Typography style={{display: 'inline'}}>{parentLabel}</Typography>
+            <Typography style={{ display: "inline" }}>{parentLabel}</Typography>
           </Box>
         )}
       </Box>
