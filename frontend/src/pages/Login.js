@@ -34,6 +34,7 @@ const LoginPage = ({ handleLogin }) => {
         </label>
         <br />
         <button type="submit">Login</button>
+        <button onClick={() => navigate("/register")}>Register</button>
       </form>
     </div>
   );

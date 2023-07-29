@@ -7,6 +7,7 @@ import budget_logo from "./assets/imgs/logo.png";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import Router from "./Router";
+import "./styles/globals.style.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -37,7 +38,7 @@ function App() {
       loading={loading}
       content={
         <>
-          <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
+          <img className="logo" src={budget_logo} />
           <div style={{ fontFamily: "Montserrat" }}>Budget App</div>
         </>
       }

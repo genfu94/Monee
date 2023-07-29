@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import "../../styles/globals.style.css";
 
 function LinkTab(props) {
   return (
@@ -74,7 +75,7 @@ function NavBar({ page, onLogout }) {
     <NavBarContainer>
       <Box className="flex-centered nav-bar-content">
         <Box style={{ display: "flex", alignItems: "center", height: "100%" }}>
-          <img className="nav-bar-logo nav-bar-link" src={budget_logo} />
+          <img className="logo nav-bar-link" src={budget_logo} />
           <LogoTypography variant="logo">Monee</LogoTypography>
         </Box>
         <Box className="flex-centered nav-bar-menu">
