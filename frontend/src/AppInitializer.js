@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { verifyAuthentication, authenticate } from "./apis";
-import { LoginPage } from "./pages";
+import { verifyAuthentication } from "./apis";
+import { useAuth } from "./AuthProvider";
 
 const AppInitializer = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const { authenticated, setAuthenticated } = useAuth();
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const initializeApp = async () => {
       verifyAuthentication()
@@ -20,24 +19,13 @@ const AppInitializer = ({ children }) => {
     };
 
     initializeApp();
-  }, []);
-
-  const handleLogin = async (username, password) => {
-    try {
-      const response = await authenticate(username, password);
-      localStorage.setItem("token", response.access_token);
-      console.log("Login successful. Redirecting...", response.access_token);
-      setAuthenticated(true);
-    } catch (error_code) {
-      console.error("Token request responded with", error_code);
-    }
-  };
+  }, [setAuthenticated, setLoading]);
 
   if (loading) {
     return;
   }
 
-  return authenticated ? children : <LoginPage handleLogin={handleLogin} />;
+  return children;
 };
 
 export default AppInitializer;

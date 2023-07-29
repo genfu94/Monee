@@ -7,10 +7,11 @@ import budget_logo from "./assets/imgs/logo.png";
 import { theme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import Router from "./Router";
-import "./styles/globals.style.css";
+import { useAuth } from "./AuthProvider";
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const { authenticated, setAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const handleLoadingComplete = () => setLoading(false);
 
@@ -20,18 +21,23 @@ function App() {
         families: ["Montserrat:300,400,500,600,700,800,900", "Kalam:400"],
       },
     });
-
-    synchronizeAndFetchAccounts()
-      .then((data) => {
-        setAccounts(data);
-        handleLoadingComplete();
-      })
-      .catch((errorCode) => {
-        if (errorCode === 401) {
-          console.log("Unauthorized");
-        }
-      });
   }, []);
+
+  useEffect(() => {
+    if (authenticated) {
+      setLoading(true);
+      synchronizeAndFetchAccounts()
+        .then((data) => {
+          setAccounts(data);
+          handleLoadingComplete();
+        })
+        .catch((errorCode) => {
+          if (errorCode === 401) {
+            console.log("Unauthorized");
+          }
+        });
+    }
+  }, [authenticated]);
 
   return (
     <LoadingScreen

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const LoginPage = ({ handleLogin }) => {
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,7 +32,6 @@ const LoginPage = ({ handleLogin }) => {
         </label>
         <br />
         <button type="submit">Login</button>
-        <button onClick={() => navigate("/register")}>Register</button>
       </form>
     </div>
   );
