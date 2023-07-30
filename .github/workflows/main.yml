@@ -15,7 +15,7 @@ jobs:
       - name: Build
         run: |
           docker compose -f docker-compose.production.yml build
-
+          docker compose -f docker-compose.production.yml push
       - name: Deploy
         env:
           KEYCLOAK_DB_NAME: ${{ secrets.KEYCLOAK_DB_NAME }}
@@ -57,7 +57,5 @@ jobs:
             git checkout main &&
             git fetch --all &&
             git reset --hard origin/main &&
-            git pull origin main &&
-            sudo docker compose -f docker-compose.production.yml down &&
-            sudo docker compose -f docker-compose.production.yml up -d --build --force-recreate
+            git pull origin main
           '
