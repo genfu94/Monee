@@ -62,7 +62,7 @@ jobs:
           echo "MONGO_DB_URL=$MONGO_DB_URL" >> .env
           scp -o StrictHostKeyChecking=no -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget-app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
-            mkdir /home/ubuntu/budget-app &&
+            mkdir -p /home/ubuntu/budget-app &&
             cd /home/ubuntu/budget-app &&
             set -a &&
             source .env &&
