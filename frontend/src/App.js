@@ -18,7 +18,12 @@ function App() {
   useEffect(() => {
     WebFont.load({
       google: {
-        families: ["Montserrat:300,400,500,600,700,800,900", "Kalam:400"],
+        families: [
+          "Montserrat:300,400,500,600,700,800,900",
+          "Kalam:400",
+          "Ultra:400",
+          "Noto Serif:200,600",
+        ],
       },
     });
   }, []);

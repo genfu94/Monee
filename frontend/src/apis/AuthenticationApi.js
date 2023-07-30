@@ -34,3 +34,18 @@ export async function verifyAuthentication() {
     return response.json();
   });
 }
+
+export async function register(username, password) {
+  const endpoint = urlJoin(process.env.REACT_APP_BACKEND_ENDPOINT, "signup");
+
+  return await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: username, password: password }),
+  }).then((response) => {
+    if (response.status !== 200) throw new Error(response.status);
+    return response.json();
+  });
+}

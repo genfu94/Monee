@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Form
 from typing import Annotated, Union
 from fastapi.security import OAuth2PasswordRequestForm
 from services.bank_connect.types import InstitutionInfo
-from models.models import AccountTransactions, Token
-from dependencies import get_bank_sync, oauth2_scheme, authenticate_user
+from models.models import AccountTransactions, Token, UserRegistration
+from dependencies import get_bank_sync, oauth2_scheme, authenticate_user, register_user
 from typing import List
 import jwt
 from datetime import datetime, timedelta
@@ -13,6 +13,16 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter()
+
+
+@router.post("/signup")
+def signup(new_user: UserRegistration):
+    try:
+        register_user(new_user.username, new_user.password)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Couldn't perform registration")
+
+    return {"message": "Registration successful"}
 
 
 async def validate_token_and_get_active_user(

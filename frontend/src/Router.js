@@ -1,9 +1,15 @@
 import React from "react";
 
 import { Navigate, Route, Routes, redirect } from "react-router-dom";
-import { Dashboard, Transactions, Accounts, LoginPage } from "./pages";
+import {
+  Dashboard,
+  Transactions,
+  Accounts,
+  LoginPage,
+  RegistrationPage,
+} from "./pages";
 import { useAuth } from "./AuthProvider";
-import { authenticate } from "./apis";
+import { authenticate, register } from "./apis";
 import { useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ route, children }) {
@@ -29,9 +35,23 @@ function Router({ accounts }) {
     }
   };
 
+  const handleRegistration = async (username, password) => {
+    try {
+      const response = await register(username, password);
+      console.log("Registration successful. Redirecting to Login");
+      navigate("/login");
+    } catch (error_code) {
+      console.error("Registration request responded with", error_code);
+    }
+  };
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
+      <Route
+        path="/register"
+        element={<RegistrationPage handleRegistration={handleRegistration} />}
+      />
       <Route
         exact
         path="/"

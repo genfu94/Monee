@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import login_hero from "../assets/imgs/login_hero.jpeg";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const LoginPage = ({ handleLogin }) => {
+const RegistrationPage = ({ handleRegistration }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleLogin(username, password);
+    await handleRegistration(username, password);
   };
 
   return (
@@ -24,7 +24,7 @@ const LoginPage = ({ handleLogin }) => {
       >
         <div style={{ width: "70%" }}>
           <h1 style={{ fontFamily: "Noto Serif", color: "#333" }}>
-            Welcome Back
+            Create Monee Account
           </h1>
           <div
             style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}
@@ -47,7 +47,7 @@ const LoginPage = ({ handleLogin }) => {
               variant="outlined"
             />
             <Button variant="contained" onClick={handleSubmit}>
-              Login
+              Sign Up
             </Button>
             <div
               style={{
@@ -56,7 +56,7 @@ const LoginPage = ({ handleLogin }) => {
                 textAlign: "right",
               }}
             >
-              Not a user? <Link to="/register">Sign Up</Link>
+              Already have an account? <Link to="/login">Sign In</Link>
             </div>
           </div>
         </div>
@@ -68,4 +68,4 @@ const LoginPage = ({ handleLogin }) => {
   );
 };
 
-export default LoginPage;
+export default RegistrationPage;

@@ -29,6 +29,19 @@ bank_sync: BankSync = None
 mongo_client: MongoClient = None
 
 
+def register_user(username: str, password: str):
+    global mongo_client
+    users_collection = mongo_client["users"]
+    U = list(users_collection.find({"username": username}))
+    if len(U) != 0:
+        raise Exception("Username already exists")
+
+    print("I'm here")
+    users_collection.insert_one(
+        {"username": username, "hashed_password": pwd_context.hash(password)}
+    )
+
+
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 

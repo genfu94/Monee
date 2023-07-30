@@ -16,3 +16,46 @@
 .add-account-btn:hover {
   background-color: rgb(3, 137, 93);
 }
+
+.equal-columns {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+}
+
+.full-page {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  background-color: white;
+}
+
+.hero-image {
+  /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); */
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Place text in the middle of the image */
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 10%;
+  left: 55%;
+  color: #333;
+  font-size: 3rem;
+  font-family: "Ultra";
+}
