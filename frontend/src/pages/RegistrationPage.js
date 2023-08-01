@@ -62,7 +62,7 @@ const RegistrationPage = ({ handleRegistration }) => {
         </div>
       </div>
       <div style={{ margin: 0, padding: 0 }}>
-        <img src={login_hero} className="hero-image"></img>
+        <div className="hero-image" />
       </div>
     </div>
   );

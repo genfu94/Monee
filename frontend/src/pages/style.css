@@ -35,13 +35,15 @@
 
 .hero-image {
   /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
-  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url(../assets/imgs/login_hero.jpeg);
   margin: 0;
   padding: 0;
-  object-fit: cover;
   width: 100%;
   height: 100%;
+  object-fit: contain;
 
+  /* overflow: hidden; */
   /* Position and center the image to scale nicely on all screens */
   background-position: center;
   background-repeat: no-repeat;

@@ -14,12 +14,17 @@ const LoginPage = ({ handleLogin }) => {
   };
 
   return (
-    <div className="equal-columns full-page login-page">
+    <div
+      className="equal-columns full-page login-page"
+      style={{ margin: 0, padding: 0 }}
+    >
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          margin: 0,
+          padding: 0,
         }}
       >
         <div style={{ width: "70%" }}>
@@ -62,7 +67,8 @@ const LoginPage = ({ handleLogin }) => {
         </div>
       </div>
       <div style={{ margin: 0, padding: 0 }}>
-        <img src={login_hero} className="hero-image"></img>
+        <div className="hero-image" />
+        {/* <div className="hero-image"/> */}
       </div>
     </div>
   );
