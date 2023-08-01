@@ -64,5 +64,6 @@ jobs:
           scp -o StrictHostKeyChecking=no -i private_key scripts/deploy.sh ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu
           scp -o StrictHostKeyChecking=no -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget-app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
+            chmod u+rx deploy.sh &&
             ./deploy.sh
           '
