@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -25,8 +25,9 @@ jobs:
 
       - name: Build
         run: |
-          docker compose -f docker-compose.production.yml build
-          docker compose -f docker-compose.production.yml push
+          # docker compose -f docker-compose.production.yml build
+          # docker compose -f docker-compose.production.yml push
+          ls -la
       - name: Deploy
         env:
           KEYCLOAK_DB_NAME: ${{ secrets.KEYCLOAK_DB_NAME }}
@@ -60,14 +61,8 @@ jobs:
           echo "MONGO_DB_USER=$MONGO_DB_USER" >> .env
           echo "MONGO_DB_PASSWORD=$MONGO_DB_PASSWORD" >> .env
           echo "MONGO_DB_URL=$MONGO_DB_URL" >> .env
+          scp -o StrictHostKeyChecking=no -i private_key code/scripts/deploy.sh ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu
           scp -o StrictHostKeyChecking=no -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget-app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
-            cd /home/ubuntu/budget-app &&
-            set -a &&
-            source .env &&
-            git checkout main &&
-            git fetch --all &&
-            git reset --hard origin/main &&
-            git pull origin main
+            ./deploy.sh
           '
-
