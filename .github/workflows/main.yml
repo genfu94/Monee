@@ -66,6 +66,7 @@ jobs:
             chmod u+rx pre_deploy.sh &&
             ./pre_deploy.sh
           '
+          scp -o StrictHostKeyChecking=no -i private_key scripts/deploy.sh ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu
           scp -o StrictHostKeyChecking=no -i private_key -r ./* ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget_app
           scp -o StrictHostKeyChecking=no -i private_key .env ${EC2_USER}@${EC2_HOSTNAME}:/home/ubuntu/budget_app
           ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USER}@${EC2_HOSTNAME} '
