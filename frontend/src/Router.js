@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ route, children }) {
   const { authenticated, setAuthenticated } = useAuth();
-  console.log("Going to", route, authenticated);
   return authenticated ? children : <Navigate to="/login" replace />;
 }
 

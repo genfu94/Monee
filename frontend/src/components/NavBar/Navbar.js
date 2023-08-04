@@ -44,6 +44,10 @@ function NavBar({ onLogout }) {
   const page = URL_TO_PAGE[base];
   const [tab, setTab] = useState(PAGE_TO_TAB[page]);
 
+  if (!Object.keys(URL_TO_PAGE).includes(base)) {
+    return <></>;
+  }
+
   const handleChange = (event, newValue) => {
     setTab(newValue);
   };
