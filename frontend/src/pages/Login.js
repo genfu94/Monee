@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import login_hero from "../assets/imgs/login_hero.jpeg";
+import budget_logo from "../assets/imgs/logo.png";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import styled from "@emotion/styled";
+
+const LogoTypography = styled(Typography)(({ theme }) => ({
+  display: "inline",
+  textAlign: "center",
+  fontSize: "1.8rem",
+  marginLeft: "0.7rem",
+  color: theme.palette.primary.main,
+}));
 
 const LoginPage = ({ handleLogin }) => {
   const [username, setUsername] = useState("");
@@ -28,6 +38,15 @@ const LoginPage = ({ handleLogin }) => {
         }}
       >
         <div style={{ width: "70%" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <img className="logo nav-bar-link" src={budget_logo} />
+            <LogoTypography variant="logo">Monee</LogoTypography>
+          </div>
           <h1 style={{ fontFamily: "Noto Serif", color: "#333" }}>
             Welcome Back
           </h1>
@@ -68,7 +87,6 @@ const LoginPage = ({ handleLogin }) => {
       </div>
       <div style={{ margin: 0, padding: 0 }}>
         <div className="hero-image" />
-        {/* <div className="hero-image"/> */}
       </div>
     </div>
   );
