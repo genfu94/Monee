@@ -3,11 +3,9 @@ import WebFont from "webfontloader";
 
 import { LoadingScreen } from "./components";
 import { synchronizeAndFetchAccounts } from "./apis";
-import budget_logo from "./assets/imgs/logo.png";
-import { theme } from "./theme";
-import { ThemeProvider } from "@emotion/react";
 import Router from "./Router";
 import { useAuth } from "./AuthProvider";
+import { AppLogo } from "./components/AppLogo/AppLogo";
 
 function App() {
   const { authenticated, setAuthenticated } = useAuth();
@@ -45,18 +43,8 @@ function App() {
   }, [authenticated]);
 
   return (
-    <LoadingScreen
-      loading={loading}
-      content={
-        <>
-          <img className="logo" src={budget_logo} />
-          <div style={{ fontFamily: "Montserrat" }}>Budget App</div>
-        </>
-      }
-    >
-      <ThemeProvider theme={theme}>
-        <Router accounts={accounts} />
-      </ThemeProvider>
+    <LoadingScreen loading={loading} content={<AppLogo />}>
+      <Router accounts={accounts} />
     </LoadingScreen>
   );
 }

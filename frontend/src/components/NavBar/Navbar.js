@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Navbar.style.css";
-import budget_logo from "../../assets/imgs/logo.png";
 import UserProfile from "./UserProfile.js";
 import { Typography, Box, Button } from "@mui/material";
 import styled from "@emotion/styled";
@@ -8,6 +7,7 @@ import { Link } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import "../../styles/globals.style.css";
+import { AppLogo } from "../AppLogo/AppLogo";
 
 function LinkTab(props) {
   return (
@@ -51,14 +51,6 @@ const AddRecordBtn = styled(Button)(({ theme }) => ({
   },
 }));
 
-const LogoTypography = styled(Typography)(({ theme }) => ({
-  display: "inline",
-  textAlign: "center",
-  fontSize: "1.8rem",
-  marginLeft: "0.7rem",
-  color: theme.palette.primary.main,
-}));
-
 const PAGE_TO_TAB = {
   Dashboard: 0,
   Accounts: 1,
@@ -75,8 +67,7 @@ function NavBar({ page, onLogout }) {
     <NavBarContainer>
       <Box className="flex-centered nav-bar-content">
         <Box style={{ display: "flex", alignItems: "center", height: "100%" }}>
-          <img className="logo nav-bar-link" src={budget_logo} />
-          <LogoTypography variant="logo">Monee</LogoTypography>
+          <AppLogo />
         </Box>
         <Box className="flex-centered nav-bar-menu">
           <Box style={{ display: "flex", justifyContent: "center" }}>
