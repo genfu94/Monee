@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from dependencies import initialize_bank_sync_client
-from time import sleep
+from dependencies.dependencies import initialize_bank_sync_client
 
 import routes.bank_connection_api
+import routes.authentication_api
 
 app = FastAPI()
 
@@ -18,6 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(routes.bank_connection_api.router)
+app.include_router(routes.authentication_api.router)
 
 
 @app.on_event("startup")
