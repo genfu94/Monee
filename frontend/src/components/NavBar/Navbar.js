@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./Navbar.style.css";
 import UserProfile from "./UserProfile.js";
-import { Typography, Box, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import "../../styles/globals.style.css";
@@ -11,25 +11,11 @@ import { AppLogo } from "../AppLogo/AppLogo";
 
 function LinkTab(props) {
   return (
-    <Link to={props.href}>
+    <NavLink to={props.href}>
       <Tab component="a" {...props} />
-    </Link>
+    </NavLink>
   );
 }
-
-const NavBarLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-}));
-
-const NavBarItem = styled(Typography)(({ theme }) => ({
-  listStyle: "none",
-  cursor: "pointer",
-  textTransform: "uppercase",
-  "&:hover": {
-    color: theme.palette.primary.main,
-    textShadow: ".25px 0px .1px, -.25px 0px .1px",
-  },
-}));
 
 const NavBarContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -40,16 +26,11 @@ const NavBarContainer = styled(Box)(({ theme }) => ({
   background: theme.palette.primary.background,
 }));
 
-const AddRecordBtn = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: "#fff",
-  borderRadius: "2em",
-  padding: "0.5rem 0.9rem",
-  fontSize: "0.8rem",
-  "&:hover": {
-    backgroundColor: theme.palette.primary.light,
-  },
-}));
+const URL_TO_PAGE = {
+  "/": "Dashboard",
+  "/accounts": "Accounts",
+  "/transactions": "Transactions",
+};
 
 const PAGE_TO_TAB = {
   Dashboard: 0,
@@ -57,8 +38,12 @@ const PAGE_TO_TAB = {
   Transactions: 2,
 };
 
-function NavBar({ page, onLogout }) {
+function NavBar({ onLogout }) {
+  const { pathname } = useLocation();
+  const base = `/${pathname.slice(1).split("/").shift()}`;
+  const page = URL_TO_PAGE[base];
   const [tab, setTab] = useState(PAGE_TO_TAB[page]);
+
   const handleChange = (event, newValue) => {
     setTab(newValue);
   };
@@ -71,11 +56,7 @@ function NavBar({ page, onLogout }) {
         </Box>
         <Box className="flex-centered nav-bar-menu">
           <Box style={{ display: "flex", justifyContent: "center" }}>
-            <Tabs
-              value={tab}
-              onChange={handleChange}
-              aria-label="nav tabs example"
-            >
+            <Tabs value={tab} onChange={handleChange}>
               <LinkTab label="Dashboard" href="/" />
               <LinkTab label="Accounts" href="/accounts" />
               <LinkTab label="Transactions" href="/transactions" />
@@ -83,7 +64,6 @@ function NavBar({ page, onLogout }) {
           </Box>
         </Box>
         <Box className="flex-centered" style={{ marginLeft: "auto" }}>
-          {/*<AddRecordBtn>+Record</AddRecordBtn>*/}
           <UserProfile onLogout={onLogout} />
         </Box>
       </Box>

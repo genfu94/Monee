@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Navigate, Route, Routes, redirect } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import {
   Dashboard,
   Transactions,

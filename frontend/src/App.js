@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import WebFont from "webfontloader";
 
-import { LoadingScreen } from "./components";
+import { LoadingScreen, NavBar } from "./components";
 import { synchronizeAndFetchAccounts } from "./apis";
 import Router from "./Router";
 import { useAuth } from "./AuthProvider";
@@ -44,6 +44,7 @@ function App() {
 
   return (
     <LoadingScreen loading={loading} content={<AppLogo />}>
+      <NavBar />
       <Router accounts={accounts} />
     </LoadingScreen>
   );

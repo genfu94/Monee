@@ -1,5 +1,4 @@
 import React from "react";
-import NavBar from "../components/NavBar/Navbar.js";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 
@@ -26,18 +25,15 @@ class SideMenuLayout extends React.Component {
 
   render() {
     return (
-      <>
-        <NavBar page={this.props.page} />
-        <MainContainer>
-          {this.props.sideMenuTitle && (
-            <SideMenuContainer>
-              <Typography variant="h1">{this.props.sideMenuTitle}</Typography>
-              <Box>{this.props.sideMenuContent}</Box>
-            </SideMenuContainer>
-          )}
-          <Box style={{ flex: 1 }}>{this.props.content}</Box>
-        </MainContainer>
-      </>
+      <MainContainer>
+        {this.props.sideMenuTitle && (
+          <SideMenuContainer>
+            <Typography variant="h1">{this.props.sideMenuTitle}</Typography>
+            <Box>{this.props.sideMenuContent}</Box>
+          </SideMenuContainer>
+        )}
+        <Box style={{ flex: 1 }}>{this.props.content}</Box>
+      </MainContainer>
     );
   }
 }
