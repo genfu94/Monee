@@ -26,6 +26,7 @@ class BankSync:
             hour=(int(last_update.hour / 8)) * 8, minute=0, second=0
         )
 
+    # TODO: Refactor this method
     def fetch_account_updates(
         self, account_id: str, link: BankLink
     ) -> Tuple[Account, List[Transaction]]:

@@ -26,6 +26,7 @@ def _is_account_valid(nordigen_client, account_id: str) -> Dict:
     return account_json
 
 
+# TODO: Organize this class a little bit better
 class NordigenBankAccountClient(BankAccountAPI):
     def __init__(self, nordigen_client):
         self.nordigen_client = nordigen_client

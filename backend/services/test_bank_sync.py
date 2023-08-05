@@ -32,7 +32,7 @@ class TestBankSync(unittest.TestCase):
         bank_sync = BankSync(
             bank_connector_mock, account_crud_mock, transaction_crud_mock, Mock()
         )
-        account, new_trans = bank_sync.fetch_account_updates("asd", None)
+        account, new_trans = bank_sync.fetch_account_updates("acc1", None)
         assert new_trans == []
 
 
