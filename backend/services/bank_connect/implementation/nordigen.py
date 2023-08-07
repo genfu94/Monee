@@ -63,10 +63,10 @@ class NordigenBankAccountClient(BankAccountAPI):
             return None
 
         balances_dict = account_api.get_balances()["balances"][0]["balanceAmount"]
-
-        return Account(
-            id=account_id, name=account_json["name"], balances=[balances_dict]
+        account_name = (
+            account_json["name"] if "name" in account_json else account_json["iban"]
         )
+        return Account(id=account_id, name=account_name, balances=[balances_dict])
 
     def _psd2_to_transaction(
         self, account_id: str, psd2_transaction: Dict, last_balance: float
@@ -120,7 +120,8 @@ class NordigenBankLinkClient(BankLinkAPI):
             country_code
         )
         institution_list = [
-            InstitutionInfo(name=r["name"], id=r["id"]) for r in raw_institutions
+            InstitutionInfo(name=r["name"], id=r["id"], logo=r["logo"])
+            for r in raw_institutions
         ]
 
         return institution_list

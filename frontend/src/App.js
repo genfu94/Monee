@@ -21,6 +21,7 @@ function App() {
           "Kalam:400",
           "Ultra:400",
           "Noto Serif:200,600",
+          "REM",
         ],
       },
     });

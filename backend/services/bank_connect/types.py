@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Union, List
+from typing import Union, List, Optional
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pydantic import BaseModel, validator
@@ -21,6 +21,7 @@ class APICredentials:
 class InstitutionInfo(BaseModel):
     name: str
     id: str
+    logo: Optional[str] = None
 
 
 class BankLinkBase(BaseModel):
@@ -80,7 +81,7 @@ class Transaction(BaseModel):
 class Account(BaseModel):
     id: str
     name: str
-    institution_name: str = None
+    institution: InstitutionInfo = None
     last_update: datetime = None
     balances: List[Balance] = []
 

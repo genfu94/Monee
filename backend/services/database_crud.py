@@ -129,7 +129,7 @@ class MongoAccountCRUD(AccountCRUD):
             self.update(account)
             return
 
-        account.institution_name = bank_link.institution.name
+        account.institution = bank_link.institution
         account = account.dict()
         account["user"] = username
         account["transactions"] = []

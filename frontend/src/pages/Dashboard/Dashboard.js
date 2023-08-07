@@ -11,10 +11,12 @@ import {
   networthChange,
 } from "../../utils/statistics.js";
 import TimeChart from "../../components/Plot/TimeChart.js";
+import Accounts from "../Accounts/Accounts.js";
 
 const BalanceSummaryContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-around",
+  marginTop: "2rem",
 }));
 
 const BalanceSummaryCard = styled(Card)(({ theme }) => ({
@@ -133,6 +135,7 @@ function Dashboard({ accounts }) {
         page="Dashboard"
         content={
           <>
+            <Accounts accounts={accounts} />
             {renderDashboard(networthSeries, expensesSeries)}
             {timeChart.plot()}
           </>

@@ -18,11 +18,8 @@ function BankSelector() {
   ] = useBankSelector();
 
   const onCountrySelected = (c) => setInstitutionsByCountry(c.value);
-  const onClickConnect = () =>
-    bankConnect(selectedInstitution, userInfo.username);
+  const onClickConnect = () => bankConnect(selectedInstitution);
   const isInstitutionSelected = selectedInstitution ? false : true;
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   return (
     <div className="bank-selector-container">

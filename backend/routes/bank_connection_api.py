@@ -42,4 +42,5 @@ async def synchronize_account(
         )
         account_transactions.append(account_dict)
 
+    print(account_transactions)
     return account_transactions

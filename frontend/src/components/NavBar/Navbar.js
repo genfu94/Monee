@@ -62,7 +62,6 @@ function NavBar({ onLogout }) {
           <Box style={{ display: "flex", justifyContent: "center" }}>
             <Tabs value={tab} onChange={handleChange}>
               <LinkTab label="Dashboard" href="/" />
-              <LinkTab label="Accounts" href="/accounts" />
               <LinkTab label="Transactions" href="/transactions" />
             </Tabs>
           </Box>

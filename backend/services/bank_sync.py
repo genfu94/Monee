@@ -34,7 +34,7 @@ class BankSync:
 
         if not account:
             account = self.bank_connector.bank_account_api.fetch_account(account_id)
-            account.institution_name = link.institution.name
+            account.institution = link.institution
 
         last_update = (
             account.last_update

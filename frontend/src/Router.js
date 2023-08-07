@@ -69,15 +69,6 @@ function Router({ accounts }) {
           </ProtectedRoute>
         }
       />
-      <Route
-        exact
-        path="/accounts"
-        element={
-          <ProtectedRoute>
-            <Accounts accounts={accounts} />
-          </ProtectedRoute>
-        }
-      />
     </Routes>
   );
 }

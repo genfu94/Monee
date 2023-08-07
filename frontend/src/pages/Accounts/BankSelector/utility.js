@@ -1,7 +1,7 @@
 import urlJoin from "url-join";
-import { POST_request, GET_request } from "../../../utils/network";
+import { GET_request } from "../../../utils/network";
 
-export function bankConnect(institution_info, username) {
+export async function bankConnect(institution_info) {
   let institution = {
     id: institution_info["value"],
     name: institution_info["label"],
@@ -11,8 +11,19 @@ export function bankConnect(institution_info, username) {
     process.env.REACT_APP_BACKEND_ENDPOINT,
     "bank_connect"
   );
-  POST_request(endpoint, { username: username }, institution).then((data) => {
-    let bank_connection_link = data.link;
+
+  return await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(institution),
+  }).then(async (response) => {
+    if (response.status !== 200) throw new Error(response.status);
+    const bank_link = await response.json();
+    console.log(bank_link);
+    let bank_connection_link = bank_link.link;
     window.location.replace(bank_connection_link);
   });
 }
