@@ -5,6 +5,8 @@ from dependencies.dependencies import get_bank_sync
 from dependencies.authentication import validate_token_and_get_active_user
 import numpy as np
 
+pd.set_option("display.max_rows", 500)
+
 router = APIRouter(prefix="/api")
 
 
@@ -33,7 +35,7 @@ async def networth_trend(
         ]
         curr_df = (
             curr_df.resample("1D", on="booking_date")
-            .sum()
+            .last()
             .replace(0, np.NAN)
             .fillna(method="ffill")
         )
