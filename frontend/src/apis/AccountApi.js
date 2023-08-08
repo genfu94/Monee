@@ -17,3 +17,21 @@ export async function synchronizeAndFetchAccounts() {
     return response.json();
   });
 }
+
+export async function networthTrend() {
+  const endpoint = urlJoin(
+    process.env.REACT_APP_BACKEND_ENDPOINT,
+    "networth_trend"
+  );
+
+  return await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }).then((response) => {
+    if (response.status !== 200) throw new Error(response.status);
+    return response.json();
+  });
+}

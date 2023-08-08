@@ -1,148 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SideMenuLayout from "../SideMenuLayout.js";
-
-import { Box, Card, CardContent, Typography } from "@mui/material";
-import styled from "@emotion/styled";
-import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
-import { getMonthStart } from "../../utils/date.js";
-import {
-  getNetworthSeries,
-  getExpensesSeries,
-  networthChange,
-} from "../../utils/statistics.js";
-import TimeChart from "../../components/Plot/TimeChart.js";
 import Accounts from "../Accounts/Accounts.js";
-
-const BalanceSummaryContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "space-around",
-  marginTop: "2rem",
-}));
-
-const BalanceSummaryCard = styled(Card)(({ theme }) => ({
-  width: "25%",
-  borderRadius: "1rem",
-}));
-
-function renderDashboard(networthSeries, expenseSeries) {
-  const balanceCards = [
-    {
-      title: "Total Networth",
-      amount: networthSeries.loc(-1).data, //totalNetworth(accounts),
-      increasePreviousPeriod: networthChange(networthSeries),
-      icon: <FiTrendingUp />,
-      background: "green",
-    },
-    {
-      title: "Current Period Expenses",
-      amount: expenseSeries.loc(-1).data,
-      increasePreviousPeriod: "-10.5",
-      icon: <FiTrendingDown />,
-      background: "red",
-    },
-  ];
-  return (
-    <>
-      <BalanceSummaryContainer>
-        {balanceCards.map((b) => (
-          <BalanceSummaryCard>
-            <CardContent>
-              <Box style={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="h5">{b.title}</Typography>
-                <Box
-                  style={{
-                    marginLeft: "auto",
-                    display: "flex",
-                    fontSize: "0.9rem",
-                    color: "white",
-                    padding: "0.3em",
-                    borderRadius: "10%",
-                    background: b.background,
-                  }}
-                >
-                  {b.icon}
-                </Box>
-              </Box>
-              <Box style={{ display: "flex" }}>
-                <Typography
-                  variant="h1"
-                  sx={{ alignSelf: "end", lineHeight: 1 }}
-                >
-                  {new Intl.NumberFormat("it-IT", {
-                    style: "currency",
-                    currency: "EUR",
-                  }).format(b.amount)}
-                </Typography>
-                <Typography
-                  variant="small"
-                  sx={{
-                    alignSelf: "end",
-                    color: "green",
-                    fontWeight: 600,
-                    marginLeft: "0.5rem",
-                  }}
-                >
-                  {b.increasePreviousPeriod}%
-                </Typography>
-              </Box>
-            </CardContent>
-          </BalanceSummaryCard>
-        ))}
-      </BalanceSummaryContainer>
-    </>
-  );
-}
+import { networthTrend } from "../../apis/AccountApi.js";
+import TimeChart from "../../components/Plot/TimeChart.js";
 
 function Dashboard({ accounts }) {
-  const monthStart = getMonthStart();
-  let networthSeries = getNetworthSeries(accounts);
-  if (networthSeries.series.length === 0) {
-    return (
-      <SideMenuLayout
-        page="Dashboard"
-        content={
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Typography style={{ color: "#444" }}>
-              You are not tracking any account yet, add a new one from the
-              Account tab.
-            </Typography>
-          </div>
-        }
-      />
-    );
-  } else {
-    let expensesSeries = getExpensesSeries(accounts);
-    expensesSeries = expensesSeries.filter(monthStart).cumulate();
-    networthSeries = networthSeries.resample("1D").min().fillNa();
-    const timeChart = new TimeChart();
-    timeChart.add(
-      networthSeries.toPlotData(),
-      "rgba(0, 0, 255, 1.0)",
-      "rgba(0, 0, 255, 0.2)",
-      "€"
-    );
-    return (
-      <SideMenuLayout
-        page="Dashboard"
-        content={
-          <>
-            <Accounts accounts={accounts} />
-            {renderDashboard(networthSeries, expensesSeries)}
-            {timeChart.plot()}
-          </>
-        }
-      />
-    );
-  }
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    networthTrend().then((nw) => {
+      const newTrend = [];
+      for (const b of nw) {
+        newTrend.push({ x: b.index, y: b.account_balance });
+      }
+      setData(newTrend);
+    });
+  }, [accounts]);
+
+  const timeChart = new TimeChart();
+  timeChart.add(data, "rgba(0, 0, 255, 1.0)", "rgba(0, 0, 255, 0.2)", "€");
+
+  return (
+    <SideMenuLayout
+      page="Dashboard"
+      content={
+        <>
+          <Accounts accounts={accounts} />
+          {timeChart.plot()}
+        </>
+      }
+    />
+  );
 }
 
 export default Dashboard;
