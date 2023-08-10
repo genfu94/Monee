@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from .bank_connect.types import Transaction, Account
+from ..models.bank import Transaction, Account
 
 bank_connector_mock = Mock()
 transaction_crud_mock = Mock()
@@ -29,9 +29,7 @@ account_crud_mock.find_by_id.return_value = Account(
 
 class TestBankSync(unittest.TestCase):
     def test_no_new_transactions(self):
-        bank_sync = BankSync(
-            bank_connector_mock, account_crud_mock, transaction_crud_mock, Mock()
-        )
+        bank_sync = BankSync(bank_connector_mock, account_crud_mock, transaction_crud_mock, Mock())
         account, new_trans = bank_sync.fetch_account_updates("acc1", None)
         assert new_trans == []
 

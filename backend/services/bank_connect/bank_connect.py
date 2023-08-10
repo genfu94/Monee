@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from datetime import datetime
 
-from .types import InstitutionInfo, BankLink, Account, Transaction
+from models.bank import InstitutionInfo, BankLink, Account, Transaction
 
 
 class BankLinkAPI(ABC):
@@ -25,9 +25,7 @@ class BankLinkAPI(ABC):
 
 class BankAccountAPI(ABC):
     @abstractmethod
-    def fetch_transactions(
-        self, account_id: str, date_start: datetime, date_end: datetime
-    ) -> List[Transaction]:
+    def fetch_transactions(self, account_id: str, date_start: datetime, date_end: datetime) -> List[Transaction]:
         pass
 
     @abstractmethod

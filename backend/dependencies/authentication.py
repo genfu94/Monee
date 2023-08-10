@@ -14,9 +14,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-async def validate_token_and_get_active_user(
-    token: Annotated[str, Depends(oauth2_scheme)]
-):
+async def validate_token_and_get_active_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -49,9 +47,7 @@ def register_user(username: str, password: str):
         raise Exception("Username already exists")
 
     print("I'm here")
-    users_collection.insert_one(
-        {"username": username, "hashed_password": pwd_context.hash(password)}
-    )
+    users_collection.insert_one({"username": username, "hashed_password": pwd_context.hash(password)})
 
 
 def verify_password(plain_password, hashed_password):

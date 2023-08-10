@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from services.bank_connect.types import Account, BankLink, Transaction
-from .bank_connect.types import (
+from models.bank import (
+    Account,
     BankLink,
     NordigenBankLink,
     InstitutionInfo,
@@ -10,8 +10,6 @@ from .bank_connect.types import (
     Transaction,
 )
 from typing import List, Dict
-import json
-from dataclasses import asdict
 from datetime import datetime
 
 
@@ -52,9 +50,7 @@ class BankLinkCRUD(ABC):
 
 class AccountCRUD(ABC):
     @abstractmethod
-    def add(
-        self, username: str, bank_link: BankLink, account: Account, upsert=False
-    ) -> None:
+    def add(self, username: str, bank_link: BankLink, account: Account, upsert=False) -> None:
         pass
 
     @abstractmethod
@@ -99,10 +95,7 @@ class MongoBankLinkCRUD(BankLinkCRUD):
 
     def find_by_user(self, username: str) -> List[BankLink]:
         bank_link_list = self.bank_link_collection.find({"user": username})
-        return [
-            BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER[bank_link["client"]](bank_link)
-            for bank_link in bank_link_list
-        ]
+        return [BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER[bank_link["client"]](bank_link) for bank_link in bank_link_list]
 
     def update(self, bank_link: BankLink) -> None:
         filter_query = bank_link.get_identifiers()
@@ -122,9 +115,7 @@ class MongoAccountCRUD(AccountCRUD):
         self.mongo_client = mongo_client
         self.account_collection = self.mongo_client["accounts"]
 
-    def add(
-        self, username: str, bank_link: BankLink, account: Account, upsert=False
-    ) -> None:
+    def add(self, username: str, bank_link: BankLink, account: Account, upsert=False) -> None:
         if upsert and self.find_by_id(account.id):
             self.update(account)
             return
@@ -136,15 +127,11 @@ class MongoAccountCRUD(AccountCRUD):
         self.account_collection.insert_one(account)
 
     def find_by_id(self, account_id: str) -> Account:
-        account = self.account_collection.find_one(
-            {"id": account_id}, {"_id": 0, "transactions": 0}
-        )
+        account = self.account_collection.find_one({"id": account_id}, {"_id": 0, "transactions": 0})
         return Account.parse_obj(account) if account else None
 
     def find_by_user(self, username: str) -> List[Account]:
-        raw_accounts = self.account_collection.find(
-            {"user": username}, {"_id": 0, "transactions": 0}
-        )
+        raw_accounts = self.account_collection.find({"user": username}, {"_id": 0, "transactions": 0})
         return [Account.parse_obj(acc) for acc in raw_accounts]
 
     def update(self, account: Account) -> None:
@@ -158,9 +145,7 @@ class MongoAccountCRUD(AccountCRUD):
             }
         ]
 
-        self.account_collection.update_one(
-            {"id": account_json["id"]}, update_query, upsert=True
-        )
+        self.account_collection.update_one({"id": account_json["id"]}, update_query, upsert=True)
 
 
 class MongoTransactionCRUD(TransactionCRUD):
@@ -181,9 +166,7 @@ class MongoTransactionCRUD(TransactionCRUD):
                 }
             }
         ]
-        self.account_collection.update_one(
-            {"id": account_id}, update_query, upsert=True
-        )
+        self.account_collection.update_one({"id": account_id}, update_query, upsert=True)
 
     def update(self, account_id: str, transaction: Transaction) -> None:
         find_query = {"_id": account_id, "transactions.id": transaction.id}
@@ -203,8 +186,4 @@ class MongoTransactionCRUD(TransactionCRUD):
 
     def find_by_account(self, account_id: str) -> List[Transaction]:
         account = self.account_collection.find_one({"id": account_id})
-        return (
-            [Transaction.parse_obj(t) for t in account["transactions"]]
-            if account
-            else []
-        )
+        return [Transaction.parse_obj(t) for t in account["transactions"]] if account else []

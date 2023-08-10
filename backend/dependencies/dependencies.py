@@ -1,6 +1,5 @@
-from services.bank_connect.types import APICredentials
-from services.bank_connect.implementation.nordigen import NordigenBankSyncClient
-from services.database_crud import (
+from services.bank_connect.implementation.nordigen import NordigenBankSyncClient, APICredentials
+from database.database_crud import (
     MongoAccountCRUD,
     MongoBankLinkCRUD,
     MongoTransactionCRUD,
