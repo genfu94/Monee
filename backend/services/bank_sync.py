@@ -1,6 +1,6 @@
 from .bank_connect.bank_connect import BankConnector
 from database.database_crud import AccountCRUD, TransactionCRUD, BankLinkCRUD
-from models.bank import BankLink, Account, Transaction
+from models.bank import BankLink, Account, Transaction, AccountStatus
 from typing import Tuple, List
 from .transaction_categorization.algorithms import categorize
 
@@ -52,10 +52,12 @@ class BankSync:
         return account, new_transactions
 
     def update_bank_links(self, username: str):
-        for bank_link_status in self.bank_link_crud.find_by_user(username):
-            bank_linking_details = self.bank_connector.bank_link_api.fetch_link_bank_status(bank_link_status)
-            self.bank_link_crud.update(bank_linking_details)
+        for bank_link in self.bank_link_crud.find_by_user(username):
+            if bank_link.status == AccountStatus.AUTHORIZATION_REQUIRED:
+                bank_link.status = self.bank_connector.bank_link_api.fetch_link_bank_status(bank_link)
+                self.bank_link_crud.update(bank_link)
 
+        # TODO: Delete only if there is a bank link that is still unauthorized
         self.bank_link_crud.delete_unauthorized_links(username)
 
     def synchronize_user_accounts(self, username: str):

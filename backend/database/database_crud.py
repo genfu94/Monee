@@ -14,13 +14,7 @@ from datetime import datetime
 
 
 def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLink:
-    return NordigenBankLink(
-        client="Nordigen",
-        link=bank_link_details_json["link"],
-        requisition_id=bank_link_details_json["requisition_id"],
-        institution=InstitutionInfo(**bank_link_details_json["institution"]),
-        status=bank_link_details_json["status"],
-    )
+    return NordigenBankLink.model_validate(bank_link_details_json)
 
 
 BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER = {"Nordigen": parse_nordigen_bank_link_details}
@@ -94,7 +88,8 @@ class MongoBankLinkCRUD(BankLinkCRUD):
         return self.bank_link_collection.find_one({"id": bank_link_id}, {"_id": 0})
 
     def find_by_user(self, username: str) -> List[BankLink]:
-        bank_link_list = self.bank_link_collection.find({"user": username})
+        bank_link_list = list(self.bank_link_collection.find({"user": username}))
+        print("Bank Link List", bank_link_list)
         return [BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER[bank_link["client"]](bank_link) for bank_link in bank_link_list]
 
     def update(self, bank_link: BankLink) -> None:

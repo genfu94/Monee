@@ -144,18 +144,12 @@ class NordigenBankLinkClient(BankLinkAPI):
 
         return bank_linking_details
 
-    def fetch_link_bank_status(self, bank_link: BankLink) -> BankLink:
+    def fetch_link_bank_status(self, bank_link: BankLink) -> AccountStatus:
         nordigen_bank_link = self.nordigen_client.requisition.get_requisition_by_id(
             requisition_id=bank_link.requisition_id
         )
 
-        return NordigenBankLink(
-            client="Nordigen",
-            link=nordigen_bank_link["link"],
-            requisition_id=bank_link.requisition_id,
-            institution=bank_link.institution,
-            status=self.nordigen_link_status_map[nordigen_bank_link["status"]],
-        )
+        return self.nordigen_link_status_map[nordigen_bank_link["status"]]
 
     def fetch_account_ids_from_bank_link(self, bank_linking_details: BankLink) -> List[str]:
         account_id_list = self.nordigen_client.requisition.get_requisition_by_id(
