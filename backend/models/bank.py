@@ -11,6 +11,7 @@ from pydantic import (
     Field,
     ConfigDict,
     model_serializer,
+    TypeAdapter,
 )
 from datetime import datetime
 from dateutil.parser import parse
@@ -61,6 +62,15 @@ class MongoBaseModel(BaseModel):
         return {"_id": json_util.dumps(self.id)}
 
 
+class StringIDMongoBaseModel(BaseModel):
+    id: str = Field(alias="_id")
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @model_serializer
+    def ser_model(self) -> Dict[str, Any]:
+        return {"_id": self.id}
+
+
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
     LINKED = 1
@@ -79,9 +89,9 @@ class InstitutionInfo(BaseModel):
 
 
 class NordigenBankLink(MongoBaseModel):
+    client: Optional[str]
     requisition_id: str
-    institution: InstitutionInfo
-    link: str
+    url: str
     status: AccountStatus = AccountStatus.AUTHORIZATION_REQUIRED
 
     def get_identifiers(self):
@@ -91,16 +101,31 @@ class NordigenBankLink(MongoBaseModel):
 BankLink = NordigenBankLink
 
 
-class Account(MongoBaseModel):
+class Account(StringIDMongoBaseModel):
     name: str
     last_update: Optional[DateField] = None
-    institution: InstitutionInfo = None
     balances: List[Amount] = []
 
 
-class Transaction(MongoBaseModel):
+class Bank(MongoBaseModel):
+    link: NordigenBankLink
+    institution: InstitutionInfo
+    accounts: List[Account]
+
+
+class TransactionAccountInfo(StringIDMongoBaseModel):
+    name: str
+
+
+class Transaction(BaseModel):
+    id: str = Field(alias="_id")
     origin: str
     text: Optional[str] = None
     transaction_amount: Amount
     booking_date: Optional[DateField]
     type: str = None
+    account: Optional[TransactionAccountInfo] = None
+
+
+BankList = TypeAdapter(List[Bank])
+TransactionList = TypeAdapter(List[Transaction])

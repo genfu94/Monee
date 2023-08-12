@@ -27,7 +27,7 @@ async def bank_connect(
 async def synchronize_account(username: Annotated[str, Depends(validate_token_and_get_active_user)]):
     if get_bank_sync().bank_connector.nordigen_client:
         get_bank_sync().update_bank_links(username)
-        # get_bank_sync().synchronize_user_accounts(username)
+        get_bank_sync().synchronize_user_accounts(username)
 
     account_transactions = []
     # for account in get_bank_sync().account_crud.find_by_user(username):

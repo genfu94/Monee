@@ -16,6 +16,7 @@ from models.bank import (
     InstitutionInfo,
     DateField,
     Amount,
+    TransactionList,
 )
 
 
@@ -48,9 +49,8 @@ class NordigenPSD2Transaction(BaseModel):
             origin = self.creditor_name if self.creditor_name else self.creditor_account.iban
         else:
             origin = self.debtor_name if self.debtor_name else self.debtor_account.iban
-        print(self.remittance_information_unstructured, text)
         return Transaction(
-            id=self.transaction_id,
+            _id=self.transaction_id,
             origin=origin,
             text=text,
             transaction_amount=self.transaction_amount,
@@ -75,19 +75,20 @@ class NordigenBankAccountClient(BankAccountAPI):
         self.nordigen_client = nordigen_client
 
     def fetch_transactions(
-        self, account_id: str, date_start: datetime = None, date_end: datetime = None
+        self, account: Account, date_start: datetime = None, date_end: datetime = None
     ) -> List[Transaction]:
-        account_api = self.nordigen_client.account_api(id=account_id)
+        account_api = self.nordigen_client.account_api(id=account.id)
         date_start = date_start.strftime("%Y-%m-%d") if date_start else None
         date_end = date_end.strftime("%Y-%m-%d") if date_end else None
         transactions_raw = account_api.get_transactions(date_from=date_start, date_to=date_end)["transactions"]
         transactions_list = transactions_raw["booked"] + transactions_raw["pending"]
-        current_amount = self.fetch_account(account_id).balances[0].amount
+        current_amount = self.fetch_account(account.id).balances[0].amount
         transactions = []
         for t in transactions_list:
-            transactions.append(self._psd2_to_transaction(account_id, t, current_amount))
+            transactions.append(self._psd2_to_transaction(account, t, current_amount))
             # current_amount = transactions[-1].account_balance - transactions[-1].transaction_amount.amount
 
+        transactions = TransactionList.validate_python(transactions)
         return transactions
 
     def fetch_account(self, account_id: str) -> Account:
@@ -99,9 +100,10 @@ class NordigenBankAccountClient(BankAccountAPI):
 
         balances_dict = account_api.get_balances()["balances"][0]["balanceAmount"]
         account_name = account_json["name"] if "name" in account_json else account_json["iban"]
-        return Account(id=account_id, name=account_name, balances=[balances_dict])
+        return Account(_id=account_id, name=account_name, balances=[balances_dict])
 
-    def _psd2_to_transaction(self, account_id: str, psd2_transaction: Dict, last_balance: float) -> Transaction:
+    def _psd2_to_transaction(self, account: Account, psd2_transaction: Dict, last_balance: float) -> Transaction:
+        psd2_transaction["account"] = {"id": account.id, "name": account.name}
         transaction_obj = NordigenPSD2Transaction.model_validate(psd2_transaction)
         return transaction_obj.to_transaction()
 

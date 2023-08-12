@@ -8,55 +8,36 @@ from models.bank import (
     AccountStatus,
     Account,
     Transaction,
+    Bank,
+    BankList,
+    TransactionList,
 )
-from typing import List, Dict
-from datetime import datetime
+from typing import List
 
 
-def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> NordigenBankLink:
-    return NordigenBankLink.model_validate(bank_link_details_json)
-
-
-BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER = {"Nordigen": parse_nordigen_bank_link_details}
-
-
-class BankLinkCRUD(ABC):
+class BankCRUD(ABC):
     @abstractmethod
-    def add(self, username: str, bank_link: BankLink) -> None:
+    def add(self, username: str, bank_link: BankLink):
         pass
 
     @abstractmethod
-    def find_by_id(self, bank_link_id: str) -> BankLink:
+    def find_by_id(self, bank_id: str) -> Bank:
         pass
 
     @abstractmethod
-    def find_by_user(self, username: str) -> List[BankLink]:
+    def find_by_user(self, username: str) -> List[Bank]:
         pass
 
     @abstractmethod
-    def update(self, bank_link: BankLink) -> None:
+    def update(self, bank: Bank):
         pass
 
     @abstractmethod
-    def delete_unauthorized_links(self, username) -> None:
-        pass
-
-
-class AccountCRUD(ABC):
-    @abstractmethod
-    def add(self, username: str, bank_link: BankLink, account: Account, upsert=False) -> None:
+    def delete_unauthorized(self, username: str):
         pass
 
     @abstractmethod
-    def find_by_id(self, account_id: str) -> Account:
-        pass
-
-    @abstractmethod
-    def find_by_user(self, username: str) -> List[Account]:
-        pass
-
-    @abstractmethod
-    def update(self, account: Account) -> None:
+    def add_account(self, id: str, account: Account):
         pass
 
 
@@ -74,94 +55,59 @@ class TransactionCRUD(ABC):
         pass
 
 
-class MongoBankLinkCRUD(BankLinkCRUD):
+class MongoBankCRUD(BankCRUD):
     def __init__(self, mongo_client):
         self.mongo_client = mongo_client
-        self.bank_link_collection = self.mongo_client["bank_links"]
+        self.bank_collection = self.mongo_client["banks"]
 
-    def add(self, username: str, bank_link: BankLink) -> None:
-        bank_link_json = bank_link.dict()
+    def add(self, username: str, institution: InstitutionInfo, bank_link: BankLink) -> None:
+        bank_link_json = bank_link.model_dump()
         bank_link_json["user"] = username
-        self.bank_link_collection.insert_one(bank_link_json)
+        bank_link = NordigenBankLink.model_validate(bank_link_json)
+        bank = Bank(link=bank_link, institution=institution, accounts=[])
+        self.bank_collection.insert_one(bank)
 
-    def find_by_id(self, bank_link_id: str) -> BankLink:
-        return self.bank_link_collection.find_one({"id": bank_link_id}, {"_id": 0})
+    def find_by_id(self, bank_id: str) -> Bank:
+        return Bank.model_validate(self.bank_collection.find_one({"_id": bank_id}))
 
-    def find_by_user(self, username: str) -> List[BankLink]:
-        bank_link_list = list(self.bank_link_collection.find({"user": username}))
-        print("Bank Link List", bank_link_list)
-        return [BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER[bank_link["client"]](bank_link) for bank_link in bank_link_list]
+    def find_by_user(self, username: str) -> List[Bank]:
+        bank_list = list(self.bank_collection.find({"user": username}))
+        return BankList.validate_python(bank_list)
 
-    def update(self, bank_link: BankLink) -> None:
-        filter_query = bank_link.get_identifiers()
-        update_query = {"$set": {"status": bank_link.status}}
-        self.bank_link_collection.update_one(filter_query, update_query)
+    def update(self, bank: Bank) -> None:
+        update_query = {"$set": bank}
+        self.bank_collection.update_one({"_id": bank.id}, update_query)
 
-    def delete_unauthorized_links(self, username) -> None:
-        remove_query = {
-            "user": username,
-            "status": AccountStatus.AUTHORIZATION_REQUIRED,
-        }
-        self.bank_link_collection.delete_many(remove_query)
+    def delete_unauthorized(self, username):
+        remove_query = {"user": username, "link": {"status": AccountStatus.AUTHORIZATION_REQUIRED}}
+        self.bank_collection.delete_many(remove_query)
 
-
-class MongoAccountCRUD(AccountCRUD):
-    def __init__(self, mongo_client):
-        self.mongo_client = mongo_client
-        self.account_collection = self.mongo_client["accounts"]
-
-    def add(self, username: str, bank_link: BankLink, account: Account, upsert=False) -> None:
-        if upsert and self.find_by_id(account.id):
-            self.update(account)
-            return
-
-        account.institution = bank_link.institution
-        account = account.dict()
-        account["user"] = username
-        account["transactions"] = []
-        self.account_collection.insert_one(account)
-
-    def find_by_id(self, account_id: str) -> Account:
-        account = self.account_collection.find_one({"id": account_id}, {"_id": 0, "transactions": 0})
-        return Account.parse_obj(account) if account else None
-
-    def find_by_user(self, username: str) -> List[Account]:
-        raw_accounts = self.account_collection.find({"user": username}, {"_id": 0, "transactions": 0})
-        return [Account.parse_obj(acc) for acc in raw_accounts]
-
-    def update(self, account: Account) -> None:
-        account_json = account.dict()
-        update_query = [
-            {
-                "$set": {
-                    "balances": account_json["balances"],
-                    "last_update": datetime.now(),
+    def add_account(self, id: str, account: Account):
+        query = {
+            "$set": {
+                "accounts": {
+                    "$concatArrays": [
+                        account.model_dump(),
+                        "$accounts",
+                    ]
                 }
             }
-        ]
+        }
 
-        self.account_collection.update_one({"id": account_json["id"]}, update_query, upsert=True)
+        self.bank_collection.update_one({"_id": id}, query)
 
 
 class MongoTransactionCRUD(TransactionCRUD):
     def __init__(self, mongo_client):
         self.mongo_client = mongo_client
-        self.account_collection = self.mongo_client["accounts"]
+        self.transaction_collection = self.mongo_client["transactions"]
 
-    def add(self, account_id: str, transactions: List[Transaction]) -> None:
-        update_query = [
-            {
-                "$set": {
-                    "transactions": {
-                        "$concatArrays": [
-                            [t.dict() for t in transactions],
-                            "$transactions",
-                        ]
-                    }
-                }
-            }
-        ]
-        self.account_collection.update_one({"id": account_id}, update_query, upsert=True)
+    def add(self, account: Account, transactions: TransactionList):
+        transactions = [Transaction.model_dump(t, by_alias=True) for t in transactions]
+        try:
+            self.transaction_collection.insert_many(transactions)
+        except Exception as e:
+            print("There was an exception when adding new transactions")
 
     def update(self, account_id: str, transaction: Transaction) -> None:
         find_query = {"_id": account_id, "transactions.id": transaction.id}
@@ -180,5 +126,5 @@ class MongoTransactionCRUD(TransactionCRUD):
         self.account_collection.update_one(find_query, update_query, upsert=True)
 
     def find_by_account(self, account_id: str) -> List[Transaction]:
-        account = self.account_collection.find_one({"id": account_id})
-        return [Transaction.parse_obj(t) for t in account["transactions"]] if account else []
+        account_transactions = list(self.transaction_collection.find({"account": {"_id": account_id}}))
+        return TransactionList.validate_python(account_transactions)
