@@ -72,6 +72,7 @@ class MongoBankCRUD(BankCRUD):
 
     def find_by_user(self, username: str) -> List[Bank]:
         bank_list = list(self.bank_collection.find({"user": username}))
+        print("Bank list", bank_list)
         return BankList.validate_python(bank_list)
 
     def update(self, bank: Bank) -> None:
@@ -126,5 +127,5 @@ class MongoTransactionCRUD(TransactionCRUD):
         self.account_collection.update_one(find_query, update_query, upsert=True)
 
     def find_by_account(self, account_id: str) -> List[Transaction]:
-        account_transactions = list(self.transaction_collection.find({"account": {"_id": account_id}}))
+        account_transactions = list(self.transaction_collection.find({"account._id": account_id}))
         return TransactionList.validate_python(account_transactions)

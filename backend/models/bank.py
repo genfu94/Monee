@@ -1,7 +1,6 @@
-from typing import Optional, List, Any, Dict
+from typing import Optional, List, Any
 from typing_extensions import Annotated, Union
 from enum import Enum
-import bson.json_util as json_util
 from pydantic import (
     BaseModel,
     AfterValidator,
@@ -10,7 +9,6 @@ from pydantic import (
     WithJsonSchema,
     Field,
     ConfigDict,
-    model_serializer,
     TypeAdapter,
 )
 from datetime import datetime
@@ -53,24 +51,6 @@ PyObjectId = Annotated[
 ]
 
 
-class MongoBaseModel(BaseModel):
-    id: Optional[PyObjectId] = Field(default=None, alias="_id")
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    @model_serializer
-    def ser_model(self) -> Dict[str, Any]:
-        return {"_id": json_util.dumps(self.id)}
-
-
-class StringIDMongoBaseModel(BaseModel):
-    id: str = Field(alias="_id")
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    @model_serializer
-    def ser_model(self) -> Dict[str, Any]:
-        return {"_id": self.id}
-
-
 class AccountStatus(int, Enum):
     AUTHORIZATION_REQUIRED = 0
     LINKED = 1
@@ -88,7 +68,7 @@ class InstitutionInfo(BaseModel):
     logo: Optional[str] = None
 
 
-class NordigenBankLink(MongoBaseModel):
+class NordigenBankLink(BaseModel):
     client: Optional[str]
     requisition_id: str
     url: str
@@ -101,19 +81,8 @@ class NordigenBankLink(MongoBaseModel):
 BankLink = NordigenBankLink
 
 
-class Account(StringIDMongoBaseModel):
-    name: str
-    last_update: Optional[DateField] = None
-    balances: List[Amount] = []
-
-
-class Bank(MongoBaseModel):
-    link: NordigenBankLink
-    institution: InstitutionInfo
-    accounts: List[Account]
-
-
-class TransactionAccountInfo(StringIDMongoBaseModel):
+class TransactionAccountInfo(BaseModel):
+    id: str = Field(alias="_id")
     name: str
 
 
@@ -125,6 +94,24 @@ class Transaction(BaseModel):
     booking_date: Optional[DateField]
     type: str = None
     account: Optional[TransactionAccountInfo] = None
+    last_balance: Optional[Amount] = None
+
+
+class Account(BaseModel):
+    id: str = Field(alias="_id")
+    name: str
+    last_update: Optional[DateField] = None
+    balances: List[Amount] = []
+    transactions: List[Transaction] = None
+
+
+class Bank(BaseModel):
+    id: Optional[PyObjectId] = Field(default=None, alias="_id")
+    link: NordigenBankLink
+    institution: InstitutionInfo
+    accounts: List[Account]
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 BankList = TypeAdapter(List[Bank])

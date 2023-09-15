@@ -1,5 +1,5 @@
 import unittest
-from .bank import Transaction
+from .bank import Transaction, Demo
 
 
 class TestBankModels(unittest.TestCase):

@@ -21,21 +21,17 @@ class BankSync:
     def get_last_sync_time(self, last_update):
         return datetime.now().replace(hour=(int(last_update.hour / 8)) * 8, minute=0, second=0)
 
-    # TODO: Refactor this method
     def fetch_account_updates(self, account: Account, link: BankLink) -> Tuple[Account, List[Transaction]]:
         last_sync_time = self.get_last_sync_time(account.last_update)
         if account.last_update < last_sync_time:
             new_transactions = self.bank_connector.bank_account_api.fetch_transactions(account, account.last_update)
             self.transaction_crud.add(account.id, new_transactions)
-        #     for i in range(len(new_transactions)):
-        #         new_transactions[i].category = categorize(new_transactions[i], old_transactions).value
+            #     for i in range(len(new_transactions)):
+            #         new_transactions[i].category = categorize(new_transactions[i], old_transactions).value
 
         #     account.last_update = datetime.now()
         #     new_account_info = self.bank_connector.bank_account_api.fetch_account(account_id)
         #     account.balances = new_account_info.balances
-
-        # return account, new_transactions
-        return [], []
 
     def update_bank_links(self, username: str):
         for bank in self.bank_crud.find_by_user(username):
@@ -51,4 +47,7 @@ class BankSync:
         user_banks = self.bank_crud.find_by_user(username)
         for bank in user_banks:
             for account in bank.accounts:
-                self.fetch_account_updates(account, bank.link)
+                # self.fetch_account_updates(account, bank.link)
+                account.transactions = self.transaction_crud.find_by_account(account.id)
+
+        return user_banks

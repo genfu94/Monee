@@ -17,6 +17,7 @@ from models.bank import (
     DateField,
     Amount,
     TransactionList,
+    TransactionAccountInfo,
 )
 
 
@@ -42,7 +43,7 @@ class NordigenPSD2Transaction(BaseModel):
     remittance_information_unstructured: str = Field(str, alias="remittanceInformationUnstructured")
     bank_transaction_code: str = Field(str, alias="bankTransactionCode")
 
-    def to_transaction(self) -> Transaction:
+    def to_transaction(self, account_info: TransactionAccountInfo, last_balance: Amount) -> Transaction:
         text = str(self.remittance_information_unstructured) if self.remittance_information_unstructured != "" else None
         type = "income" if int(self.transaction_amount.amount) > 0 else "expense"
         if type == "expense":
@@ -56,6 +57,8 @@ class NordigenPSD2Transaction(BaseModel):
             transaction_amount=self.transaction_amount,
             type=type,
             booking_date=self.booking_date,
+            account=account_info,
+            last_balance=last_balance,
         )
 
 
@@ -86,7 +89,7 @@ class NordigenBankAccountClient(BankAccountAPI):
         transactions = []
         for t in transactions_list:
             transactions.append(self._psd2_to_transaction(account, t, current_amount))
-            # current_amount = transactions[-1].account_balance - transactions[-1].transaction_amount.amount
+            current_amount = transactions[-1].last_balance.amount - transactions[-1].transaction_amount.amount
 
         transactions = TransactionList.validate_python(transactions)
         return transactions
@@ -103,9 +106,10 @@ class NordigenBankAccountClient(BankAccountAPI):
         return Account(_id=account_id, name=account_name, balances=[balances_dict])
 
     def _psd2_to_transaction(self, account: Account, psd2_transaction: Dict, last_balance: float) -> Transaction:
-        psd2_transaction["account"] = {"id": account.id, "name": account.name}
+        account_info = TransactionAccountInfo.model_validate({"_id": account.id, "name": account.name})
+        last_balance = {"currency": "EUR", "amount": last_balance}
         transaction_obj = NordigenPSD2Transaction.model_validate(psd2_transaction)
-        return transaction_obj.to_transaction()
+        return transaction_obj.to_transaction(account_info=account_info, last_balance=last_balance)
 
 
 class NordigenBankLinkClient(BankLinkAPI):

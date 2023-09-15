@@ -3,7 +3,7 @@ from typing import Annotated
 from models.bank import InstitutionInfo
 from dependencies.authentication import validate_token_and_get_active_user
 from dependencies.dependencies import get_bank_sync
-from typing import List
+
 
 router = APIRouter(prefix="/api")
 
@@ -27,12 +27,6 @@ async def bank_connect(
 async def synchronize_account(username: Annotated[str, Depends(validate_token_and_get_active_user)]):
     if get_bank_sync().bank_connector.nordigen_client:
         get_bank_sync().update_bank_links(username)
-        get_bank_sync().synchronize_user_accounts(username)
-
-    account_transactions = []
-    # for account in get_bank_sync().account_crud.find_by_user(username):
-    #     account_dict = account.dict()
-    #     account_dict["transactions"] = get_bank_sync().transaction_crud.find_by_account(account.id)
-    #     account_transactions.append(account_dict)
+        account_transactions = get_bank_sync().synchronize_user_accounts(username)
 
     return account_transactions
