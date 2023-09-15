@@ -8,14 +8,40 @@ import { updateTransaction } from "./api";
 
 import { DATE_RANGE_PRESETS } from "../../utils/date";
 import TransactionList from "./TransactionList.js";
+import dayjs from "dayjs";
 
-function Transactions({ accounts = [] }) {
+function getAccountList(banks) {
+  let accounts = [];
+
+  for (const bank of banks) {
+    for (const acc of bank.accounts) {
+      accounts.push({ ...acc, institution: bank.institution });
+    }
+  }
+
+  return accounts;
+}
+
+function getTransactionList(accounts) {
+  let transactions = [];
+
+  for (const acc of accounts) {
+    transactions = [...transactions, ...acc.transactions];
+  }
+
+  // return transactions.sort((t1, t2) => dayjs(t1.booking_date) < dayjs(t2.booking_date));
+  return transactions;
+}
+
+function Transactions({ banks = [] }) {
   const [dateRange, setDateRange] = useState(DATE_RANGE_PRESETS[0].value);
   const [selectedPreset, setSelectedPreset] = useState(
     DATE_RANGE_PRESETS[0].presetId
   );
+  const accounts = getAccountList(banks);
+  const transactions = getTransactionList(accounts);
   const accountCheckboxes = accounts.map((a) => ({
-    label: a.institution_name + " - " + a.name,
+    label: a.institution.name + " - " + a.name,
     value: a.id,
   }));
   const [filter, setFilter] = useState(accountCheckboxes.map((a) => a.value));
