@@ -10,7 +10,7 @@ import { AppLogo } from "./components/AppLogo/AppLogo";
 function App() {
   const { authenticated, setAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [accounts, setAccounts] = useState([]);
+  const [banks, setBanks] = useState([]);
   const handleLoadingComplete = () => setLoading(false);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function App() {
       setLoading(true);
       synchronizeAndFetchAccounts()
         .then((data) => {
-          setAccounts(data);
+          setBanks(data);
           handleLoadingComplete();
         })
         .catch((errorCode) => {
@@ -46,7 +46,7 @@ function App() {
   return (
     <LoadingScreen loading={loading} content={<AppLogo />}>
       <NavBar />
-      <Router accounts={accounts} />
+      <Router banks={banks} />
     </LoadingScreen>
   );
 }

@@ -25,17 +25,17 @@ export default function TransactionItem({ transaction, onItemClick }) {
         <div style={{ flexBasis: "30%" }}>
           <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
             <CategoryIcon
-              sx={{
-                background: CATEGORIES_ICON_ENUM[transaction.category].color,
-              }}
+            // sx={{
+            //   background: CATEGORIES_ICON_ENUM[transaction.category].color,
+            // }}
             >
-              {CATEGORIES_ICON_ENUM[transaction.category].icon}
+              {/* {CATEGORIES_ICON_ENUM[transaction.category].icon} */}
             </CategoryIcon>
             &nbsp;{" "}
             <Box>
               <Typography variant="h5">{transaction.origin}</Typography>
               <Typography variant="h6">
-                {CATEGORIES_ICON_ENUM[transaction.category].text}
+                {/* {CATEGORIES_ICON_ENUM[transaction.category].text} */}
               </Typography>
             </Box>
           </div>

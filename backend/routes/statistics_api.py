@@ -11,17 +11,14 @@ router = APIRouter(prefix="/api")
 
 
 @router.get("/networth_trend")
-async def networth_trend(
-    username: Annotated[str, Depends(validate_token_and_get_active_user)]
-):
+async def networth_trend(username: Annotated[str, Depends(validate_token_and_get_active_user)]):
     account_transactions = []
-    for account in get_bank_sync().account_crud.find_by_user(username):
-        account_dict = account.dict()
-        account_dict["transactions"] = get_bank_sync().transaction_crud.find_by_account(
-            account.id
-        )
-        account_dict["transactions"] = [t.dict() for t in account_dict["transactions"]]
-        account_transactions.append(account_dict)
+    for bank in get_bank_sync().bank_crud.find_by_user(username):
+        for account in bank.accounts:
+            account_dict = account.model_dump()
+            account_dict["transactions"] = get_bank_sync().transaction_crud.find_by_account(account.id)
+            account_dict["transactions"] = [t.model_dump() for t in account_dict["transactions"]]
+            account_transactions.append(account_dict)
 
     accounts_balance_trend = []
     min_date = None
@@ -29,16 +26,10 @@ async def networth_trend(
     for account in account_transactions:
         if len(account["transactions"]) == 0:
             continue
-
-        curr_df = pd.DataFrame.from_dict(account["transactions"])[
-            ["booking_date", "account_balance"]
-        ]
-        curr_df = (
-            curr_df.resample("1D", on="booking_date")
-            .last()
-            .replace(0, np.NAN)
-            .fillna(method="ffill")
-        )
+        curr_df = pd.DataFrame.from_dict(account["transactions"])
+        curr_df = curr_df[["booking_date", "last_balance"]]
+        curr_df["booking_date"] = pd.to_datetime(curr_df["booking_date"])
+        curr_df = curr_df.resample("1D", on="booking_date").last().replace(0, np.NAN).fillna(method="ffill")
         accounts_balance_trend.append(curr_df)
         if min_date == None:
             min_date = curr_df.index.min()
@@ -51,8 +42,7 @@ async def networth_trend(
 
     new_index = pd.date_range(start=min_date, end=max_date)
     accounts_balance_trend = [
-        df.reindex(new_index).fillna(method="ffill").fillna(method="bfill")
-        for df in accounts_balance_trend
+        df.reindex(new_index).fillna(method="ffill").fillna(method="bfill") for df in accounts_balance_trend
     ]
     balance_trend = accounts_balance_trend[0]
     for bt in accounts_balance_trend[1:]:

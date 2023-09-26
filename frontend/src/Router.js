@@ -17,7 +17,7 @@ function ProtectedRoute({ route, children }) {
   return authenticated ? children : <Navigate to="/login" replace />;
 }
 
-function Router({ accounts }) {
+function Router({ banks }) {
   const navigate = useNavigate();
   const { authenticated, setAuthenticated } = useAuth();
 
@@ -56,7 +56,7 @@ function Router({ accounts }) {
         path="/"
         element={
           <ProtectedRoute route="Main">
-            <Dashboard accounts={accounts} />
+            <Dashboard banks={banks} />
           </ProtectedRoute>
         }
       />
@@ -65,7 +65,7 @@ function Router({ accounts }) {
         path="/transactions"
         element={
           <ProtectedRoute>
-            <Transactions accounts={accounts} />
+            <Transactions banks={banks} />
           </ProtectedRoute>
         }
       />

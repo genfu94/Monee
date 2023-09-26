@@ -2,7 +2,7 @@ from .categories import TransactionCategory
 from .categorisation_rules import MOST_COMMON_WORDS_RULES, MOST_COMMON_COMPANY_RULES
 
 # from sentence_transformers import SentenceTransformer, util
-from ..bank_connect.types import Transaction
+from models.bank import Transaction
 from typing import List
 
 # model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
@@ -19,9 +19,7 @@ def _rule_based_categorization(text, rules):
 
 def rule_based_categorization(transaction_text, merchant_name):
     transaction_text = "" if transaction_text == None else transaction_text
-    category = _rule_based_categorization(
-        transaction_text.lower(), MOST_COMMON_WORDS_RULES
-    )
+    category = _rule_based_categorization(transaction_text.lower(), MOST_COMMON_WORDS_RULES)
     if category != TransactionCategory.UNKNOWN:
         return category
 
@@ -48,9 +46,7 @@ def history_based_categorization(
     return TransactionCategory.UNKNOWN
 
 
-def categorize(
-    transaction: Transaction, transaction_history: List[Transaction]
-) -> TransactionCategory:
+def categorize(transaction: Transaction, transaction_history: List[Transaction]) -> TransactionCategory:
     category = rule_based_categorization(transaction.text, transaction.origin)
 
     if category == TransactionCategory.UNKNOWN:

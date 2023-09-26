@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from datetime import timedelta
-from models.models import Token, UserRegistration
+from models.authentication import Token, UserRegistration
 from dependencies.authentication import (
     register_user,
     authenticate_user,
@@ -25,9 +25,7 @@ def signup(new_user: UserRegistration):
 
 
 @router.post("/token", response_model=Token)
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-):
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -37,14 +35,10 @@ async def login_for_access_token(
         )
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user["username"]}, expires_delta=access_token_expires
-    )
+    access_token = create_access_token(data={"sub": user["username"]}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.get("/check_authentication")
-async def synchronize_account(
-    username: Annotated[str, Depends(validate_token_and_get_active_user)]
-) -> dict:
+async def synchronize_account(username: Annotated[str, Depends(validate_token_and_get_active_user)]) -> dict:
     return {"status": "ok"}

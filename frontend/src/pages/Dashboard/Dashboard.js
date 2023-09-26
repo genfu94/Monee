@@ -3,8 +3,9 @@ import SideMenuLayout from "../SideMenuLayout.js";
 import Accounts from "../Accounts/Accounts.js";
 import { networthTrend } from "../../apis/AccountApi.js";
 import TimeChart from "../../components/Plot/TimeChart.js";
+import dayjs from "dayjs";
 
-function Dashboard({ accounts }) {
+function Dashboard({ banks }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -12,11 +13,14 @@ function Dashboard({ accounts }) {
     networthTrend().then((nw) => {
       const newTrend = [];
       for (const b of nw) {
-        newTrend.push({ x: b.index, y: b.account_balance });
+        newTrend.push({
+          x: dayjs(b.index, "YYYY-MM-DDTHH:mm").toDate(),
+          y: b.last_balance.amount,
+        });
       }
       setData(newTrend);
     });
-  }, [accounts]);
+  }, [banks]);
 
   const timeChart = new TimeChart();
   timeChart.add(data, "rgba(0, 0, 255, 1.0)", "rgba(0, 0, 255, 0.2)", "€");

@@ -17,7 +17,6 @@ const generateColors = (numColors) => {
 };
 
 function renderAccountCard(item, color) {
-  console.log(item, color);
   return (
     <Card sx={{ width: "15rem", padding: "0.7rem", position: "relative" }}>
       <img
@@ -102,11 +101,27 @@ function addBankCard(onClick) {
   );
 }
 
-function Accounts({ accounts = [] }) {
+function getAccountList(banks) {
+  let accounts = [];
+
+  for (const bank of banks) {
+    for (const acc of bank.accounts) {
+      accounts.push({ ...acc, institution: bank.institution });
+    }
+  }
+
+  return accounts;
+}
+
+function Accounts({ banks }) {
   const [dialog, setDialog] = useState(false);
   const showDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
+
+  if (!banks || banks.length <= 0) return;
+  const accounts = getAccountList(banks);
   const colors = generateColors(accounts.length);
+
   return (
     <>
       <SideMenuLayout
