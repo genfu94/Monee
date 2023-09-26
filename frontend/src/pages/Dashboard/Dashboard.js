@@ -8,6 +8,7 @@ function Dashboard({ accounts }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    if (accounts.length == 0) return;
     networthTrend().then((nw) => {
       const newTrend = [];
       for (const b of nw) {
@@ -26,7 +27,7 @@ function Dashboard({ accounts }) {
       content={
         <>
           <Accounts accounts={accounts} />
-          {timeChart.plot()}
+          {accounts.length > 0 && timeChart.plot()}
         </>
       }
     />

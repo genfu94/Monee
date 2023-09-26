@@ -17,7 +17,7 @@ const generateColors = (numColors) => {
 };
 
 function renderAccountCard(item, color) {
-  console.log(color);
+  console.log(item, color);
   return (
     <Card sx={{ width: "15rem", padding: "0.7rem", position: "relative" }}>
       <img

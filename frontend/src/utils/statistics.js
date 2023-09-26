@@ -22,7 +22,7 @@ export function groupTransactionsByDate(accounts, accountFilter, dateRange) {
 
       transactionsGroupedByDate[format_booking_date].push({
         ...transaction,
-        account: account.institution_name + " - " + account.name,
+        account: account.institution.name + " - " + account.name,
       });
     }
   }

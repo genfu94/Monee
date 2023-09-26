@@ -15,7 +15,7 @@ function Transactions({ accounts = [] }) {
     DATE_RANGE_PRESETS[0].presetId
   );
   const accountCheckboxes = accounts.map((a) => ({
-    label: a.institution_name + " - " + a.name,
+    label: a.institution.name + " - " + a.name,
     value: a.id,
   }));
   const [filter, setFilter] = useState(accountCheckboxes.map((a) => a.value));
