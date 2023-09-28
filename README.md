@@ -1,4 +1,4 @@
-<h1 align="center">Budget App</h1>
+<h1 align="center">Monee</h1>
 
 > Personal Finance web app to automatically keep track and generate reports of expenses directly from your credit cards and bank accounts data!
 
@@ -22,7 +22,7 @@ docker compose up
 
 ## ✨ Demo
 
-Currently the application allows to add a new bank account, visualize the amount on each and list all the transactions (still not categorized):
+Currently the application allows to add a new bank account, visualize the amount on each and list all the transactions. Also employs a transaction categorization algorithm that improves as the user correct the wrong transaction categories:
 
 ![name-of-you-image](https://github.com/genfu94/budget-app/blob/main/images/Dashboard.png?raw=true)
 
