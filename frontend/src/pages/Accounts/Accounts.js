@@ -65,7 +65,7 @@ function renderAccountCard(item, color) {
       >
         {Intl.NumberFormat("en-US", {
           style: "currency",
-          currency: item.balances[0].currency,
+          currency: item.balances[0].currency_symbol,
         }).format(item.balances[0].amount)}
       </div>
     </Card>

@@ -30,6 +30,8 @@ async def networth_trend(
         if len(account["transactions"]) == 0:
             continue
 
+        print(account["transactions"])
+
         curr_df = pd.DataFrame.from_dict(account["transactions"])[
             ["booking_date", "account_balance"]
         ]

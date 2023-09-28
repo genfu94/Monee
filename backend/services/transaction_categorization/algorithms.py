@@ -2,7 +2,7 @@ from .categories import TransactionCategory
 from .categorisation_rules import MOST_COMMON_WORDS_RULES, MOST_COMMON_COMPANY_RULES
 
 # from sentence_transformers import SentenceTransformer, util
-from ..bank_connect.types import Transaction
+from schemas import Transaction
 from typing import List
 
 # model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')

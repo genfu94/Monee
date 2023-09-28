@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from datetime import timedelta
-from models.models import Token, UserRegistration
+from schemas import Token, UserRegistration
 from dependencies.authentication import (
     register_user,
     authenticate_user,

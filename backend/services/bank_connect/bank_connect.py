@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from datetime import datetime
 
-from .types import InstitutionInfo, BankLink, Account, Transaction
+from schemas import InstitutionInfo, BankLink, Account, Transaction
 
 
 class BankLinkAPI(ABC):

@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from .bank_connect.types import Transaction, Account
+from ..types import Transaction, Account
 
 bank_connector_mock = Mock()
 transaction_crud_mock = Mock()

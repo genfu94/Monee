@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from ..bank_connect import BankConnector, BankLinkAPI, BankAccountAPI
 
-from ..types import (
+from schemas import (
     APICredentials,
     NordigenBankLink,
     BankLink,

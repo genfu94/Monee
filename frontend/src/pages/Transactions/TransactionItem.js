@@ -47,15 +47,15 @@ export default function TransactionItem({ transaction, onItemClick }) {
 
         <div
           className={`${
-            transaction.transaction_amount.amount > 0
+            transaction.amount.amount > 0
               ? "transaction-income"
               : "target-currency-transaction-amount"
           }`}
         >
           {new Intl.NumberFormat("it-IT", {
             style: "currency",
-            currency: transaction.transaction_amount.currency,
-          }).format(transaction.transaction_amount.amount)}
+            currency: transaction.amount.currency_symbol,
+          }).format(transaction.amount.amount)}
         </div>
       </div>
     </ListItemButton>

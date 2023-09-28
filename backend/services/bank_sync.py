@@ -1,6 +1,6 @@
 from .bank_connect.bank_connect import BankConnector
 from .database_crud import AccountCRUD, TransactionCRUD, BankLinkCRUD
-from .bank_connect.types import BankLink, Account, Transaction, Balance
+from schemas import BankLink, Account, Transaction, CurrencyAmount
 from typing import Tuple, List
 from .transaction_categorization.algorithms import categorize
 

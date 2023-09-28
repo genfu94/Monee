@@ -1,4 +1,4 @@
-from services.bank_connect.types import APICredentials
+from schemas import APICredentials
 from services.bank_connect.implementation.nordigen import NordigenBankSyncClient
 from services.database_crud import (
     MongoAccountCRUD,
@@ -24,7 +24,10 @@ def initialize_bank_sync_client():
     transaction_crud = MongoTransactionCRUD(mongo_client)
 
     bank_connector = NordigenBankSyncClient(
-        APICredentials(settings.NORDIGEN_SECRET_ID, settings.NORDIGEN_SECRET_KEY),
+        APICredentials(
+            secret_id=settings.NORDIGEN_SECRET_ID,
+            secret_key=settings.NORDIGEN_SECRET_KEY,
+        ),
     )
 
     bank_sync = BankSync(bank_connector, account_crud, transaction_crud, bank_link_crud)
