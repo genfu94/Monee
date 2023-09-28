@@ -195,7 +195,7 @@ class MongoTransactionCRUD(TransactionCRUD):
                 "transactions.$.text": transaction.text,
                 "transactions.$.category": transaction.category,
                 "transactions.$.type": transaction.type,
-                # "transactions.$.category_edited": transaction.category_edited,
+                "transactions.$.category_edited": transaction.category_edited,
             }
         }
 

@@ -1,6 +1,6 @@
 from schemas import APICredentials
 from services.bank_connect.implementation.nordigen import NordigenBankSyncClient
-from services.database_crud import (
+from database.crud import (
     MongoAccountCRUD,
     MongoBankLinkCRUD,
     MongoTransactionCRUD,
