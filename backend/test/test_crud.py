@@ -9,7 +9,7 @@ mock_transactions = [
     Transaction(
         id=str(uuid.uuid4()),
         origin="origin",
-        amount=CurrencyAmount(currency_symbol="EUR", amount=10.0),
+        amount=CurrencyAmount(currency="EUR", amount=10.0),
         booking_date="2023-09-28T00:00:00",
         type="expense",
         category="unknown",

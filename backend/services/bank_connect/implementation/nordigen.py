@@ -26,7 +26,6 @@ def _is_account_valid(nordigen_client, account_id: str) -> Dict:
     return account_json
 
 
-# TODO: Organize this class a little bit better
 class NordigenBankAccountClient(BankAccountAPI):
     def __init__(self, nordigen_client):
         self.nordigen_client = nordigen_client
@@ -35,22 +34,22 @@ class NordigenBankAccountClient(BankAccountAPI):
         self, account_id: str, date_start: datetime = None, date_end: datetime = None
     ) -> List[Transaction]:
         account_api = self.nordigen_client.account_api(id=account_id)
-        date_start = date_start.strftime("%Y-%m-%d") if date_start else None
-        date_end = date_end.strftime("%Y-%m-%d") if date_end else None
+
+        date_start_str = date_start.strftime("%Y-%m-%d") if date_start else None
+        date_end_str = date_end.strftime("%Y-%m-%d") if date_end else None
+
         transactions_raw = account_api.get_transactions(
-            date_from=date_start, date_to=date_end
+            date_from=date_start_str, date_to=date_end_str
         )["transactions"]
+
         transactions_list = transactions_raw["booked"] + transactions_raw["pending"]
 
         current_amount = self.fetch_account(account_id).balances[0].amount
-        transactions = []
-        for t in transactions_list:
-            transactions.append(
-                self._psd2_to_transaction(account_id, t, current_amount)
-            )
-            current_amount = (
-                transactions[-1].account_balance - transactions[-1].amount.amount
-            )
+
+        transactions = [
+            self._psd2_to_transaction(account_id, t, current_amount)
+            for t in transactions_list
+        ]
 
         return transactions
 
@@ -70,31 +69,29 @@ class NordigenBankAccountClient(BankAccountAPI):
     def _psd2_to_transaction(
         self, account_id: str, psd2_transaction: Dict, last_balance: float
     ) -> Transaction:
-        origin = ""
-        if "creditorName" in psd2_transaction:
-            origin = psd2_transaction["creditorName"]
-        if "debtorName" in psd2_transaction:
-            origin = psd2_transaction["debtorName"]
-        text = (
-            psd2_transaction["remittanceInformationUnstructured"]
-            if "remittanceInformationUnstructured" in psd2_transaction
-            else ""
+        origin = psd2_transaction.get("creditorName") or psd2_transaction.get(
+            "debtorName"
         )
+
+        text = psd2_transaction.get("remittanceInformationUnstructured", "")
         text = None if text == "-" else text
-        return Transaction.parse_obj(
-            {
-                "account_id": account_id,
-                "type": "income"
-                if float(psd2_transaction["transactionAmount"]["amount"]) > 0
-                else "expense",
-                "id": psd2_transaction["transactionId"],
-                "booking_date": psd2_transaction["bookingDate"] + " 00:00:00",
-                "amount": dict(psd2_transaction["transactionAmount"]),
-                "account_balance": last_balance,
-                "origin": origin,
-                "text": text,
-                "category": "unknown",
-            }
+
+        transaction_type = (
+            "income"
+            if float(psd2_transaction["transactionAmount"]["amount"]) > 0
+            else "expense"
+        )
+
+        return Transaction(
+            account_id=account_id,
+            type=transaction_type,
+            id=psd2_transaction["transactionId"],
+            booking_date=psd2_transaction["bookingDate"] + " 00:00:00",
+            amount=dict(psd2_transaction["transactionAmount"]),
+            account_balance=last_balance,
+            origin=origin,
+            text=text,
+            category="unknown",
         )
 
 
