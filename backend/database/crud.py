@@ -166,45 +166,35 @@ class MongoAccountCRUD(AccountCRUD):
 class MongoTransactionCRUD(TransactionCRUD):
     def __init__(self, mongo_client):
         self.mongo_client = mongo_client
-        self.account_collection = self.mongo_client["accounts"]
+        self.transaction_collection = self.mongo_client["transactions"]
 
     def add(self, account_id: str, transactions: List[schemas.Transaction]) -> None:
-        update_query = [
-            {
-                "$set": {
-                    "transactions": {
-                        "$concatArrays": [
-                            [t.model_dump() for t in transactions],
-                            "$transactions",
-                        ]
-                    }
-                }
-            }
-        ]
-        self.account_collection.update_one(
-            {"id": account_id}, update_query, upsert=True
-        )
+        if len(transactions) == 0:
+            return
+
+        transaction_dicts = [t.model_dump() for t in transactions]
+        for i in range(len(transaction_dicts)):
+            transaction_dicts[i]["account_id"] = account_id
+
+        self.transaction_collection.insert_many(transaction_dicts)
 
     def update(self, account_id: str, transaction: schemas.Transaction) -> None:
-        find_query = {"_id": account_id, "transactions.id": transaction.id}
+        find_query = {"id": transaction.id}
+
         update_query = {
             "$set": {
-                "transactions.$.booking_date": transaction.booking_date,
-                "transactions.$.transaction_amount": transaction.transaction_amount.to_dict(),
-                "transactions.$.origin": transaction.origin,
-                "transactions.$.text": transaction.text,
-                "transactions.$.category": transaction.category,
-                "transactions.$.type": transaction.type,
-                "transactions.$.category_edited": transaction.category_edited,
+                "booking_date": transaction.booking_date,
+                "amount": transaction.amount.model_dump(),
+                "origin": transaction.origin,
+                "text": transaction.text,
+                "category": transaction.category,
+                "type": transaction.type,
+                "category_edited": transaction.category_edited,
             }
         }
 
-        self.account_collection.update_one(find_query, update_query, upsert=True)
+        self.transaction_collection.update_one(find_query, update_query)
 
     def find_by_account(self, account_id: str) -> List[schemas.Transaction]:
-        account = self.account_collection.find_one({"id": account_id})
-        return (
-            [schemas.Transaction.model_validate(t) for t in account["transactions"]]
-            if account
-            else []
-        )
+        transactions = self.transaction_collection.find({"account_id": account_id})
+        return [schemas.Transaction.model_validate(t) for t in transactions]

@@ -45,7 +45,7 @@ BankLink = NordigenBankLink
 
 
 class CurrencyAmount(BaseModel):
-    currency_symbol: str
+    currency: str
     amount: float
 
 
@@ -56,6 +56,7 @@ class Transaction(BaseModel):
     type: str
     booking_date: datetime
     category: str = None
+    category_edited: bool = False
     text: Union[str, None] = None
     account_balance: float = None
 

@@ -49,8 +49,7 @@ class NordigenBankAccountClient(BankAccountAPI):
                 self._psd2_to_transaction(account_id, t, current_amount)
             )
             current_amount = (
-                transactions[-1].account_balance
-                - transactions[-1].transaction_amount.amount
+                transactions[-1].account_balance - transactions[-1].amount.amount
             )
 
         return transactions
@@ -90,7 +89,7 @@ class NordigenBankAccountClient(BankAccountAPI):
                 else "expense",
                 "id": psd2_transaction["transactionId"],
                 "booking_date": psd2_transaction["bookingDate"] + " 00:00:00",
-                "transaction_amount": dict(psd2_transaction["transactionAmount"]),
+                "amount": dict(psd2_transaction["transactionAmount"]),
                 "account_balance": last_balance,
                 "origin": origin,
                 "text": text,

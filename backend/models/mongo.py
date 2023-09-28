@@ -31,7 +31,7 @@ BankLink = NordigenBankLink
 
 
 class CurrencyAmount(BaseModel):
-    currency_symbol: str
+    currency: str
     amount: float
 
 

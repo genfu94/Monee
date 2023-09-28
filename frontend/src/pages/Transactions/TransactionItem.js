@@ -54,7 +54,7 @@ export default function TransactionItem({ transaction, onItemClick }) {
         >
           {new Intl.NumberFormat("it-IT", {
             style: "currency",
-            currency: transaction.amount.currency_symbol,
+            currency: transaction.amount.currency,
           }).format(transaction.amount.amount)}
         </div>
       </div>
