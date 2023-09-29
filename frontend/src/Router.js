@@ -1,20 +1,28 @@
 import React from "react";
 
 import { Navigate, Route, Routes } from "react-router-dom";
-import {
-  Dashboard,
-  Transactions,
-  Accounts,
-  LoginPage,
-  RegistrationPage,
-} from "./pages";
-import { useAuth } from "./AuthProvider";
+import { Dashboard, Transactions, LoginPage, RegistrationPage } from "./pages";
 import { authenticate, register } from "./apis";
 import { useNavigate } from "react-router-dom";
+import jwt from "jwt-decode";
+import { useAuth } from "./AuthProvider";
+
+function isTokenValid() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return false;
+  }
+
+  const expirationTimestamp = jwt(token).exp * 1000; // Convert to milliseconds
+  return expirationTimestamp > Date.now() + 60 * 60 * 1000; // Check if expired (1 hour tolerance)
+}
 
 function ProtectedRoute({ route, children }) {
   const { authenticated, setAuthenticated } = useAuth();
-  return authenticated ? children : <Navigate to="/login" replace />;
+  const isAuthenticated = isTokenValid();
+  if (isAuthenticated) setAuthenticated(true);
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
 function Router({ accounts }) {
@@ -25,9 +33,8 @@ function Router({ accounts }) {
     try {
       const response = await authenticate(username, password);
       localStorage.setItem("token", response.access_token);
-      console.log("Login successful. Redirecting...", response.access_token);
       setAuthenticated(true);
-      console.log("Set authenticated to true");
+      console.log("Login successful. Redirecting...", response.access_token);
       navigate("/");
     } catch (error_code) {
       console.error("Token request responded with", error_code);
@@ -64,7 +71,7 @@ function Router({ accounts }) {
         exact
         path="/transactions"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute route="Transactions">
             <Transactions accounts={accounts} />
           </ProtectedRoute>
         }

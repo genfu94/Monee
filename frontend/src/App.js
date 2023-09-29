@@ -4,8 +4,8 @@ import WebFont from "webfontloader";
 import { LoadingScreen, NavBar } from "./components";
 import { synchronizeAndFetchAccounts } from "./apis";
 import Router from "./Router";
-import { useAuth } from "./AuthProvider";
 import { AppLogo } from "./components/AppLogo/AppLogo";
+import { useAuth } from "./AuthProvider";
 
 function App() {
   const { authenticated, setAuthenticated } = useAuth();
@@ -28,19 +28,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (authenticated) {
-      setLoading(true);
-      synchronizeAndFetchAccounts()
-        .then((data) => {
-          setAccounts(data);
-          handleLoadingComplete();
-        })
-        .catch((errorCode) => {
-          if (errorCode === 401) {
-            console.log("Unauthorized");
-          }
-        });
-    }
+    if (!authenticated) return;
+
+    setLoading(true);
+    synchronizeAndFetchAccounts()
+      .then((data) => {
+        setAccounts(data);
+        handleLoadingComplete();
+      })
+      .catch((errorCode) => {
+        if (errorCode === 401) {
+          console.log("Unauthorized");
+        }
+      });
   }, [authenticated]);
 
   return (
