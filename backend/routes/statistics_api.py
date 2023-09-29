@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
 import pandas as pd
-from dependencies.dependencies import get_bank_sync
+from dependencies import get_bank_sync
 from .authentication_api import validate_token_and_get_active_user
 import numpy as np
 

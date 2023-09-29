@@ -1,7 +1,11 @@
 import unittest
 import mongomock
 import jwt
-from dependencies.authentication import MongoAuthenticationEngine, SECRET_KEY, ALGORITHM
+from backend.services.authentication import (
+    MongoAuthenticationEngine,
+    SECRET_KEY,
+    ALGORITHM,
+)
 
 
 class TestAuthentication(unittest.TestCase):

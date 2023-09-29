@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
 from schemas import Account, InstitutionInfo, BankLink
-from dependencies.dependencies import get_bank_sync
+from dependencies import get_bank_sync
 from .authentication_api import validate_token_and_get_active_user
 from typing import List
 

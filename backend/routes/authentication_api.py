@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from schemas import Token, UserRegistration
-from dependencies.dependencies import get_authentication_engine
+from dependencies import get_authentication_engine
 from fastapi.security import OAuth2PasswordBearer
 
 

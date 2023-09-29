@@ -7,7 +7,7 @@ from database.crud import (
 )
 from services.bank_sync import BankSync
 from pymongo import MongoClient
-from .authentication import MongoAuthenticationEngine
+from services.authentication import MongoAuthenticationEngine
 
 from settings import Settings
 
