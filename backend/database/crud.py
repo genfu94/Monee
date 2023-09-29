@@ -6,19 +6,6 @@ from typing import List, Dict
 from datetime import datetime
 
 
-# def parse_nordigen_bank_link_details(bank_link_details_json: Dict) -> schemas.NordigenBankLink:
-#     return schemas.NordigenBankLink(
-#         client="Nordigen",
-#         link=bank_link_details_json["link"],
-#         requisition_id=bank_link_details_json["requisition_id"],
-#         institution=schemas.InstitutionInfo(**bank_link_details_json["institution"]),
-#         status=bank_link_details_json["status"],
-#     )
-
-
-# BANK_SYNC_CLIENT_TO_BANK_LINK_PARSER = {"Nordigen": parse_nordigen_bank_link_details}
-
-
 class BankLinkCRUD(ABC):
     @abstractmethod
     def add(self, username: str, bank_link: schemas.BankLink) -> None:

@@ -26,16 +26,47 @@ class BankSync:
             hour=(int(last_update.hour / 8)) * 8, minute=0, second=0
         )
 
-    # TODO: Refactor this method
-    def fetch_account_updates(
-        self, account_id: str, link: BankLink
-    ) -> Tuple[Account, List[Transaction]]:
+    def fetch_account(self, account_id: str, link: BankLink) -> Account:
         account = self.account_crud.find_by_id(account_id)
 
         if not account:
             account = self.bank_connector.bank_account_api.fetch_account(account_id)
             account.institution = link.institution
 
+        return account
+
+    def fetch_new_transactions(
+        self, account_id: str, last_update: datetime
+    ) -> List[Transaction]:
+        old_transactions = self.transaction_crud.find_by_account(account_id)
+        old_transactions_ids = [t.id for t in old_transactions]
+
+        new_transactions = self.bank_connector.bank_account_api.fetch_transactions(
+            account_id, last_update
+        )
+
+        new_transactions = [
+            transaction
+            for transaction in new_transactions
+            if transaction.id not in old_transactions_ids
+        ]
+
+        for transaction in new_transactions:
+            transaction.category = categorize(transaction, old_transactions).value
+
+        return new_transactions
+
+    def update_account_info(self, account: Account) -> None:
+        account.last_update = datetime.now()
+        new_account_info = self.bank_connector.bank_account_api.fetch_account(
+            account.id
+        )
+        account.balances = new_account_info.balances
+
+    def fetch_account_updates(
+        self, account_id: str, link: BankLink
+    ) -> Tuple[Account, List[Transaction]]:
+        account = self.fetch_account(account_id, link)
         last_update = (
             account.last_update
             if account.last_update
@@ -43,27 +74,12 @@ class BankSync:
         )
 
         last_sync_time = self.get_last_sync_time(last_update)
-        new_transactions = []
+
         if last_update < last_sync_time:
-            old_transactions = self.transaction_crud.find_by_account(account_id)
-            old_transactions_ids = [t.id for t in old_transactions]
-            new_transactions = self.bank_connector.bank_account_api.fetch_transactions(
-                account_id, last_update
-            )
-            new_transactions = list(
-                filter(lambda x: x.id not in old_transactions_ids, new_transactions)
-            )
-
-            for i in range(len(new_transactions)):
-                new_transactions[i].category = categorize(
-                    new_transactions[i], old_transactions
-                ).value
-
-            account.last_update = datetime.now()
-            new_account_info = self.bank_connector.bank_account_api.fetch_account(
-                account_id
-            )
-            account.balances = new_account_info.balances
+            new_transactions = self.fetch_new_transactions(account_id, last_update)
+            self.update_account_info(account)
+        else:
+            new_transactions = []
 
         return account, new_transactions
 
