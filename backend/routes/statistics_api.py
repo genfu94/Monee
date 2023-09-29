@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from typing import Annotated
 import pandas as pd
 from dependencies.dependencies import get_bank_sync
-from dependencies.authentication import validate_token_and_get_active_user
+from .authentication_api import validate_token_and_get_active_user
 import numpy as np
 
 pd.set_option("display.max_rows", 500)

@@ -1,23 +1,36 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
-from datetime import timedelta
 from schemas import Token, UserRegistration
-from dependencies.authentication import (
-    register_user,
-    authenticate_user,
-    create_access_token,
-    validate_token_and_get_active_user,
-    ACCESS_TOKEN_EXPIRE_MINUTES,
-)
+from dependencies.dependencies import get_authentication_engine
+from fastapi.security import OAuth2PasswordBearer
+
 
 router = APIRouter(prefix="/api")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+async def validate_token_and_get_active_user(
+    token: Annotated[str, Depends(oauth2_scheme)]
+):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    try:
+        payload = get_authentication_engine().validate_token(token)
+    except:
+        raise credentials_exception
+
+    return payload["sub"]
 
 
 @router.post("/signup")
 def signup(new_user: UserRegistration):
     try:
-        register_user(new_user.username, new_user.password)
+        get_authentication_engine().register_user(new_user.username, new_user.password)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Couldn't perform registration")
 
@@ -28,7 +41,9 @@ def signup(new_user: UserRegistration):
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):
-    user = authenticate_user(form_data.username, form_data.password)
+    user = get_authentication_engine().authenticate_user(
+        form_data.username, form_data.password
+    )
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -36,9 +51,8 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user["username"]}, expires_delta=access_token_expires
+    access_token = get_authentication_engine().create_access_token(
+        data={"sub": user["username"]}
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
