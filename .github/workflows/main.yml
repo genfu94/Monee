@@ -25,9 +25,8 @@ jobs:
 
       - name: Build
         run: |
-          # docker compose -f docker-compose.production.yml build
-          # docker compose -f docker-compose.production.yml push
-          ls -la
+          docker compose -f docker-compose.production.yml build
+          docker compose -f docker-compose.production.yml push
       - name: Deploy
         env:
           KEYCLOAK_DB_NAME: ${{ secrets.KEYCLOAK_DB_NAME }}
