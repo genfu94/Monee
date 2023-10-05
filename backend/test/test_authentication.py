@@ -1,17 +1,15 @@
 import unittest
 import mongomock
-import jwt
-from backend.services.authentication import (
+from services.authentication import (
     MongoAuthenticationEngine,
-    SECRET_KEY,
-    ALGORITHM,
 )
 
 
 class TestAuthentication(unittest.TestCase):
     def setUp(self):
+        SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
         mongo_client = mongomock.MongoClient().db.collection
-        self.authentication_engine = MongoAuthenticationEngine(mongo_client)
+        self.authentication_engine = MongoAuthenticationEngine(SECRET_KEY, mongo_client)
 
     def test_user_registration(self):
         self.authentication_engine.register_user("user", "pass")

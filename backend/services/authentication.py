@@ -3,13 +3,13 @@ from typing import Union
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
 
 class AuthenticationEngine:
-    def __init__(self):
+    def __init__(self, secret):
+        self.secret = secret
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     def verify_password(self, plain_password, hashed_password):
@@ -27,12 +27,12 @@ class AuthenticationEngine:
         else:
             expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+        encoded_jwt = jwt.encode(to_encode, self.secret, algorithm=ALGORITHM)
         return encoded_jwt
 
     def validate_token(self, token: str):
         try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            payload = jwt.decode(token, self.secret, algorithms=[ALGORITHM])
         except jwt.exceptions.InvalidTokenError as e:
             raise Exception("Token is not valid")
 
@@ -40,8 +40,8 @@ class AuthenticationEngine:
 
 
 class MongoAuthenticationEngine(AuthenticationEngine):
-    def __init__(self, mongo_client):
-        super(MongoAuthenticationEngine, self).__init__()
+    def __init__(self, secret, mongo_client):
+        super(MongoAuthenticationEngine, self).__init__(secret)
         self.mongo_client = mongo_client
         self.users_collection = self.mongo_client["users"]
 

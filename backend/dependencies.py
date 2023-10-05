@@ -24,7 +24,9 @@ def initialize_bank_sync_client():
     account_crud = MongoAccountCRUD(mongo_client)
     bank_link_crud = MongoBankLinkCRUD(mongo_client)
     transaction_crud = MongoTransactionCRUD(mongo_client)
-    authentication_engine = MongoAuthenticationEngine(mongo_client)
+    authentication_engine = MongoAuthenticationEngine(
+        settings.AUTH_SECRET_KEY, mongo_client
+    )
 
     bank_connector = NordigenBankSyncClient(
         APICredentials(
