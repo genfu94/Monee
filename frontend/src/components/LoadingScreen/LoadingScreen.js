@@ -4,6 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 function renderLoadingPage(content) {
   return (
     <div
+      test-id="loading-screen"
       style={{
         display: "flex",
         flexDirection: "column",

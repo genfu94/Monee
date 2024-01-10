@@ -34,8 +34,7 @@ const URL_TO_PAGE = {
 
 const PAGE_TO_TAB = {
   Dashboard: 0,
-  Accounts: 1,
-  Transactions: 2,
+  Transactions: 1,
 };
 
 function NavBar({ onLogout }) {

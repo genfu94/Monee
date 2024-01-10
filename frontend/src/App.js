@@ -29,7 +29,6 @@ function App() {
 
   useEffect(() => {
     if (!authenticated) return;
-
     setLoading(true);
     synchronizeAndFetchAccounts()
       .then((data) => {
